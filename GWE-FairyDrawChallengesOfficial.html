@@ -1,0 +1,1611 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Good-way Edition: Fairy Draw (Infinite Challenge)</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #ecff40, #fd774b);
+      margin: 0;
+      padding: 0;
+      text-align: center;
+      user-select: none;
+      overflow-x: hidden;
+      overflow-y: scroll;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+}
+    body::-webkit-scrollbar {
+      display: none;
+}
+    nav {
+      display: flex;
+      align-items: center;
+      background-color: #fff8;
+      backdrop-filter: blur(6px);
+      padding: 10px 30px;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 1100;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+    .ticker {
+        position: relative;
+        overflow: hidden;
+        background: #00ffff;
+        color: #320064;
+        border: 4px solid #036cff;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        font: 500 15px/1.2 system-ui, Arial, sans-serif;
+        border-radius: 10px;
+        }
+        .ticker__track {
+        position: relative;
+        flex: 1 1 auto;
+        overflow: hidden;
+        }
+        .ticker__list {
+        color: #320064 ;
+        display: inline-flex;
+        white-space: nowrap;
+        gap: 30px;
+        padding-left: 100%;      
+        animation: ticker-move 48s linear infinite;
+        }
+        .ticker__item::after {          
+        content: "•";
+        margin-left: 28px;
+        opacity: .5;
+        }
+        @keyframes ticker-move {
+        0%   { transform: translateX(0); }
+        100% { transform: translateX(-100%); }
+        }
+    .logo { display: flex; align-items: center; gap: 10px; }
+    .logo img { width: 150px; vertical-align: middle; }
+    .menu { display: flex; gap: 30px; list-style: none; margin-left: 40px; }
+    .menu li a {
+      text-decoration: none; color: black; font-size: 18px; padding: 6px 12px;
+    }
+    .menu li a:hover {
+      background: #FFECA1; border-radius: 8px;
+    }
+    h1 { margin-bottom: 20px; color: #333; }
+    .game-container {
+      text-align: center;
+      max-width: 1500px;
+      margin: 20px auto;
+      background: #ffffffcc;
+      border-radius: 10px;
+      padding: 20px;
+    }
+    .card-container { display: flex; justify-content: center; gap: 20px; margin: 20px 0; flex-wrap: wrap; }
+    .card {
+      width: 165px; height: 240px; perspective: 1000px; cursor: pointer; position: relative;
+    }
+    .card-inner {
+      width: 100%; height: 100%; position: relative;
+      transform-style: preserve-3d;
+      transition: transform 0.8s;
+      border-radius: 8px;
+    }
+    .card.flipped .card-inner { transform: rotateY(180deg); }
+    .card-front, .card-back {
+      position: absolute; width: 100%; height: 100%;
+      backface-visibility: hidden;
+      border-radius: 8px; overflow: hidden;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .card-front { background: #2a2a2a; color: white; font-size: 14px; }
+    .card-front img, .card-back img {
+      width: 100%; height: 100%; object-fit: cover; display: block;
+    }
+    .card-back { transform: rotateY(180deg); background: #ddd; color: #111; font-weight: 600; }
+    .card.disabled { pointer-events: none; opacity: 0.45; }
+    .question-area { display: none; margin: 20px 0; background: #fff; padding: 15px; border-radius: 10px; }
+    .timer, .lives, .score, .round { font-size: 18px; color: #333; margin: 10px 0; text-align: center; }
+    button {
+      padding: 10px 20px; margin: 5px; font-size: 16px; border-radius: 10px;
+      border: none; background: #fffa5c; cursor: pointer; transition: 0.2s ease;
+    }
+    button:hover { background: #ffdf4f; box-shadow: 0 0 5px rgba(0,0,0,0.3); }
+    button:disabled { background: #cccccc; cursor: not-allowed; }
+    .start {
+      padding: 10px 20px; margin: 5px; font-size: 20px; border-radius: 10px;
+      border: none; background: #fffa5c; cursor: pointer; transition: 0.2s ease;
+      border: 4px solid #ff9100;
+    }
+    .start:hover { background: #ffdf4f; box-shadow: 0 0 5px rgba(0,0,0,0.3); }
+    .start:disabled { background: #cccccc; cursor: not-allowed; }
+    .modal {
+  display: none;
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.5);
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+}
+    .modal-content {
+      background: #fff; padding: 20px; border-radius: 10px; text-align: center;
+      max-width: 700px; width: 90%; box-shadow: 0 0 10px rgba(0,0,0,0.3);
+    }
+    .modal-content button { background: #d86100; color: white; }
+    .modal-content button:hover { background: #c65900; }
+    .show { display: flex !important; }
+    footer { background: #222; color: white; text-align: center; padding: 30px; margin-top: 40px; }
+    .card-message {
+      position: absolute; top: 50%; left: 50%;
+      transform: translate(-50%,-50%);
+      background: #ffffffcc; padding: 6px 8px;
+      border-radius: 6px; font-size: 14px;
+      z-index: 50; display: none;
+    }
+    table {
+      width: 90%;
+      margin: auto;
+      border-collapse: collapse;
+      background: rgba(255,255,255,0.9);
+      box-shadow: 0 0 20px rgba(0,0,0,0.1);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    th, td {
+      padding: 15px;
+      border-bottom: 1px solid #ddd;
+      text-align: center;
+    }
+
+    th {
+      background: #bb00ff;
+      color: white;
+      font-weight: bold;
+    }
+
+    td {
+      color: #444;
+    }
+    select
+    {
+      height: 30px;
+    }
+    .skill-bar {
+      background: #f4ffd2;
+      border-radius: 5px;
+      overflow: hidden;
+      margin-bottom: 10px;
+      width: 400px;
+      border: 2px solid #ff00e1;
+    }
+
+    .skill-bar-fill {
+      background: #f7f732;
+      padding: 4px 0;
+      text-align: left;
+      color: black;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+<body oncontextmenu="return false;">
+  <nav>
+    <div class="logo">
+      <img src="Image/BMSTORY.png" alt="Logo"><p style="color:#fb00ff">HTML Games</p>
+    </div>
+    <ul class="menu">
+      <li>Đây là hệ thống game được lập trình bằng HTML, CSS và JavaScript. Được thành lập bởi BMSTORY Entertainment và UNETI ITC LAB.</li>
+    </ul>
+  </nav>
+
+  <h1>Good-way Edition: Fairy Draw (Infinite Challenge)</h1>
+
+  <div class="game-container" id="main-screen">
+    <p style="font-size: 24px"><strong>Chào mừng bạn đến với Good-way Edition: Fairy Draw (Phiên bản gốc)!</strong><br>-Nơi hội tụ tri thức vô hạn!-</p>
+    <p>Hãy dùng máy tính, máy tính bảng hoặc laptop trên website để có trải nghiệm tốt nhất!</p>
+    <div class="score">Điểm cao nhất: <b><span id="high-score">0</span></b><br>Round cao nhất: <b><span id="highest-round">0</span></b></div>
+    <p style="font-size: 12px">Nhấn Ctrl+F5 để lấy lại xếp hạng.</p>
+    <button class="start"; onclick="startGame()"; style="font-size: 24px">Bắt đầu chơi</button>
+    <br>
+    <a href="Variants/GWE-FairyDrawITSuperstarOfficial.html"><b>Phiên bản Công Nghệ Thông Tin (Mới!)</b></a>
+    <div class="instructions" style="margin-top:15px;">
+      <br>
+      <h3 style="font-size: 20px; color:#ff0000">----------- Hướng dẫn chơi -----------</h3>
+      <ul style="text-align: left; line-height: 1.8;">
+        <li>Chơi vô hạn đến khi hết cơ hội. Mỗi round bốc 1 trong 4 lá (3 lá bộ môn + 1 lá chức năng).</li>
+        <li>Sau khi bốc trúng 1 lá chức năng thì sẽ được bốc lá tiếp trong cùng round đấy (Trừ lá Boost).</li>
+        <li>Cứ sau 5 round, bạn nhận được Bonus Round với 4 lá chức năng nhưng trong round đấy chỉ được phép bốc 1 lần.</li>
+        <li>Trả lời câu hỏi trắc nghiệm (4 đáp án) trong 20 giây. Trả lời đúng câu hỏi sẽ được 10 điểm mỗi câu và có quyền vào round tiếp theo. Càng về sau, thời gian trả lời sẽ giảm đi.</li>
+        <li>Mỗi người chơi có 3 cơ hội. Trả lời sai hoặc hết giờ sẽ mất 1 cơ hội và không đến round tiếp theo.</li>
+      </ul>
+    <div class="ticker">
+     <div class="ticker__track">
+      <div class="ticker__list">
+        <span class="ticker__item">Dự án game thuộc về Trần Đặng Bình Minh (MinhCampbell) - Trưởng bộ phận BMSTORY Entertainment.</span>
+        <span class="ticker__item">Phiên bản cập nhật Beta v1.0.1 (Ngày 13/9/2025): Sửa lỗi, nâng cấp tính năng game, Xếp hạng.</span>
+        <span class="ticker__item">Thông báo cập nhật và bảo trì dự kiến vào tháng 10/2025: Thêm thẻ chức năng, bộ môn mới.</span>
+        <span class="ticker__item">Thông báo gửi câu hỏi cụ thể ở phần dưới của trang web này. Đọc kỹ nội dung trước khi gửi về ban tổ chức.</span>
+        <span class="ticker__item">Cảm ơn các bạn đã cùng chơi và đồng hành với chúng tôi!</span>
+      </div>
+    </div>
+    </div>
+    <br>
+    <br>
+      <table>
+      <tr>
+        <th colspan="3" style="background: #b56100; font-size: 20px">Lá chức năng</th>
+      </tr>
+      <tr>
+        <th style="background: rgb(87, 13, 156)">Lá</th>
+        <th style="background: rgb(87, 13, 156)">Chức năng</th>
+      </tr>
+      <tr>
+        <td><img src="Image/Jackpot.png" style="width: 150px; vertical-align: middle;"></td>
+        <td><b>Jackpot</b> - Nhân đôi (x2) điểm có được và tiếp tục round hiện tại.</td>
+      </tr>
+      <tr>
+        <td><img src="Image/AHA.png" style="width: 150px; vertical-align: middle;"></td>
+        <td><b>A-HA!</b> - Nhân 5 lần (x5) điểm nhận được khi trả lời đúng câu hỏi môn sở trường (Sau khi bốc trúng lá A-HA! thì sẽ có lựa chọn môn sở trường).<br>Lưu ý: Chỉ được chọn 1 môn duy nhất, có thể thay đổi khi bốc lá A-HA! lần thứ 2.</td>
+      </tr>
+      <tr>
+        <td><img src="Image/Boost.png" style="width: 150px; vertical-align: middle;"></td>
+        <td><b>Boost</b> - Cộng 50 điểm và lập tức đến round tiếp theo.</td>
+      </tr>
+      <tr>
+        <td><img src="Image/Protection.png" style="width: 150px; vertical-align: middle;"></td>
+        <td><b>Protection</b> - Không bị mất cơ hội khi trả lời sai. Tuy nhiên, hệ thống sẽ đổi câu hỏi khác mà vẫn ở bộ môn đã chọn. (Có thể giữ nhiều lá cùng lúc)<br>Lưu ý: Có thể bốc lá khác trong bộ bài hiện tại.</td>
+      </tr>
+      <tr>
+        <td><img src="Image/Sync.png" style="width: 150px; vertical-align: middle;"></td>
+        <td><b>Sync</b> - Cộng thêm 5-10 điểm khi trả lời đúng và cộng dồn cho các câu hỏi được trả lời chính xác liên tiếp sau đó.</td>
+      </tr>
+      <tr>
+        <td><img src="Image/STOP.png" style="width: 150px; vertical-align: middle;"></td>
+        <td><b>STOP</b> - Bỏ hẹn giờ để trả lời câu hỏi kế tiếp (Có thể giữ nhiều lá cùng lúc)<br>Lưu ý: Chỉ được dừng 1 lần/câu hỏi duy nhất và sẽ mất đi sau khi trả lời xong.</td>
+      </tr>
+    </table>
+    </div>
+    <br>
+        <table>
+      <tr>
+        <th colspan="3" style="font-size: 20px"><b>"Star Messager"'s Milestones</b><br>Bảng cột mốc của "Sứ Thần Ngôi Sao"</th>
+      </tr>
+      <tr>
+        <th>Cột mốc</th>
+        <th>Round (Tri thức)</th>
+        <th>Điểm (May mắn)</th>
+      </tr>
+      <tr>
+        <td style="font-size: 24px; color:#32CD32"><b>C</b></td>
+        <td><b>25-40</b>: Không tệ</td>
+        <td><b>4000-8999</b>: Cũng không may mắn lắm</td>
+      </tr>
+      <tr>
+        <td style="font-size: 24px; color:#00bfff"><b>B</b></td>
+        <td><b>41-80</b>: Khá lắm</td>
+        <td><b>9000-24999</b>: Có niềm tin</td>
+      </tr>
+      <tr>
+        <td style="font-size: 24px; color:#800080"><b>A</b></td>
+        <td><b>81-179</b>: Quá giỏi</td>
+        <td><b>25000-69999</b>: Ông hoàng trúng tủ</td>
+      </tr>
+      <tr>
+        <td style="font-size: 24px; color:#ffa500"><b>S</b></td>
+        <td><b>181-300</b>: Xuất sắc</td>
+        <td><b>70000-199999</b>: Jackpot.exe</td>
+      </tr>
+      <tr>
+        <td style="font-size: 24px; color:#ff781f"><b>SS</b></td>
+        <td><b>301-450</b>: Ánh sáng tri thức</td>
+        <td><b>200000-599999</b>: Sổ xố 365 ngày</td>
+      </tr>
+      <tr>
+        <td style="font-size: 24px; color:#ff67fa"><b>Peak SS</b></td>
+        <td><b>451 trở lên</b>: Ngôi sao tri thức</td>
+        <td><b>600000 trở lên</b>: Trùm bài</td>
+      </tr>
+    </table>
+<div style="margin-top: 15px;">
+  <button id="openProfileBtn" style="display:none;">Thông tin của "Star Messenger"</button>
+</div>
+
+<div class="modal" id="profileModal">
+  <div class="modal-content" style="max-width: 1000px; background-color: #f9d6ff;">
+    <h2>🌟 Profile của "Star Messenger" - "Sứ Thần Ngôi Sao"🌟</h2>
+    <table>
+      <tr>
+    <td rowspan="3"><img src="Image/CôgiáoTrang.png" style="width: 300px; vertical-align: middle;"></td>
+    <td style="text-align: left;"><b>Sinh nhật:</b> Ngày 5 tháng 3</td>
+    </tr>
+    <tr>
+    <td style="text-align: left;"><b>Môn học sở trường:</b> Hoá Học</td>
+    </tr>
+    <tr>
+    <td><div class="skill-bar"><div class="skill-bar-fill" style="width: 85%;">Sức mạnh</div></div><div class="skill-bar"><div class="skill-bar-fill" style="width: 90%;"> Tri thức</div></div><div class="skill-bar"><div class="skill-bar-fill" style="width: 90%;"> Thần kỳ</div></div><div class="skill-bar"><div class="skill-bar-fill" style="width: 95%;"> Xinh đẹp</div></div><div class="skill-bar"><div class="skill-bar-fill" style="width: 90%;"> Đặc biệt</div></div></td>
+    </tr>
+    <tr>
+    <td rowspan="2"; style="text-align: left; font-size: 20px;"><b>Họ tên:</b> Vũ Thị Trang<br>(Cô giáo Trang)</td>
+    <td style="text-align: left;"><b>Đặc điểm:</b> Người đồng hành và truyền cảm hứng cho người chơi vượt qua mọi thử thách tri thức.</td>
+    </tr>
+    <tr>
+    <td style="text-align: left;"><b>Cách mở khoá Profile:</b> "Hmmm... Có vẻ như bạn không nhớ cách để thấy mở được profile này..."</td>
+    </tr>
+    </table>
+    <button onclick="closeProfile()">Trở về</button>
+  </div>
+</div>
+<br><br>
+  <a class="start"; href="https://docs.google.com/forms/d/e/1FAIpQLSdJAufqQidTHU5X3S622OqKoNmTYeLuB2TJNwr7osqde08SRw/viewform?usp=header" target="_blank"><b>Gửi thêm câu hỏi cho nhà phát hành</b></a>
+</div>
+
+
+  <div class="game-container" id="game-area" style="display:none;">
+    <table style="font-size: 18px">
+      <tr>
+        <td>Round: <b><span id="round-number">1</span></b></td>
+        <td>Điểm: <b><span id="score">0</span></b></td>
+        <td>Cơ hội còn lại: <b><span id="lives">3</span></b></td>
+      </tr>
+      <tr>
+        <td colspan="3">Lá chức năng tích lỹ: Protection x <b id="protection-count">0</b> | STOP x <b id="stop-count">0</b></div></td>
+      </tr>
+    </table>
+
+    <div class="card-container" id="card-container">
+      <div class="card" data-index="1" onclick="flipCard(1)"><div class="card-inner"><div class="card-front"><img src="Image/CardBack.png"></div><div class="card-back"></div></div></div>
+      <div class="card" data-index="2" onclick="flipCard(2)"><div class="card-inner"><div class="card-front"><img src="Image/CardBack.png"></div><div class="card-back"></div></div></div>
+      <div class="card" data-index="3" onclick="flipCard(3)"><div class="card-inner"><div class="card-front"><img src="Image/CardBack.png"></div><div class="card-back"></div></div></div>
+      <div class="card" data-index="4" onclick="flipCard(4)"><div class="card-inner"><div class="card-front"><img src="Image/CardBack.png"></div><div class="card-back"></div></div></div>
+    </div>
+
+    <div class="question-area" id="question-area">
+      <h3 id="question-text">Câu hỏi sẽ hiển thị ở đây</h3>
+      <div id="options">
+        <button onclick="checkAnswer(1)">A</button>
+        <button onclick="checkAnswer(2)">B</button>
+        <button onclick="checkAnswer(3)">C</button>
+        <button onclick="checkAnswer(4)">D</button>
+      </div>
+      <div class="timer">Thời gian: <b><span id="timer">20</span></b> giây</div>
+    </div>
+
+    <div id="aha-selection" style="display:none; margin:20px 0;">
+      <label>Chọn môn sở trường (A-HA): </label>
+      <select id="favorite-subject">
+        <option value="Toán">Toán</option>
+        <option value="Lịch sử">Lịch sử</option>
+        <option value="Địa lí">Địa lí</option>
+        <option value="GD Kinh tế - Pháp Luật">GD Kinh tế - Pháp Luật</option>
+        <option value="Vật lý">Vật lý</option>
+        <option value="Hoá học">Hoá học</option>
+        <option value="Sinh học">Sinh học</option>
+      </select>
+      <button id="confirm-aha">Xác nhận</button>
+    </div>
+  </div>
+
+  <div class="modal" id="gameOverModal">
+    <div class="modal-content">
+      <h2 style="color: red;">Game Over!</h2>
+      <p>Điểm của bạn: <span id="final-score">0</span></p>
+      <div id="starMessengerReaction" style="margin-top: 20px;"></div>
+      <div><button onclick="restartGame()">Chơi lại</button></div>
+    </div>
+  </div>
+
+  <div id="messageModal" class="modal">
+    <div class="modal-content">
+        <p style="font-size: 18px;" id="popupMessage"></p>
+        <button onclick="closePopup()">Tiếp tục</button>
+    </div>
+</div>
+  
+  <div class="modal" id="bonusModal">
+    <div class="modal-content">
+      <h2>Bonus Round!</h2>
+      <p>Bạn có 1 lần lật duy nhất với lá chức năng!</p>
+      <button onclick="startBonusRound()">Bắt đầu</button>
+    </div>
+  </div>
+  
+  
+  <footer>© 2025 BMSTORY Entertainment</footer>
+
+  <script>
+    // --- Game state ---
+    let round = 1;
+    let lives = 3;
+    let score = 0;
+    let highScore = localStorage.getItem('highScore') ? parseInt(localStorage.getItem('highScore')) : 0;
+    let highestRound = localStorage.getItem('highestRound') ? parseInt(localStorage.getItem('highestRound')) : 0;
+    let currentCard = null;
+    let timerInterval = null;
+    let hasAHA = false;
+    let hasSync = false;
+    let consecutiveCorrect = 0;
+    let favoriteSubject = null;
+    let isCardFlipped = false;
+    let inBonusRound = false;
+    let roundCards = [];
+    let choosingAHA = false;
+    let protectionCount = 0;
+    let stopCount = 0;
+    let isStopUsed = false;
+
+    // --- Data ---
+const functionCards = [
+  { name: "Jackpot", image: "Image/Jackpot.png", text: "Jackpot", effect: () => { score *= 2; showPopup("Jackpot! Điểm của bạn được nhân đôi!"); } },
+  { name: "A-HA", image: "Image/AHA.png", text: "A-HA", effect: () => { hasAHA = true; choosingAHA = true; document.getElementById('aha-selection').style.display = 'block'; showPopup("A-HA! Chọn môn sở trường để x5 điểm khi trả lời đúng!"); } },
+  { name: "Boost", image: "Image/Boost.png", text: "Boost", effect: () => { score += 50; showPopup("Boost! Cộng 50 điểm và chuyển đến round tiếp theo!"); } },
+  { name: "Protection", image: "Image/Protection.png", text: "Protection", effect: () => { protectionCount++; updatePowerCards(); showPopup("Bạn nhận được 1 lá Protection! Bạn sẽ không bị mất cơ hội khi trả lời sai! (Còn: " + protectionCount + ")");} },
+  { name: "Sync", image: "Image/Sync.png", text: "Sync", effect: () => { hasSync = true; showPopup("Sync! Thêm điểm khi trả lời đúng liên tiếp!"); } },
+  { name: "STOP", image: "Image/STOP.png", text: "STOP", effect: () => { stopCount++; updatePowerCards(); showPopup("Bạn nhận được 1 lá STOP! Bỏ hẹn giờ trả lời câu hỏi! (Số lượng còn lại: " + stopCount + ")");} }
+];
+
+    const subjectCards = [
+      { subject: "Toán", image: "Image/Math.png", text: "Toán" },
+      { subject: "Lịch sử", image: "Image/History.png", text: "Lịch sử" },
+      { subject: "Địa lí", image: "Image/Geography.png", text: "Địa lí" },
+      { subject: "GD Kinh tế - Pháp Luật", image: "Image/EconomicsLaw.png", text: "GD Kinh tế - Pháp Luật" },
+      { subject: "Vật lý", image: "Image/Physics.png", text: "Vật lý" },
+      { subject: "Hoá học", image: "Image/Chemistry.png", text: "Hoá học" },
+      { subject: "Sinh học", image: "Image/Biology.png", text: "Sinh học" }
+    ];
+
+    const questions = [
+  { subject: "Toán", question: "Công thức tính diện tích hình thoi là gì? (Cho d là đường chéo)", options: ["d1 × d2", "(d1 × d2)/2", "2 × (d1 × d2)", "(d1 × d2)/4"], correct: 2 },
+  { subject: "Toán", question: "Giá trị của sin(30°)?", options: ["0", "1/2", "√3/2", "1"], correct: 2 },
+  { subject: "Toán", question: "Phương trình bậc hai ax² + bx + c = 0 có nghiệm khi Δ = ?", options: ["b² - 4ac ≥ 0", "b² + 4ac ≥ 0", "b² - 4ac < 0", "b² + 4ac < 0"], correct: 1 },
+  { subject: "Toán", question: "Diện tích hình tròn có bán kính r là gì?", options: ["πr", "2πr", "πr²", "2πr²"], correct: 3 },
+  { subject: "Toán", question: "Đạo hàm của hàm số y = x² là?", options: ["2x", "x", "x²", "1"], correct: 1 },
+{ subject: "Toán", question: "Giá trị của cos(60°)?", options: ["1", "1/2", "√3/2", "0"], correct: 2 },
+{ subject: "Toán", question: "Thể tích hình lập phương cạnh a là?", options: ["a²", "a³", "6a²", "4a³"], correct: 2 },
+{ subject: "Toán", question: "Đường trung tuyến trong tam giác xuất phát từ đâu?", options: ["Từ đỉnh đến cạnh đối diện", "Từ trung điểm một cạnh đến trung điểm cạnh đối diện", "Từ một góc đến cạnh kề", "Từ đỉnh đến trung điểm cạnh đối diện"], correct: 4 },
+{ subject: "Toán", question: "Hàm số nào là hàm bậc nhất?", options: ["y = ax + b", "y = ax² + bx + c", "y = a/x", "y = sinx"], correct: 1 },
+{ subject: "Toán", question: "Tập xác định của hàm số y = 1/x là?", options: ["R", "R \\ {0}", "R⁺", "R⁻"], correct: 2 },
+{ subject: "Toán", question: "Đơn vị góc trong hệ SI là gì?", options: ["Độ", "Radian", "Grad", "Phút"], correct: 2 },
+{ subject: "Toán", question: "Giá trị nhỏ nhất của sin(x) là?", options: ["0", "-1", "1", "-√3/2"], correct: 2 },
+{ subject: "Toán", question: "Công thức tính diện tích hình vuông cạnh a?", options: ["a²", "2a", "4a", "a³"], correct: 1 },
+{ subject: "Toán", question: "Hệ số góc của đường thẳng y = 3x + 2 là?", options: ["2", "3", "-3", "1"], correct: 2 },
+{ subject: "Toán", question: "Nghiệm của phương trình sin(x) = 0 là?", options: ["x = kπ", "x = π/2 + kπ", "x = 2kπ", "x = (2k+1)π"], correct: 1 },
+{ subject: "Toán", question: "Định lý Pitago phát biểu cho tam giác vuông là? (c là cạnh huyền)", options: ["a² = b² + c²", "a² + b² = c²", "a² - b² = c²", "a² + b² + c² = 0"], correct: 2 },
+{ subject: "Toán", question: "Giá trị của tan(45°)?", options: ["0", "1", "√3", "∞"], correct: 2 },
+{ subject: "Toán", question: "Công thức nghiệm phương trình bậc hai ax² + bx + c = 0?", options: ["x = (-b ± √Δ)/(2a)", "x = (-b ± Δ)/(2a)", "x = (b ± √Δ)/(2a)", "x = (-b ± √Δ)/a"], correct: 1 },
+{ subject: "Toán", question: "Công thức tính chu vi hình tròn bán kính r?", options: ["πr²", "2πr", "πr", "4πr"], correct: 2 },
+{ subject: "Toán", question: "Giá trị của cos(0°)?", options: ["0", "1", "-1", "√3/2"], correct: 2 },
+{ subject: "Toán", question: "Hàm số nào đồng biến trên R?", options: ["y = x³", "y = -x²", "y = cosx", "y = -x³"], correct: 1 },
+{ subject: "Toán", question: "Tích vô hướng của 2 vectơ vuông góc bằng?", options: ["0", "1", "-1", "Không xác định"], correct: 1 },
+{ subject: "Toán", question: "Số π có giá trị xấp xỉ?", options: ["2.14", "3.14", "3.41", "3.04"], correct: 2 },
+{ subject: "Toán", question: "Công thức tính thể tích hình nón bán kính r, chiều cao h?", options: ["πr²h", "(1/3)πr²h", "2πr²h", "πrh"], correct: 2 },
+{ subject: "Toán", question: "Giá trị của sin(90°)?", options: ["0", "1", "-1", "√3/2"], correct: 2 },
+{ subject: "Toán", question: "Tập nghiệm phương trình cosx = 0?", options: ["x = kπ", "x = π/2 + kπ", "x = 2kπ", "x = (2k+1)π"], correct: 2 },
+{ subject: "Toán", question: "Đạo hàm của y = sinx là?", options: ["cosx", "-cosx", "-sinx", "tanx"], correct: 1 },
+{ subject: "Toán", question: "Nguyên hàm của y = 2x là?", options: ["x² + C", "2x² + C", "ln|x| + C", "e^x + C"], correct: 1 },
+{ subject: "Toán", question: "Trong không gian Oxyz, phương trình mặt phẳng có dạng?", options: ["ax + by + cz + d = 0", "ax + by = c", "y = ax + b", "ax² + bx + c = 0"], correct: 1 },
+{ subject: "Toán", question: "Hệ số nhị thức Newton C(n,k) bằng?", options: ["n! / (k!(n-k)!)", "k! / (n!(n-k)!)", "n! / (k! + (n-k)!)", "n! / (n+k)!"], correct: 1 },
+{ subject: "Toán", question: "Giá trị lớn nhất của cosx là?", options: ["0", "1", "-1", "√3/2"], correct: 2 },
+{ subject: "Toán", question: "Nếu dãy số có công sai d, gọi là?", options: ["Cấp số cộng", "Cấp số nhân", "Hàm số mũ", "Hàm logarit"], correct: 1 },
+{ subject: "Toán", question: "Số hạng thứ n của cấp số cộng (u1, d)?", options: ["u1 + (n-1)d", "u1 × d^n", "u1 + nd", "u1 - nd"], correct: 1 },
+{ subject: "Toán", question: "Tổng n số hạng đầu của cấp số cộng?", options: ["(u1 + un)×n/2", "u1 × n", "u1 + nd", "n(u1 + d)"], correct: 1 },
+{ subject: "Toán", question: "Đạo hàm của y = e^x là?", options: ["1", "x", "e^x", "lnx"], correct: 3 },
+{ subject: "Toán", question: "Logarit cơ số a của 1 bằng?", options: ["0", "1", "a", "Không xác định"], correct: 1 },
+{ subject: "Toán", question: "Tích của 2 số phức liên hợp z và z̅ bằng?", options: ["|z|²", "0", "1", "Re(z)"], correct: 1 },
+{ subject: "Toán", question: "Số nghiệm thực của phương trình x² + 1 = 0?", options: ["0", "1", "2", "Vô số"], correct: 1 },
+{ subject: "Toán", question: "Giá trị của sin(180°)?", options: ["0", "1", "-1", "√3/2"], correct: 1 },
+{ subject: "Toán", question: "Công thức tính diện tích tam giác (a, h là cạnh đáy và chiều cao)?", options: ["a × h", "a × h / 2", "2a × h", "a² + h²"], correct: 2 },
+{ subject: "Toán", question: "Giá trị của cos(180°)?", options: ["1", "0", "-1", "√2/2"], correct: 3 },
+{ subject: "Toán", question: "Thể tích hình hộp chữ nhật a, b, c?", options: ["a²b²c", "a²+b²+c²", "a+b×c", "a×b×c"], correct: 4 },
+{ subject: "Toán", question: "Đạo hàm của y = cosx là?", options: ["sinx", "-sinx", "cosx", "-cosx"], correct: 2 },
+{ subject: "Toán", question: "Nguyên hàm của y = cosx là?", options: ["-cosx + C", "sinx + C", "tanx + C", "xcosx + C"], correct: 2 },
+{ subject: "Toán", question: "Nghiệm của phương trình tanx = 0?", options: ["x = kπ", "x = π/2 + kπ", "x = 2kπ", "x = (2k+1)π"], correct: 1 },
+{ subject: "Toán", question: "Giá trị của tan(45°)?", options: ["√3", "0", "1", "∞"], correct: 3 },
+{ subject: "Toán", question: "Công thức tính diện tích hình thang (a, b hai đáy, h là chiều cao)?", options: ["(a+b)h", "(a+b)h/2", "2(a+b)h", "(a-b)h/2"], correct: 2 },
+{ subject: "Toán", question: "Thể tích hình cầu bán kính r?", options: ["4/3 πr³", "πr²h", "2πr³", "(1/3)πr²h"], correct: 1 },
+{ subject: "Toán", question: "Giá trị của cos(90°)?", options: ["0", "1", "-1", "√3/2"], correct: 1 },
+{ subject: "Toán", question: "Tập nghiệm phương trình sinx = 1?", options: ["x = kπ", "x = π/2 + 2kπ", "x = π + kπ", "x = 2kπ"], correct: 2 },
+{ subject: "Toán", question: "Phương trình đường thẳng qua (0,2) và hệ số góc 3?", options: ["y = 3x + 2", "y = 2x + 3", "y = 3x - 2", "y = -3x + 2"], correct: 1 },
+{ subject: "Toán", question: "Tổng các góc trong một tam giác bằng?", options: ["90°", "180°", "270°", "360°"], correct: 2 },
+{ subject: "Toán", question: "Phương trình logax = 1 tương đương với?", options: ["a = 1", "x = 1", "x = a", "ax = 1"], correct: 3 },
+{ subject: "Toán", question: "Tập nghiệm phương trình cosx = 1?", options: ["x = kπ", "x = 2kπ", "x = π/2 + 2kπ", "x = (2k+1)π"], correct: 2 },
+{ subject: "Toán", question: "Số phức i thỏa mãn đẳng thức nào?", options: ["i² = 1", "i² = -1", "i² = 0", "i² = i"], correct: 2 },
+{ subject: "Toán", question: "Giá trị lớn nhất của hàm số y = -x² + 4x + 1 đạt tại?", options: ["x = -2", "x = 2", "x = 1", "x = -1"], correct: 2 },
+{ subject: "Toán", question: "Tổng n số hạng đầu của cấp số nhân (u1, q)?", options: ["u1(1-q^n)/(1-q)", "u1 + (n-1)q", "(u1+un)×n/2", "u1q^n"], correct: 1 },
+{ subject: "Toán", question: "Đạo hàm của y = ln(x)?", options: ["1/x", "x", "lnx", "0"], correct: 1 },
+{ subject: "Toán", question: "Giá trị của sin(60°)?", "options": ["1/2", "√3/2", "0", "1"], "correct": 2 },
+{ subject: "Toán", question: "Căn bậc hai của 144 là?", options: ["10", "11", "12", "13"], correct: 3 },
+  { subject: "Toán", question: "Kết quả của 7! (giai thừa 7) là?", options: ["720", "5040", "40320", "120"], correct: 2 },
+  { subject: "Toán", question: "Giá trị của sin(0°)?", options: ["0", "1", "-1", "∞"], correct: 1 },
+  { subject: "Toán", question: "Giá trị của cos(90°)?", options: ["1", "0", "-1", "∞"], correct: 2 },
+  { subject: "Toán", question: "Đạo hàm của y = cosx?", options: ["cosx", "-cosx", "sinx", "-sinx"], correct: 4 },
+  { subject: "Toán", question: "Nguyên hàm của y = cosx?", options: ["sinx + C", "-sinx + C", "cosx + C", "tanx + C"], correct: 1 },
+  { subject: "Toán", question: "Số hạng thứ n của cấp số cộng u₁, d là?", options: ["u₁ + nd", "u₁ + (n-1)d", "u₁n + d", "u₁ + n/d"], correct: 2 },
+  { subject: "Toán", question: "Tổng n số hạng đầu của cấp số cộng?", options: ["n(u₁+uₙ)/2", "u₁+uₙ", "n(u₁+uₙ)", "(u₁+uₙ)/2"], correct: 1 },
+  { subject: "Toán", question: "Đạo hàm của y = e^x?", options: ["x·e^x", "lnx", "e^x", "1/e^x"], correct: 3 },
+  { subject: "Toán", question: "Giá trị log₁₀(1000) bằng?", options: ["1", "2", "3", "10"], correct: 3 },
+  { subject: "Toán", question: "Công thức tính diện tích hình tròn bán kính R?", options: ["πR", "2πR", "πR²", "4πR²"], correct: 3 },
+  { subject: "Toán", question: "Công thức tính chu vi hình tròn bán kính R?", options: ["2R", "πR", "2πR", "πR²"], correct: 3 },
+  { subject: "Toán", question: "Trong tam giác, tổng 3 góc luôn bằng?", options: ["90°", "120°", "180°", "360°"], correct: 3 },
+  { subject: "Toán", question: "Phương trình x² = 25 có nghiệm?", options: ["x = ±5", "x = 5", "x = -5", "Vô nghiệm"], correct: 1 },
+  { subject: "Toán", question: "Hệ số góc của đường thẳng y = 3x + 2?", options: ["2", "3", "-3", "0"], correct: 2 },
+  { subject: "Toán", question: "Định lý Pytago: trong tam giác vuông, cạnh huyền bình phương bằng?", options: ["a²+b²", "a²-b²", "2ab", "(a+b)²"], correct: 1 },
+  { subject: "Toán", question: "Giới hạn lim(x→∞) 1/x bằng?", options: ["0", "1", "∞", "-∞"], correct: 1 },
+  { subject: "Toán", question: "Tổng các số hạng của cấp số nhân có công bội q≠1?", options: ["u₁(1-q^n)/(1-q)", "u₁(1-q)/(1-q^n)", "u₁(q^n-1)/(q-1)", "u₁nq"], correct: 1 },
+  { subject: "Toán", question: "Nếu cosx = 0 thì x bằng?", options: ["kπ", "π/2 + kπ", "2kπ", "0"], correct: 2 },
+  { subject: "Toán", question: "Nguyên hàm của 1/x?", options: ["ln|x| + C", "1/(x²)", "xlnx", "e^x"], correct: 1 },
+  { subject: "Toán", question: "Giá trị của sin(45°)?", options: ["1/2", "√2/2", "√3/2", "1"], correct: 2 },
+  { subject: "Toán", question: "Giá trị của cos(45°)?", options: ["1/2", "√2/2", "√3/2", "1"], correct: 2 },
+  { subject: "Toán", question: "Giá trị của tan(30°)?", options: ["√3", "1/√3", "1", "0"], correct: 2 },
+  { subject: "Toán", question: "Nghiệm của phương trình x² - 9 = 0?", options: ["x = ±3", "x = 3", "x = -3", "x = 0"], correct: 1 },
+  { subject: "Toán", question: "Công thức tính diện tích hình chữ nhật a, b?", options: ["a+b", "2a+2b", "ab", "a²+b²"], correct: 3 },
+  { subject: "Toán", question: "Thể tích hình lập phương cạnh a?", options: ["a²", "a³", "6a²", "4a³"], correct: 2 },
+  { subject: "Toán", question: "Thể tích hình trụ bán kính r, chiều cao h?", options: ["πr²h", "2πrh", "πrh²", "(1/3)πr²h"], correct: 1 },
+  { subject: "Toán", question: "Tập nghiệm phương trình sinx = 0?", options: ["x = kπ", "x = π/2 + kπ", "x = 2kπ", "x = (2k+1)π"], correct: 1 },
+  { subject: "Toán", question: "Tập nghiệm phương trình cosx = 1?", options: ["x = kπ", "x = 2kπ", "x = π/2 + 2kπ", "x = (2k+1)π"], correct: 2 },
+  { subject: "Toán", question: "Tập nghiệm phương trình tanx = 0?", options: ["x = kπ", "x = π/2 + kπ", "x = 2kπ", "x = (2k+1)π"], correct: 1 },
+  { subject: "Toán", question: "Đạo hàm của y = x³?", options: ["3x²", "x²", "3x", "x³"], correct: 1 },
+  { subject: "Toán", question: "Nguyên hàm của y = 3x²?", options: ["x³ + C", "3x³ + C", "x² + C", "x³/3 + C"], correct: 1 },
+  { subject: "Toán", question: "Đạo hàm của y = ln(x)?", options: ["1/x", "x", "lnx", "0"], correct: 1 },
+  { subject: "Toán", question: "Giới hạn lim(x→0) sinx/x?", options: ["0", "1", "∞", "-∞"], correct: 2 },
+  { subject: "Toán", question: "Phương trình ax² + bx + c = 0 có nghiệm kép khi?", options: ["Δ > 0", "Δ = 0", "Δ < 0", "a = 0"], correct: 2 },
+  { subject: "Toán", question: "Công thức tính số cạnh của đa giác n đỉnh?", options: ["n", "n-1", "2n", "n(n-3)/2"], correct: 4 },
+  { subject: "Toán", question: "Một tam giác đều có mỗi góc bằng?", options: ["30°", "45°", "60°", "90°"], correct: 3 },
+  { subject: "Toán", question: "Giá trị lớn nhất của hàm số y = sinx?", options: ["0", "1", "-1", "∞"], correct: 2 },
+  { subject: "Toán", question: "Giá trị nhỏ nhất của hàm số y = cosx?", options: ["0", "1", "-1", "-√3/2"], correct: 3 },
+  { subject: "Toán", question: "Công thức diện tích hình thoi theo 2 đường chéo d₁, d₂?", options: ["d₁d₂", "(d₁d₂)/2", "2d₁d₂", "(d₁d₂)/4"], correct: 2 },
+  { subject: "Toán", question: "Công thức tính thể tích hình cầu bán kính r?", options: ["πr³", "4/3 πr³", "2πr³", "πr²"], correct: 2 },
+  { subject: "Toán", question: "Đạo hàm của y = tanx?", options: ["sec²x", "csc²x", "cos²x", "1"], correct: 1 },
+  { subject: "Toán", question: "Nguyên hàm của y = 1/(1+x²)?", options: ["arctanx + C", "lnx + C", "1/x + C", "arcsinx + C"], correct: 1 },
+  { subject: "Toán", question: "Tổng các góc ngoài của đa giác lồi bằng?", options: ["90°", "180°", "270°", "360°"], correct: 4 },
+  { subject: "Toán", question: "Số đường chéo của một đa giác n cạnh?", options: ["n(n-3)/2", "n(n-1)/2", "2n", "n²"], correct: 1 },
+  { subject: "Toán", question: "Giá trị của log₂(8)?", options: ["1", "2", "3", "4"], correct: 3 },
+  { subject: "Toán", question: "Số phức i thỏa mãn?", options: ["i² = -1", "i² = 1", "i² = 0", "i² = i"], correct: 1 },
+  { subject: "Toán", question: "Mẫu số chung nhỏ nhất của 12 và 18 là?", options: ["6", "18", "36", "72"], correct: 3 },
+  { subject: "Toán", question: "Ước chung lớn nhất của 24 và 36 là?", options: ["6", "12", "18", "24"], correct: 2 },
+  { subject: "Toán", question: "Khai triển (a+b)² bằng?", options: ["a²+b²", "a²+2ab+b²", "2a²+2b²", "a²-ab+b²"], correct: 2 },
+  { subject: "Toán", question: "Cái nào luôn đúng với a, b ≥ 0?", options: ["√a + √b ≥ √(a+b)", "√a + √b ≤ √(a+b)", "a+b ≥ √(a+b)", "a+b ≤ √(a+b)"], correct: 1 },
+  { subject: "Toán", question: "Hằng đẳng thức (a-b)² bằng gì?", options: ["a²-2ab+b²", "a²+b²", "a²-ab+b²", "a²+2ab+b²"], correct: 1 },
+  { subject: "Toán", question: "(a+b)(a-b) bằng?", options: ["a²-b²", "a²+b²", "a²-2ab+b²", "2a²-2b²"], correct: 1 },
+  { subject: "Toán", question: "(x+y)³ khai triển ra?", options: ["x³+y³", "x³+3x²y+3xy²+y³", "x³+3xy+y³", "x³+6xy+y³"], correct: 2 },
+  { subject: "Toán", question: "Hằng đẳng thức (a+b)² - (a-b)² bằng?", options: ["2ab", "4ab", "a²+b²", "2(a²+b²)"], correct: 2 },
+  { subject: "Toán", question: "a³+b³ được phân tích thành?", options: ["(a+b)(a²-ab+b²)", "(a-b)(a²-ab+b²)", "(a+b)(a²+ab+b²)", "(a-b)(a²+ab+b²)"], correct: 3 },
+
+  // Lịch sử
+  { subject: "Lịch sử", question: "Ai là vị vua đầu tiên của nhà Nguyễn?", options: ["Gia Long", "Minh Mạng", "Thiệu Trị", "Tự Đức"], correct: 1 },
+  { subject: "Lịch sử", question: "Trận Bạch Đằng năm 938 do ai chỉ huy?", options: ["Ngô Quyền", "Lý Thường Kiệt", "Trần Hưng Đạo", "Lê Lợi"], correct: 1 },
+  { subject: "Lịch sử", question: "Cách mạng Tháng Tám diễn ra năm nào?", options: ["1940", "1945", "1950", "1930"], correct: 2 },
+  { subject: "Lịch sử", question: "Nhà Hồ được thành lập vào năm nào?", options: ["1400", "1428", "1225", "968"], correct: 1 },
+  { subject: "Lịch sử", question: "Ai là người lãnh đạo khởi nghĩa Lam Sơn?", options: ["Nguyễn Huệ", "Lê Lợi", "Trần Hưng Đạo", "Phan Bội Châu"], correct: 2 },
+{ subject: "Lịch sử", question: "Triều đại nào mở đầu thời kỳ phong kiến tập quyền ở Việt Nam?", options: ["Nhà Trần", "Nhà Ngô", "Nhà Đinh", "Nhà Lý"], correct: 3 },
+{ subject: "Lịch sử", question: "Hội nghị thành lập Đảng Cộng sản Việt Nam diễn ra ở đâu?", options: ["Hà Nội", "Hồng Kông", "Thái Nguyên", "Quảng Châu"], correct: 4 },
+{ subject: "Lịch sử", question: "Phong trào Cần Vương bùng nổ sau sự kiện nào?", options: ["Hiệp ước Nhâm Tuất 1862", "Hà thành thất thủ 1882", "Kinh thành Huế thất thủ 1885", "Khởi nghĩa Yên Thế 1884"], correct: 3 },
+{ subject: "Lịch sử", question: "Ai là Tổng bí thư đầu tiên của Đảng Cộng sản Việt Nam?", options: ["Trường Chinh", "Nguyễn Văn Cừ", "Trần Phú", "Lê Duẩn"], correct: 3 },
+{ subject: "Lịch sử", question: "Chiến thắng Điện Biên Phủ diễn ra năm nào?", options: ["1950", "1954", "1968", "1975"], correct: 2 },
+{ subject: "Lịch sử", question: "Hiệp định Paris về chấm dứt chiến tranh Việt Nam được ký kết vào năm?", options: ["1973", "1975", "1968", "1954"], correct: 1 },
+{ subject: "Lịch sử", question: "Ai là lãnh đạo cuộc khởi nghĩa Tây Sơn?", options: ["Nguyễn Huệ", "Lê Lợi", "Phạm Ngũ Lão", "Ngô Quyền"], correct: 1 },
+{ subject: "Lịch sử", question: "Chiến dịch Hồ Chí Minh lịch sử diễn ra năm nào?", options: ["1968", "1973", "1975", "1980"], correct: 3 },
+{ subject: "Lịch sử", question: "Trận Chi Lăng năm 1427 gắn liền với cuộc kháng chiến nào?", options: ["Kháng chiến chống Tống", "Kháng chiến Lam Sơn", "Kháng chiến chống Nguyên Mông", "Kháng chiến chống Minh"], correct: 4 },
+{ subject: "Lịch sử", question: "Vua nào ban hành Bộ luật Hồng Đức?", options: ["Lê Thánh Tông", "Lý Thái Tổ", "Gia Long", "Trần Nhân Tông"], correct: 1 },
+{ subject: "Lịch sử", question: "Ai là người sáng lập ra triều Trần?", options: ["Trần Hưng Đạo", "Trần Thủ Độ", "Trần Nhân Tông", "Trần Cảnh"], correct: 4 },
+{ subject: "Lịch sử", question: "Ai là người sáng lập triều Lý?", options: ["Lý Thái Tông", "Lý Nhân Tông", "Lý Thái Tổ", "Lý Cao Tông"], correct: 3 },
+{ subject: "Lịch sử", question: "Khởi nghĩa Yên Thế do ai lãnh đạo?", options: ["Phan Đình Phùng", "Nguyễn Thiện Thuật", "Hoàng Hoa Thám", "Cao Bá Quát"], correct: 3 },
+{ subject: "Lịch sử", question: "Hiệp định Giơnevơ về Đông Dương được ký năm nào?", options: ["1950", "1954", "1960", "1973"], correct: 2 },
+{ subject: "Lịch sử", question: "Phong trào Đông Kinh Nghĩa Thục diễn ra năm nào?", options: ["1907", "1930", "1911", "1945"], correct: 1 },
+{ subject: "Lịch sử", question: "Ai là người lãnh đạo cuộc kháng chiến chống Nguyên Mông lần thứ 3?", options: ["Trần Nhân Tông", "Trần Hưng Đạo", "Lý Thường Kiệt", "Ngô Quyền"], correct: 2 },
+{ subject: "Lịch sử", question: "Chiến dịch Biên giới Thu - Đông 1950 do ai chỉ huy?", options: ["Võ Nguyên Giáp", "Hồ Chí Minh", "Phạm Văn Đồng", "Trường Chinh"], correct: 1 },
+{ subject: "Lịch sử", question: "Khởi nghĩa Nam Kỳ nổ ra vào năm nào?", options: ["1930", "1940", "1945", "1950"], correct: 2 },
+{ subject: "Lịch sử", question: "Ai là người khởi xướng phong trào Duy Tân?", options: ["Nguyễn Ái Quốc", "Phan Bội Châu", "Phan Châu Trinh", "Trần Quý Cáp"], correct: 3 },
+{ subject: "Lịch sử", question: "Nhà Trần ba lần kháng chiến chống quân xâm lược nào?", options: ["Nguyên Mông", "Tống", "Minh", "Thanh"], correct: 1 },
+{ subject: "Lịch sử", question: "Chiến thắng Ngọc Hồi - Đống Đa diễn ra vào dịp Tết năm nào?", options: ["1771", "1789", "1802", "1858"], correct: 2 },
+{ subject: "Lịch sử", question: "Chiến tranh thế giới thứ hai kết thúc năm nào?", options: ["1939", "1943", "1945", "1950"], correct: 3 },
+{ subject: "Lịch sử", question: "Ai là người đọc Tuyên ngôn độc lập ngày 2/9/1945?", options: ["Trường Chinh", "Võ Nguyên Giáp", "Phạm Văn Đồng", "Hồ Chí Minh"], correct: 4 },
+{ subject: "Lịch sử", question: "Phong trào Xô viết Nghệ - Tĩnh diễn ra năm nào?", options: ["1930-1931", "1945", "1954", "1968"], correct: 1 },
+{ subject: "Lịch sử", question: "Ai là Tổng thống đầu tiên của Mỹ?", options: ["Thomas Jefferson", "George Washington", "Abraham Lincoln", "John Adams"], correct: 2 },
+{ subject: "Lịch sử", question: "Chiến dịch Điện Biên Phủ trên không (Hà Nội – 1972) còn gọi là?", options: ["Chiến dịch Hồ Chí Minh", "Chiến dịch Linebacker II", "Chiến dịch Biên giới", "Chiến dịch Trường Sơn"], correct: 2 },
+{ subject: "Lịch sử", question: "Chiến thắng nào đã chấm dứt hoàn toàn ách đô hộ ngàn năm của phong kiến phương Bắc?", options: ["Chiến thắng Chi Lăng", "Chiến thắng Bạch Đằng 938", "Chiến thắng Ngọc Hồi - Đống Đa", "Chiến thắng Điện Biên Phủ"], correct: 2 },
+{ subject: "Lịch sử", question: "Người lãnh đạo phong trào Cần Vương là ai?", options: ["Phan Bội Châu", "Tôn Thất Thuyết", "Hoàng Hoa Thám", "Nguyễn Trãi"], correct: 2 },
+{ subject: "Lịch sử", question: "Chiến tranh thế giới thứ nhất bắt đầu năm nào?", options: ["1914", "1918", "1939", "1945"], correct: 1 },
+{ subject: "Lịch sử", question: "Quốc tế Cộng sản (Quốc tế III) thành lập vào năm nào?", options: ["1919", "1929", "1935", "1945"], correct: 1 },
+{ subject: "Lịch sử", question: "Ai là người sáng lập ra triều Tây Sơn?", options: ["Nguyễn Huệ", "Nguyễn Nhạc", "Nguyễn Lữ", "Nguyễn Ánh"], correct: 2 },
+{ subject: "Lịch sử", question: "Cách mạng Tháng Mười Nga năm 1917 do ai lãnh đạo?", options: ["Lê-nin", "Xtalin", "Mác", "Trốtski"], correct: 1 },
+{ subject: "Lịch sử", question: "Sự kiện nào đánh dấu Chiến tranh thế giới thứ hai bùng nổ?", options: ["Đức tấn công Liên Xô", "Nhật Bản tấn công Trân Châu Cảng", "Đức tấn công Ba Lan", "Anh – Pháp tuyên chiến với Đức"], correct: 3 },
+{ subject: "Lịch sử", question: "Chiến dịch Hồ Chí Minh giải phóng Sài Gòn diễn ra trong bao nhiêu ngày?", options: ["30 ngày", "15 ngày", "7 ngày", "5 ngày"], correct: 4 },
+{ subject: "Lịch sử", question: "Ai là vị vua cuối cùng của triều Nguyễn?", options: ["Bảo Đại", "Khải Định", "Duy Tân", "Hàm Nghi"], correct: 1 },
+{ subject: "Lịch sử", question: "Mặt trận Việt Minh được thành lập vào năm nào?", options: ["1930", "1941", "1945", "1951"], correct: 2 },
+{ subject: "Lịch sử", question: "Ai là người khởi xướng cuộc cải cách Minh Trị ở Nhật Bản?", options: ["Thiên hoàng Minh Trị", "Tô-gư-ga-oa", "Tô-ki-ô-ga-wa", "Hô-si-no"], correct: 1 },
+{ subject: "Lịch sử", question: "Hiệp định nào đã chấm dứt chiến tranh thế giới thứ hai ở châu Âu?", options: ["Hiệp định Paris", "Hiệp định Giơnevơ", "Hiệp định Pốtxđam", "Hiệp định Vecxay"], correct: 3 },
+{ subject: "Lịch sử", question: "Chiến tranh Lạnh chủ yếu diễn ra giữa hai nước nào?", options: ["Mỹ và Anh", "Mỹ và Liên Xô", "Mỹ và Đức", "Mỹ và Nhật"], correct: 2 },
+{ subject: "Lịch sử", question: "Phong trào Đồng Khởi bùng nổ ở đâu năm 1960?", options: ["Quảng Bình", "Bến Tre", "Hà Nội", "Điện Biên"], correct: 2 },
+{ subject: "Lịch sử", question: "Nhà Lý dời đô về Thăng Long vào năm nào?", options: ["1009", "1010", "1226", "1400"], correct: 2 },
+{ subject: "Lịch sử", question: "Ai là người lãnh đạo nghĩa quân Lam Sơn đánh bại quân Minh?", options: ["Nguyễn Trãi", "Lê Lợi", "Trần Nguyên Hãn", "Phạm Văn Đồng"], correct: 2 },
+{ subject: "Lịch sử", question: "Nước Văn Lang được thành lập vào khoảng thế kỷ nào?", options: ["Thế kỷ VII TCN", "Thế kỷ XIII", "Thế kỷ X", "Thế kỷ XV"], correct: 1 },
+{ subject: "Lịch sử", question: "Khởi nghĩa Hai Bà Trưng bùng nổ vào năm nào?", options: ["39", "40", "43", "44"], correct: 2 },
+{ subject: "Lịch sử", question: "Vị tướng nào đã lãnh đạo cuộc kháng chiến chống quân xâm lược Tống năm 1075–1077?", options: ["Lý Thường Kiệt", "Ngô Quyền", "Trần Hưng Đạo", "Lê Hoàn"], correct: 1 },
+{ subject: "Lịch sử", question: "Chiến thắng nào đã làm nên chiến công lẫy lừng của Trần Hưng Đạo năm 1288?", options: ["Chi Lăng", "Bạch Đằng", "Ngọc Hồi - Đống Đa", "Tốt Động - Chúc Động"], correct: 2 },
+{ subject: "Lịch sử", question: "Ai là người lãnh đạo nghĩa quân Tây Sơn đánh bại quân Xiêm năm 1785?", options: ["Nguyễn Huệ", "Nguyễn Nhạc", "Nguyễn Lữ", "Nguyễn Ánh"], correct: 1 },
+{ subject: "Lịch sử", question: "Phong trào Đông Du do ai khởi xướng?", options: ["Phan Bội Châu", "Phan Chu Trinh", "Nguyễn Tất Thành", "Hoàng Hoa Thám"], correct: 1 },
+{ subject: "Lịch sử", question: "Chiến dịch Điện Biên Phủ kéo dài trong bao nhiêu ngày đêm?", options: ["30", "45", "56", "60"], correct: 3 },
+{ subject: "Lịch sử", question: "Hiệp định Giơnevơ về Đông Dương được ký kết vào năm nào?", options: ["1954", "1960", "1973", "1975"], correct: 1 },
+{ subject: "Lịch sử", question: "Sự kiện mở đầu Chiến tranh thế giới thứ hai ở châu Á là gì?", options: ["Nhật chiếm Mãn Châu", "Nhật tấn công Trân Châu Cảng", "Nhật chiếm Nam Kỳ", "Nhật đánh Trung Quốc"], correct: 2 },
+{ subject: "Lịch sử", question: "Chiến dịch nào được xem là “Điện Biên Phủ trên không”?", options: ["Chiến dịch Trị - Thiên", "Chiến dịch Tây Nguyên", "Chiến dịch Hồ Chí Minh", "Chiến dịch 12 ngày đêm 1972"], correct: 4 },
+{ subject: "Lịch sử", question: "Ai là tổng thống đầu tiên của Hoa Kỳ?", options: ["George Washington", "Abraham Lincoln", "Thomas Jefferson", "Franklin Roosevelt"], correct: 1 },
+{ subject: "Lịch sử", question: "Cách mạng công nghiệp lần thứ nhất diễn ra ở đâu?", options: ["Pháp", "Anh", "Mỹ", "Đức"], correct: 2 },
+{ subject: "Lịch sử", question: "Phong trào Hồng vệ binh diễn ra trong cuộc vận động nào ở Trung Quốc?", options: ["Cải cách Minh Trị", "Cách mạng văn hóa", "Cải cách mở cửa", "Đại nhảy vọt"], correct: 2 },
+{ subject: "Lịch sử", question: "Hiệp định Paris 1973 đã buộc Mỹ phải làm gì?", options: ["Ngừng bắn, rút quân về nước", "Trao trả tù binh", "Công nhận chính phủ Cách mạng lâm thời", "Tất cả đều đúng"], correct: 4 },
+{ subject: "Lịch sử", question: "Ai là người chấp bút “Bình Ngô Đại Cáo”?", options: ["Nguyễn Trãi", "Lê Lợi", "Trần Nguyên Hãn", "Ngô Quyền"], correct: 1 },
+{ subject: "Lịch sử", question: "Ai là người sáng lập triều Tiền Lê?", options: ["Lê Long Đĩnh", "Lê Hoàn", "Lê Đại Hành", "Lê Thái Tổ"], correct: 2 },
+{ subject: "Lịch sử", question: "Cuộc kháng chiến chống Tống lần thứ nhất diễn ra vào năm nào?", options: ["938", "981", "1075", "1285"], correct: 2 },
+{ subject: "Lịch sử", question: "Đại Việt sử ký toàn thư do ai biên soạn?", options: ["Ngô Sĩ Liên", "Lê Văn Hưu", "Phan Huy Chú", "Ngô Thì Nhậm"], correct: 1 },
+{ subject: "Lịch sử", question: "Ai là người soạn thảo bản Tuyên ngôn độc lập đầu tiên của Việt Nam (thế kỷ XV)?", options: ["Nguyễn Trãi", "Lê Lợi", "Trần Nguyên Hãn", "Ngô Sĩ Liên"], correct: 1 },
+{ subject: "Lịch sử", question: "Văn Miếu – Quốc Tử Giám được xây dựng dưới triều đại nào?", options: ["Nhà Lý", "Nhà Trần", "Nhà Lê", "Nhà Nguyễn"], correct: 1 },
+{ subject: "Lịch sử", question: "Chiến thắng nào đã buộc quân Tống phải rút về nước năm 1077?", options: ["Chiến thắng Như Nguyệt", "Chiến thắng Bạch Đằng", "Chiến thắng Chi Lăng", "Chiến thắng Rạch Gầm – Xoài Mút"], correct: 1 },
+{ subject: "Lịch sử", question: "Phong trào khởi nghĩa Hương Khê (1885–1896) do ai lãnh đạo?", options: ["Phan Bội Châu", "Phan Đình Phùng", "Hoàng Hoa Thám", "Cao Bá Quát"], correct: 2 },
+{ subject: "Lịch sử", question: "Thành Cổ Loa gắn liền với triều đại nào?", options: ["Nhà Lý", "Nhà Ngô", "Nhà Thục", "Nhà Đinh"], correct: 3 },
+{ subject: "Lịch sử", question: "Người đề ra khẩu hiệu 'Tự do – Bình đẳng – Bác ái' trong Cách mạng tư sản Pháp là ai?", options: ["Robespierre", "Voltaire", "Rousseau", "Nhân dân Pháp"], correct: 4 },
+{ subject: "Lịch sử", question: "Ai là người khởi nghĩa chống Pháp ở Bến Tre năm 1960?", options: ["Nguyễn Thị Định", "Nguyễn Văn Trỗi", "Nguyễn Thái Học", "Nguyễn Tất Thành"], correct: 1 },
+{ subject: "Lịch sử", question: "Chiến tranh lạnh chính thức bắt đầu sau sự kiện nào?", options: ["Mỹ ném bom nguyên tử Nhật Bản", "Liên Xô chế tạo thành công bom nguyên tử", "Học thuyết Truman được công bố", "Khối NATO thành lập"], correct: 3 },
+{ subject: "Lịch sử", question: "Năm 1975, sự kiện nào đánh dấu Việt Nam hoàn toàn thống nhất?", options: ["Giải phóng miền Nam", "Chiến dịch Tây Nguyên", "Chiến dịch Huế – Đà Nẵng", "Chiến dịch Hồ Chí Minh"], correct: 4 },
+{ subject: "Lịch sử", question: "Phong trào Ba đảm đang gắn liền với đối tượng nào?", options: ["Thanh niên", "Phụ nữ", "Nông dân", "Công nhân"], correct: 2 },
+{ subject: "Lịch sử", question: "Ai là người khởi nghĩa nông dân Tây Sơn đầu tiên?", options: ["Nguyễn Lữ", "Nguyễn Nhạc", "Nguyễn Huệ", "Nguyễn Ánh"], correct: 2 },
+{ subject: "Lịch sử", question: "Bản Hiến pháp đầu tiên của nước Việt Nam Dân chủ Cộng hòa được ban hành năm nào?", options: ["1945", "1946", "1954", "1975"], correct: 2 },
+{ subject: "Lịch sử", question: "Ai là người được suy tôn làm vua sau chiến thắng Bạch Đằng năm 938?", options: ["Ngô Quyền", "Đinh Bộ Lĩnh", "Lý Công Uẩn", "Trần Thái Tông"], correct: 1 },
+{ subject: "Lịch sử", question: "Triều đại nào được coi là thời kỳ phục hưng của văn hóa dân tộc với 'Hồng Đức thịnh trị'?", options: ["Nhà Lý", "Nhà Trần", "Nhà Lê sơ", "Nhà Nguyễn"], correct: 3 },
+{ subject: "Lịch sử", question: "Khởi nghĩa Thái Nguyên (1917) do ai lãnh đạo?", options: ["Đội Cấn", "Lương Ngọc Quyến", "Nguyễn Văn Cừ", "Nguyễn Đức Cảnh"], correct: 1 },
+{ subject: "Lịch sử", question: "Ai là người thành lập Việt Nam Quốc dân Đảng năm 1927?", options: ["Phan Bội Châu", "Nguyễn Thái Học", "Phan Châu Trinh", "Trần Hưng Đạo"], correct: 2 },
+{ subject: "Lịch sử", question: "Cách mạng Tân Hợi (1911) do ai lãnh đạo?", options: ["Tôn Trung Sơn", "Mao Trạch Đông", "Lỗ Tấn", "Tưởng Giới Thạch"], correct: 1 },
+{ subject: "Lịch sử", question: "Hội nghị Thành Đô năm 1990 diễn ra giữa Việt Nam và quốc gia nào?", options: ["Trung Quốc", "Liên Xô", "Mỹ", "Lào"], correct: 1 },
+{ subject: "Lịch sử", question: "Ai là người khởi xướng phong trào 'Vô sản hóa' ở Việt Nam?", options: ["Nguyễn Ái Quốc", "Trường Chinh", "Phạm Văn Đồng", "Hà Huy Tập"], correct: 1 },
+{ subject: "Lịch sử", question: "Trận Rạch Gầm – Xoài Mút năm 1785 do ai chỉ huy?", options: ["Nguyễn Huệ", "Nguyễn Nhạc", "Nguyễn Ánh", "Trần Quang Diệu"], correct: 1 },
+{ subject: "Lịch sử", question: "Phong trào 'Đồng khởi' nổ ra mạnh mẽ nhất ở tỉnh nào?", options: ["Hà Tĩnh", "Bến Tre", "Nam Định", "Quảng Ngãi"], correct: 2 },
+{ subject: "Lịch sử", question: "Chiến thắng nào đã buộc thực dân Pháp ký Hiệp định Sơ bộ 6/3/1946?", options: ["Chiến thắng Việt Bắc", "Chiến thắng Biên giới", "Chiến thắng Điện Biên Phủ", "Chiến thắng 19/12/1946"], correct: 1 },
+{ subject: "Lịch sử", question: "Ai là người sáng lập ra triều Đinh?", options: ["Đinh Bộ Lĩnh", "Đinh Liễn", "Đinh Toàn", "Ngô Quyền"], correct: 1 },
+{ subject: "Lịch sử", question: "Phong trào 'Học chữ quốc ngữ' phát triển mạnh trong phong trào nào?", options: ["Cần Vương", "Đông Du", "Duy Tân", "Xô Viết Nghệ Tĩnh"], correct: 3 },
+{ subject: "Lịch sử", question: "Chiến thắng Tốt Động – Chúc Động diễn ra vào kháng chiến nào?", options: ["Kháng chiến chống Tống", "Kháng chiến Lam Sơn", "Kháng chiến chống Nguyên Mông", "Kháng chiến chống Pháp"], correct: 2 },
+{ subject: "Lịch sử", question: "Ai là người đứng đầu Chính phủ Lâm thời sau Cách mạng tháng Tám 1945?", options: ["Trường Chinh", "Phạm Văn Đồng", "Hồ Chí Minh", "Võ Nguyên Giáp"], correct: 3 },
+{ subject: "Lịch sử", question: "Chiến tranh thế giới thứ nhất kết thúc bằng hiệp ước nào?", options: ["Hiệp ước Vecxay", "Hiệp ước Giơnevơ", "Hiệp ước Paris", "Hiệp ước Pốtxđam"], correct: 1 },
+{ subject: "Lịch sử", question: "Ai là vị vua sáng lập triều Ngô?", options: ["Ngô Quyền", "Ngô Xương Ngập", "Ngô Xương Văn", "Ngô Nhật Khánh"], correct: 1 },
+{ subject: "Lịch sử", question: "Nhà Đinh dời đô về Hoa Lư vào năm nào?", options: ["939", "968", "981", "1009"], correct: 2 },
+{ subject: "Lịch sử", question: "Nhà Lý dời đô về Thăng Long năm nào?", options: ["1009", "1010", "1054", "1226"], correct: 2 },
+{ subject: "Lịch sử", question: "Trận Bạch Đằng năm 1288 do ai chỉ huy?", options: ["Trần Thủ Độ", "Trần Quốc Tuấn", "Trần Nhật Duật", "Trần Khánh Dư"], correct: 2 },
+{ subject: "Lịch sử", question: "Ai là người soạn 'Hịch tướng sĩ'?", options: ["Nguyễn Trãi", "Trần Hưng Đạo", "Phạm Ngũ Lão", "Trần Nhân Tông"], correct: 2 },
+{ subject: "Lịch sử", question: "Triều đại nào ban hành Bộ luật Hồng Đức?", options: ["Nhà Lý", "Nhà Trần", "Nhà Lê sơ", "Nhà Nguyễn"], correct: 3 },
+{ subject: "Lịch sử", question: "Chiến thắng Chi Lăng – Xương Giang năm 1427 diễn ra trong kháng chiến nào?", options: ["Chống Tống", "Chống Minh", "Chống Nguyên", "Chống Pháp"], correct: 2 },
+{ subject: "Lịch sử", question: "Phong trào Cần Vương bùng nổ sau sự kiện nào?", options: ["Hiệp ước Nhâm Tuất 1862", "Hà thành thất thủ 1882", "Kinh thành Huế thất thủ 1885", "Khởi nghĩa Yên Thế 1884"], correct: 3 },
+{ subject: "Lịch sử", question: "Khởi nghĩa Bãi Sậy do ai lãnh đạo?", options: ["Phan Đình Phùng", "Nguyễn Thiện Thuật", "Hoàng Hoa Thám", "Cao Bá Quát"], correct: 2 },
+{ subject: "Lịch sử", question: "Nguyễn Ái Quốc dự Đại hội Tua của Đảng Xã hội Pháp vào năm nào?", options: ["1919", "1920", "1925", "1930"], correct: 2 },
+{ subject: "Lịch sử", question: "Ai là Tổng bí thư đầu tiên của Đảng Cộng sản Việt Nam?", options: ["Trần Phú", "Nguyễn Văn Cừ", "Trường Chinh", "Lê Duẩn"], correct: 1 },
+{ subject: "Lịch sử", question: "Chiến dịch Điện Biên Phủ kéo dài bao nhiêu ngày đêm?", options: ["30", "45", "56", "60"], correct: 3 },
+{ subject: "Lịch sử", question: "Chiến dịch Hồ Chí Minh lịch sử diễn ra năm nào?", options: ["1968", "1973", "1975", "1980"], correct: 3 },
+{ subject: "Lịch sử", question: "Ai là nữ tướng lãnh đạo phong trào Đồng Khởi ở Bến Tre?", options: ["Nguyễn Thị Minh Khai", "Nguyễn Thị Định", "Nguyễn Thị Bình", "Nguyễn Thị Hồng"], correct: 2 },
+{ subject: "Lịch sử", question: "Phong trào Xô Viết Nghệ – Tĩnh diễn ra năm nào?", options: ["1930–1931", "1945", "1954", "1968"], correct: 1 },
+{ subject: "Lịch sử", question: "Ai là lãnh tụ cách mạng Cuba năm 1959?", options: ["Fidel Castro", "Che Guevara", "Hugo Chávez", "Stalin"], correct: 1 },
+{ subject: "Lịch sử", question: "Chiến tranh thế giới thứ nhất bùng nổ năm nào?", options: ["1914", "1918", "1939", "1945"], correct: 1 },
+{ subject: "Lịch sử", question: "Chiến tranh thế giới thứ nhất kết thúc năm nào?", options: ["1914", "1918", "1939", "1945"], correct: 2 },
+{ subject: "Lịch sử", question: "Chiến tranh thế giới thứ hai bùng nổ năm nào?", options: ["1939", "1941", "1943", "1945"], correct: 1 },
+{ subject: "Lịch sử", question: "Cách mạng tháng Mười Nga diễn ra năm nào?", options: ["1914", "1917", "1920", "1924"], correct: 2 },
+{ subject: "Lịch sử", question: "Thành Cổ Loa gắn liền với vị vua nào?", options: ["An Dương Vương", "Ngô Quyền", "Lý Thái Tổ", "Đinh Bộ Lĩnh"], correct: 1 },
+
+  // Địa lí
+  { subject: "Địa lí", question: "Thủ đô của Việt Nam là gì?", options: ["Hà Nội", "TP. Hồ Chí Minh", "Đà Nẵng", "Huế"], correct: 1 },
+  { subject: "Địa lí", question: "Sông dài nhất Việt Nam là gì?", options: ["Sông Hồng", "Sông Cửu Long", "Sông Đà", "Sông Thu Bồn"], correct: 2 },
+  { subject: "Địa lí", question: "Núi cao nhất Việt Nam là gì?", options: ["Fansipan", "Ngọc Linh", "Tà Chì Nhù", "Bạch Mã"], correct: 1 },
+  { subject: "Địa lí", question: "Việt Nam giáp biển nào?", options: ["Biển Đông", "Biển Nhật Bản", "Biển Đen", "Biển Đỏ"], correct: 1 },
+  { subject: "Địa lí", question: "Châu lục nào có diện tích lớn nhất thế giới?", options: ["Châu Á", "Châu Phi", "Châu Mỹ", "Châu Âu"], correct: 1 },
+{ subject: "Địa lí", question: "Sông nào dài nhất thế giới?", options: ["Sông Nile", "Sông Amazon", "Sông Mississippi", "Sông Trường Giang"], correct: 2 },
+{ subject: "Địa lí", question: "Sa mạc lớn nhất thế giới là gì?", options: ["Sahara", "Gobi", "Kalahari", "Arab"], correct: 1 },
+{ subject: "Địa lí", question: "Núi Everest nằm trên dãy núi nào?", options: ["Alpes", "Andes", "Himalaya", "Rocky"], correct: 3 },
+{ subject: "Địa lí", question: "Quốc gia nào có diện tích lớn nhất thế giới?", options: ["Canada", "Nga", "Mỹ", "Trung Quốc"], correct: 2 },
+{ subject: "Địa lí", question: "Biển Đỏ nằm giữa hai châu lục nào?", options: ["Á - Âu", "Âu - Phi", "Á - Phi", "Mỹ - Âu"], correct: 3 },
+{ subject: "Địa lí", question: "Thủ đô của Australia là gì?", options: ["Sydney", "Melbourne", "Canberra", "Perth"], correct: 3 },
+{ subject: "Địa lí", question: "Lục địa nào được mệnh danh là 'Lục địa đen'?", options: ["Châu Á", "Châu Âu", "Châu Phi", "Châu Mỹ"], correct: 3 },
+{ subject: "Địa lí", question: "Ngọn núi cao nhất Nam Mỹ là gì?", options: ["Aconcagua", "Kilimanjaro", "Elbrus", "Denali"], correct: 1 },
+{ subject: "Địa lí", question: "Quốc gia nào có dân số đông nhất thế giới tính đến năm 2023?", options: ["Trung Quốc", "Ấn Độ", "Mỹ", "Indonesia"], correct: 2 },
+{ subject: "Địa lí", question: "Hồ Baikal – hồ sâu nhất thế giới – nằm ở quốc gia nào?", options: ["Trung Quốc", "Nga", "Mông Cổ", "Kazakhstan"], correct: 2 },
+{ subject: "Địa lí", question: "Kênh đào Panama nối liền hai đại dương nào?", options: ["Thái Bình Dương – Đại Tây Dương", "Ấn Độ Dương – Đại Tây Dương", "Thái Bình Dương – Ấn Độ Dương", "Bắc Băng Dương – Đại Tây Dương"], correct: 1 },
+{ subject: "Địa lí", question: "Châu lục nào có ít quốc gia nhất?", options: ["Châu Đại Dương", "Châu Nam Cực", "Châu Âu", "Châu Phi"], correct: 2 },
+{ subject: "Địa lí", question: "Thành phố nào được gọi là 'Thành phố ánh sáng'?", options: ["New York", "London", "Paris", "Tokyo"], correct: 3 },
+{ subject: "Địa lí", question: "Sa mạc Gobi trải dài trên hai quốc gia nào?", options: ["Nga – Trung Quốc", "Mông Cổ – Trung Quốc", "Ấn Độ – Pakistan", "Iran – Iraq"], correct: 2 },
+{ subject: "Địa lí", question: "Quốc gia nào có nhiều múi giờ nhất thế giới?", options: ["Nga", "Mỹ", "Canada", "Brazil"], correct: 1 },
+{ subject: "Địa lí", question: "Đại dương nào có diện tích lớn nhất thế giới?", options: ["Đại Tây Dương", "Ấn Độ Dương", "Bắc Băng Dương", "Thái Bình Dương"], correct: 4 },
+{ subject: "Địa lí", question: "Quốc gia nào có diện tích nhỏ nhất thế giới?", options: ["Malta", "Monaco", "Vatican", "San Marino"], correct: 3 },
+{ subject: "Địa lí", question: "Thác nước Niagara nằm giữa hai quốc gia nào?", options: ["Mỹ - Canada", "Mỹ - Mexico", "Mỹ - Cuba", "Canada - Mexico"], correct: 1 },
+{ subject: "Địa lí", question: "Châu lục nào có mật độ dân số thấp nhất?", options: ["Châu Âu", "Châu Úc (Đại Dương)", "Châu Nam Cực", "Châu Phi"], correct: 3 },
+{ subject: "Địa lí", question: "Quốc gia nào được gọi là 'xứ sở mặt trời mọc'?", options: ["Hàn Quốc", "Nhật Bản", "Trung Quốc", "Thái Lan"], correct: 2 },
+{ subject: "Địa lí", question: "Sông Danube chảy qua bao nhiêu quốc gia châu Âu?", options: ["4", "6", "8", "10"], correct: 4 },
+{ subject: "Địa lí", question: "Quốc gia nào nổi tiếng với đồng cỏ Pampas?", options: ["Brazil", "Argentina", "Chile", "Mexico"], correct: 2 },
+{ subject: "Địa lí", question: "Sa mạc Atacama khô hạn nhất thế giới nằm ở quốc gia nào?", options: ["Argentina", "Chile", "Peru", "Bolivia"], correct: 2 },
+{ subject: "Địa lí", question: "Khu vực nào được coi là 'cái nôi' của nền văn minh nhân loại?", options: ["Lưỡng Hà", "Ai Cập", "Ấn Độ", "Trung Quốc"], correct: 1 },
+{ subject: "Địa lí", question: "Tổ chức nào được xem là trung tâm kinh tế - tài chính toàn cầu?", options: ["EU", "ASEAN", "G7", "WTO"], correct: 3 },
+{ subject: "Địa lí", question: "Quốc gia nào có GDP lớn nhất thế giới hiện nay?", options: ["Trung Quốc", "Mỹ", "Nhật Bản", "Đức"], correct: 2 },
+{ subject: "Địa lí", question: "Quốc gia nào được mệnh danh là 'công xưởng của thế giới'?", options: ["Mỹ", "Đức", "Nhật Bản", "Trung Quốc"], correct: 4 },
+{ subject: "Địa lí", question: "Khối liên minh nào được thành lập với mục tiêu liên kết kinh tế - chính trị ở châu Âu?", options: ["EU", "NAFTA", "ASEAN", "AU"], correct: 1 },
+{ subject: "Địa lí", question: "Quốc gia nào xuất khẩu dầu mỏ lớn nhất thế giới?", options: ["Nga", "Mỹ", "Ả Rập Xê Út", "Iran"], correct: 3 },
+{ subject: "Địa lí", question: "Đâu là trung tâm tài chính lớn nhất châu Á?", options: ["Tokyo", "Singapore", "Hong Kong", "Thượng Hải"], correct: 3 },
+{ subject: "Địa lí", question: "Nước nào nổi tiếng với ngành công nghiệp điện tử và hãng Samsung?", options: ["Nhật Bản", "Trung Quốc", "Hàn Quốc", "Singapore"], correct: 3 },
+{ subject: "Địa lí", question: "Thủ đô của Canada là gì?", options: ["Toronto", "Ottawa", "Vancouver", "Montreal"], correct: 2 },
+{ subject: "Địa lí", question: "Sông Volga – con sông dài nhất châu Âu – nằm ở quốc gia nào?", options: ["Đức", "Pháp", "Nga", "Ba Lan"], correct: 3 },
+{ subject: "Địa lí", question: "Dãy núi Andes trải dài ở châu lục nào?", options: ["Châu Á", "Châu Phi", "Châu Nam Mỹ", "Châu Âu"], correct: 3 },
+{ subject: "Địa lí", question: "Vùng đồng bằng lớn nhất thế giới là gì?", options: ["Đồng bằng Amazon", "Đồng bằng Siberia", "Đồng bằng Hoa Bắc", "Đồng bằng Tây Siberia"], correct: 4 },
+{ subject: "Địa lí", question: "Quốc gia nào có nhiều hồ nước ngọt tự nhiên nhất thế giới?", options: ["Nga", "Mỹ", "Canada", "Brazil"], correct: 3 },
+{ subject: "Địa lí", question: "Đâu là quốc gia đông dân nhất châu Phi?", options: ["Ai Cập", "Nigeria", "Nam Phi", "Ethiopia"], correct: 2 },
+{ subject: "Địa lí", question: "Khu vực Trung Đông nổi tiếng với tài nguyên gì?", options: ["Than đá", "Dầu mỏ", "Sắt thép", "Khí đốt"], correct: 2 },
+{ subject: "Địa lí", question: "Quốc gia nào có diện tích rừng Amazon chiếm phần lớn?", options: ["Brazil", "Peru", "Colombia", "Venezuela"], correct: 1 },
+{ subject: "Địa lí", question: "Đâu là quốc gia duy nhất nằm trên cả hai châu lục Á và Âu?", options: ["Nga", "Thổ Nhĩ Kỳ", "Kazakhstan", "Ai Cập"], correct: 2 },
+{ subject: "Địa lí", question: "Trung tâm kinh tế - tài chính lớn nhất thế giới nằm ở đâu?", options: ["New York", "London", "Tokyo", "Singapore"], correct: 1 },
+{ subject: "Địa lí", question: "Tổ chức thương mại toàn cầu có tên viết tắt là gì?", options: ["WTO", "IMF", "WB", "ASEAN"], correct: 1 },
+{ subject: "Địa lí", question: "Khối liên minh kinh tế ở Bắc Mỹ gồm Mỹ, Canada, Mexico có tên là gì?", options: ["NAFTA", "EU", "ASEAN", "APEC"], correct: 1 },
+{ subject: "Địa lí", question: "Ngôn ngữ nào được sử dụng rộng rãi nhất thế giới theo số người nói bản ngữ?", options: ["Tiếng Anh", "Tiếng Tây Ban Nha", "Tiếng Trung Quốc", "Tiếng Hindi"], correct: 3 },
+{ subject: "Địa lí", question: "Châu lục nào có tốc độ tăng dân số nhanh nhất hiện nay?", options: ["Châu Phi", "Châu Á", "Châu Mỹ", "Châu Đại Dương"], correct: 1 },
+{ subject: "Địa lí", question: "Trung tâm công nghiệp sản xuất ô tô lớn nhất thế giới nằm ở quốc gia nào?", options: ["Mỹ", "Nhật Bản", "Đức", "Hàn Quốc"], correct: 2 },
+{ subject: "Địa lí", question: "Khu vực nào chiếm tỉ trọng GDP toàn cầu lớn nhất?", options: ["Châu Phi", "Châu Âu", "Châu Á - Thái Bình Dương", "Châu Mỹ Latinh"], correct: 3 },
+{ subject: "Địa lí", question: "Thủ đô của Brazil là gì?", options: ["Rio de Janeiro", "São Paulo", "Brasília", "Salvador"], correct: 3 },
+{ subject: "Địa lí", question: "Sông Mekong bắt nguồn từ quốc gia nào?", options: ["Trung Quốc", "Lào", "Thái Lan", "Myanmar"], correct: 1 },
+{ subject: "Địa lí", question: "Quốc gia nào nằm trên cả hai bán cầu Đông và Tây?", options: ["Anh", "Nga", "Brazil", "Ecuador"], correct: 4 },
+{ subject: "Địa lí", question: "Châu lục nào có nhiều quốc gia nhất?", options: ["Châu Á", "Châu Phi", "Châu Âu", "Châu Mỹ"], correct: 2 },
+{ subject: "Địa lí", question: "Nơi nào được mệnh danh là 'nóc nhà thế giới'?", options: ["Dãy Andes", "Dãy Himalaya", "Dãy Alps", "Dãy Ural"], correct: 2 },
+{ subject: "Địa lí", question: "Hồ lớn nhất châu Phi là gì?", options: ["Hồ Tanganyika", "Hồ Malawi", "Hồ Victoria", "Hồ Chad"], correct: 3 },
+{ subject: "Địa lí", question: "Quốc gia nào là 'vựa lúa' lớn nhất châu Á?", options: ["Việt Nam", "Ấn Độ", "Thái Lan", "Trung Quốc"], correct: 4 },
+{ subject: "Địa lí", question: "Châu lục nào có tỉ lệ đô thị hóa cao nhất?", options: ["Châu Phi", "Châu Mỹ", "Châu Á", "Châu Âu"], correct: 2 },
+{ subject: "Địa lí", question: "Quốc gia nào nổi tiếng với ngành công nghiệp điện ảnh Hollywood?", options: ["Ấn Độ", "Mỹ", "Anh", "Pháp"], correct: 2 },
+{ subject: "Địa lí", question: "Khối kinh tế nào còn được gọi là 'thị trường chung châu Âu'?", options: ["ASEAN", "NAFTA", "EU", "G20"], correct: 3 },
+{ subject: "Địa lí", question: "Quốc gia nào có trữ lượng dầu mỏ lớn nhất thế giới?", options: ["Nga", "Venezuela", "Ả Rập Xê Út", "Iran"], correct: 2 },
+{ subject: "Địa lí", question: "Ngành kinh tế nào chiếm tỉ trọng lớn nhất trong GDP toàn cầu?", options: ["Nông nghiệp", "Công nghiệp", "Dịch vụ", "Khai khoáng"], correct: 3 },
+{ subject: "Địa lí", question: "Thành phố nào có cảng biển nhộn nhịp nhất thế giới?", options: ["Rotterdam", "Thượng Hải", "Singapore", "Hong Kong"], correct: 2 },
+{ subject: "Địa lí", question: "Quốc gia nào là nhà xuất khẩu gạo lớn nhất thế giới?", options: ["Ấn Độ", "Việt Nam", "Thái Lan", "Pakistan"], correct: 1 },
+{ subject: "Địa lí", question: "Tổ chức nào bao gồm 19 quốc gia và Liên minh châu Âu, chiếm khoảng 85% GDP toàn cầu?", options: ["G7", "WTO", "ASEAN", "G20"], correct: 4 },
+{ subject: "Địa lí", question: "Khu vực nào có nhiều quốc gia đang phát triển nhất?", options: ["Châu Âu", "Châu Phi", "Bắc Mỹ", "Châu Úc"], correct: 2 },
+{ subject: "Địa lí", question: "Việt Nam giáp với quốc gia nào ở phía Bắc?", options: ["Lào", "Campuchia", "Trung Quốc", "Thái Lan"], correct: 3 },
+{ subject: "Địa lí", question: "Vịnh nào được UNESCO công nhận là di sản thiên nhiên thế giới?", options: ["Vịnh Vân Phong", "Vịnh Xuân Đài", "Vịnh Hạ Long", "Vịnh Cam Ranh"], correct: 3 },
+{ subject: "Địa lí", question: "Dãy núi nào là biên giới tự nhiên giữa Việt Nam và Lào?", options: ["Hoàng Liên Sơn", "Trường Sơn", "Bạch Mã", "Pù Hoạt"], correct: 2 },
+{ subject: "Địa lí", question: "Tỉnh có dân số đông nhất Việt Nam (không tính Hà Nội và TP.HCM)?", options: ["Thanh Hóa", "Nghệ An", "Đồng Nai", "An Giang"], correct: 1 },
+{ subject: "Địa lí", question: "Sau khi sáp nhập, tỉnh Thừa Thiên - Huế sẽ trở thành thành phố trực thuộc Trung ương vào năm nào?", options: ["2025", "2030", "2035", "2040"], correct: 1 },
+{ subject: "Địa lí", question: "Trước khi sáp nhập năm 2025, Việt Nam hiện có bao nhiêu tỉnh/thành phố trực thuộc Trung ương?", options: ["61", "62", "63", "64"], correct: 3 },
+{ subject: "Địa lí", question: "Sau khi sáp nhập năm 2025, Việt Nam hiện có bao nhiêu tỉnh/thành phố trực thuộc Trung ương?", options: ["34", "35", "63", "43"], correct: 1 },
+{ subject: "Địa lí", question: "Vùng kinh tế trọng điểm Bắc Bộ có trung tâm là thành phố nào?", options: ["Hải Phòng", "Hà Nội", "Quảng Ninh", "Ninh Bình"], correct: 2 },
+{ subject: "Địa lí", question: "Cảng biển nào lớn nhất Việt Nam?", options: ["Cái Mép - Thị Vải", "Tiên Sa", "Cát Lái", "Hòn Gai"], correct: 1 },
+{ subject: "Địa lí", question: "Đâu là ngành xuất khẩu chủ lực của Việt Nam trong thập niên 2020?", options: ["Dệt may", "Điện tử", "Thủy sản", "Gạo"], correct: 2 },
+{ subject: "Địa lí", question: "Việt Nam gia nhập Tổ chức Thương mại Thế giới (WTO) vào năm nào?", options: ["2005", "2006", "2007", "2008"], correct: 3 },
+{ subject: "Địa lí", question: "Vùng Đồng bằng sông Cửu Long được coi là vựa gì của cả nước?", options: ["Lúa", "Cao su", "Cà phê", "Điều"], correct: 1 },
+{ subject: "Địa lí", question: "Đâu là trung tâm công nghiệp lớn nhất miền Trung Việt Nam?", options: ["Huế", "Đà Nẵng", "Quy Nhơn", "Nha Trang"], correct: 2 },
+{ subject: "Địa lí", question: "Đường Trường Sơn - Hồ Chí Minh hiện đại chủ yếu phục vụ cho mục đích gì?", options: ["Du lịch", "Giao thông - kinh tế", "Quốc phòng", "Cả 3 đều đúng"], correct: 4 },
+{ subject: "Địa lí", question: "Đỉnh núi nào cao nhất Việt Nam?", options: ["Ngọc Linh", "Fansipan", "Tây Côn Lĩnh", "Bạch Mã"], correct: 2 },
+{ subject: "Địa lí", question: "Hồ nước ngọt lớn nhất Việt Nam?", options: ["Hồ Hoàn Kiếm", "Hồ Dầu Tiếng", "Hồ Ba Bể", "Hồ Tây"], correct: 3 },
+{ subject: "Địa lí", question: "Quần đảo Trường Sa thuộc tỉnh/thành phố nào quản lý?", options: ["Khánh Hòa", "Bình Thuận", "Đà Nẵng", "Quảng Ngãi"], correct: 1 },
+{ subject: "Địa lí", question: "Tỉnh nào có bờ biển dài nhất Việt Nam?", options: ["Khánh Hòa", "Lâm Đồng", "Đắk Lắk", "Nghệ An"], correct: 2 },
+{ subject: "Địa lí", question: "Cao nguyên nào nổi tiếng với cây cà phê?", options: ["Pleiku", "Đắk Lắk", "Kon Tum", "Lâm Viên"], correct: 2 },
+{ subject: "Địa lí", question: "Địa điểm nào được gọi là 'nóc nhà Đông Dương'?", options: ["Ngọc Linh", "Fansipan", "Hoàng Liên Sơn", "Pù Luông"], correct: 2 },
+{ subject: "Địa lí", question: "Tỉnh nào giáp cả Lào và Campuchia?", options: ["Quảng Trị", "Đà Nãng", "Đắk Lắk", "Quảng Ngãi"], correct: 4 },
+{ subject: "Địa lí", question: "Đâu là vùng có sản lượng lúa gạo lớn nhất Việt Nam?", options: ["Đồng bằng sông Hồng", "Đồng bằng sông Cửu Long", "Tây Nguyên", "Bắc Trung Bộ"], correct: 2 },
+{ subject: "Địa lí", question: "Việt Nam xuất khẩu cà phê đứng thứ mấy thế giới?", options: ["1", "2", "3", "4"], correct: 2 },
+{ subject: "Địa lí", question: "Mỏ than lớn nhất Việt Nam tập trung ở tỉnh nào?", options: ["Lạng Sơn", "Thái Nguyên", "Quảng Ninh", "Cao Bằng"], correct: 3 },
+{ subject: "Địa lí", question: "Đâu là khu công nghệ cao lớn nhất phía Nam?", options: ["Khu CNC Đà Nẵng", "Khu CNC Hòa Lạc", "Khu CNC TP.HCM", "Khu CNC Bình Dương"], correct: 3 },
+{ subject: "Địa lí", question: "Việt Nam chính thức đổi tên từ 'Cộng hòa Xã hội chủ nghĩa Việt Nam' vào năm nào?", options: ["1975", "1976", "1977", "1980"], correct: 2 },
+{ subject: "Địa lí", question: "Sau năm 2008, tỉnh Hà Tây nay thuộc tỉnh/thành nào?", options: ["Hà Nội", "Hải Phòng", "Phú Thọ", "Ninh Bình"], correct: 1 },
+{ subject: "Địa lí", question: "Sau khi sáp nhập tỉnh năm 2025, tỉnh Nam Định nay thuộc tỉnh/thành nào?", options: ["Hà Nam", "Hải Phòng", "Ninh Bình", "Thanh Hoá"], correct: 3 },
+{ subject: "Địa lí", question: "Sau khi sáp nhập tỉnh năm 2025, tỉnh Hải Dương nay thuộc tỉnh/thành nào?", options: ["Bắc Ninh", "Hải Phòng", "Hải Dương", "Hưng Yên"], correct: 2 },
+{ subject: "Địa lí", question: "Sau khi sáp nhập tỉnh năm 2025, tỉnh Thái Nguyên nay thuộc tỉnh/thành nào?", options: ["Bắc Kạn", "Lạng Sơn", "Tuyên Quang", "Thái Nguyên"], correct: 4 },
+{ subject: "Địa lí", question: "Năm 2021, GDP Việt Nam đạt gần bao nhiêu tỷ USD?", options: ["250", "300", "360", "400"], correct: 3 },
+{ subject: "Địa lí", question: "Đâu là mặt hàng xuất khẩu nông sản lớn nhất của Việt Nam?", options: ["Gạo", "Cà phê", "Hạt điều", "Hồ tiêu"], correct: 1 },
+
+  // GD Kinh tế - Pháp Luật
+{ subject: "GD Kinh tế - Pháp Luật", question: "Hiến pháp Việt Nam hiện hành được thông qua năm nào?", options: ["1992", "2013", "1946", "1980"], correct: 2 },
+{ subject: "GD Kinh tế - Pháp Luật", question: "Quyền nào là quyền cơ bản của công dân Việt Nam?", options: ["Quyền tự do ngôn luận", "Quyền sở hữu tài sản cá nhân", "Quyền học tập", "Tất cả các quyền trên"], correct: 4 },
+{ subject: "GD Kinh tế - Pháp Luật", question: "Cơ quan quyền lực cao nhất ở Việt Nam là gì?", options: ["Quốc hội", "Chính phủ", "Tòa án nhân dân tối cao", "Chủ tịch nước"], correct: 1 },
+{ subject: "GD Kinh tế - Pháp Luật", question: "Luật Giao thông đường bộ Việt Nam có hiệu lực từ năm nào?", options: ["2001", "2008", "2013", "1995"], correct: 2 },
+{ subject: "GD Kinh tế - Pháp Luật", question: "Nền kinh tế thị trường định hướng xã hội chủ nghĩa ở Việt Nam được đặc trưng bởi yếu tố nào?", options: ["Chỉ có kinh tế nhà nước", "Có nhiều thành phần kinh tế, trong đó kinh tế nhà nước giữ vai trò chủ đạo", "Chỉ dựa vào kinh tế tư nhân", "Không có yếu tố quản lý của Nhà nước"], correct: 2 },
+{ subject: "GD Kinh tế - Pháp Luật", question: "Quyền sở hữu tài sản bao gồm những quyền nào?", options: ["Chiếm hữu, sử dụng, định đoạt", "Chiếm hữu, trao đổi, mua bán", "Đầu tư, quản lý, cho vay", "Tiêu dùng, tích trữ, sản xuất"], correct: 1 },
+{ subject: "GD Kinh tế - Pháp Luật", question: "Nguyên tắc nào thể hiện bản chất của pháp luật Việt Nam?", options: ["Bình đẳng, dân chủ, công bằng, nhân đạo", "Tự do tuyệt đối", "Độc quyền nhà nước", "Cạnh tranh không kiểm soát"], correct: 1 },
+{ subject: "GD Kinh tế - Pháp Luật", question: "Hành vi nào dưới đây vi phạm pháp luật hình sự?", options: ["Đi học muộn", "Trốn đóng thuế", "Trộm cắp tài sản", "Không đội mũ bảo hiểm"], correct: 3 },
+{ subject: "GD Kinh tế - Pháp Luật", question: "Quyền học tập là quyền gì?", options: ["Quyền nhân thân", "Quyền kinh tế", "Quyền xã hội", "Quyền chính trị"], correct: 3 },
+{ subject: "GD Kinh tế - Pháp Luật", question: "Hình thức sở hữu nào KHÔNG tồn tại ở Việt Nam?", options: ["Sở hữu toàn dân", "Sở hữu tư nhân", "Sở hữu hỗn hợp", "Sở hữu tuyệt đối phong kiến"], correct: 4 },
+{ subject: "GD Kinh tế - Pháp Luật", question: "Nguyên tắc nào là nền tảng trong quan hệ kinh tế thị trường?", options: ["Cạnh tranh lành mạnh", "Độc quyền tuyệt đối", "Bao cấp toàn diện", "Không có quản lý nhà nước"], correct: 1 },
+{ subject: "GD Kinh tế - Pháp Luật", question: "Pháp luật giữ vai trò gì trong xã hội?", options: ["Điều chỉnh các quan hệ xã hội", "Thay thế đạo đức", "Chỉ phục vụ kinh tế", "Chỉ phục vụ chính trị"], correct: 1 },
+{ subject: "GD Kinh tế - Pháp Luật", question: "Người từ đủ bao nhiêu tuổi trở lên phải chịu trách nhiệm hình sự về mọi tội phạm?", options: ["14 tuổi", "16 tuổi", "18 tuổi", "20 tuổi"], correct: 2 },
+{ subject: "GD Kinh tế - Pháp Luật", question: "Hoạt động nào là kinh doanh hợp pháp?", options: ["Buôn bán ma túy", "Mua bán vũ khí trái phép", "Sản xuất quần áo", "Đánh bạc"], correct: 3 },
+{ subject: "GD Kinh tế - Pháp Luật", question: "Khi vi phạm pháp luật dân sự, cá nhân phải chịu trách nhiệm gì?", options: ["Hình sự", "Kỷ luật", "Hành chính", "Dân sự"], correct: 4 },
+{ subject: "GD Kinh tế - Pháp Luật", question: "Trong nền kinh tế, cung - cầu tác động như thế nào?", options: ["Không liên quan", "Quyết định giá cả hàng hóa, dịch vụ", "Do Nhà nước ấn định", "Chỉ ảnh hưởng nhỏ"], correct: 2 },
+{ subject: "GD Kinh tế - Pháp Luật", question: "Quyền bầu cử của công dân Việt Nam được thực hiện khi đủ bao nhiêu tuổi?", options: ["16", "18", "20", "21"], correct: 2 },
+{ subject: "GD Kinh tế - Pháp Luật", question: "Pháp luật lao động quy định thời gian làm việc tối đa trong 1 ngày là?", options: ["6 giờ", "7 giờ", "8 giờ", "10 giờ"], correct: 3 },
+{ subject: "GD Kinh tế - Pháp Luật", question: "Doanh nghiệp tư nhân do ai làm chủ?", options: ["Một cá nhân", "Hai cá nhân", "Nhà nước", "Cộng đồng"], correct: 1 },
+{ subject: "GD Kinh tế - Pháp Luật", question: "Nguyên tắc nào KHÔNG thuộc pháp luật Việt Nam?", options: ["Mọi công dân đều bình đẳng trước pháp luật", "Bảo vệ quyền con người", "Độc tài toàn trị", "Bảo đảm quyền dân chủ"], correct: 3 },
+{ subject: "GD Kinh tế - Pháp Luật", question: "Người lao động ký hợp đồng làm việc với ai?", options: ["Chính phủ", "Người sử dụng lao động", "Tổ chức công đoàn", "Công an"], correct: 2 },
+{ subject: "GD Kinh tế - Pháp Luật", question: "Việc nộp thuế thể hiện điều gì của công dân?", options: ["Nghĩa vụ", "Quyền lợi", "Sở thích", "Tự nguyện"], correct: 1 },
+{ subject: "GD Kinh tế - Pháp Luật", question: "Loại hàng hóa nào bị cấm kinh doanh?", options: ["Nông sản", "Xăng dầu", "Chất ma túy", "Thực phẩm"], correct: 3 },
+{ subject: "GD Kinh tế - Pháp Luật", question: "Pháp luật có tính bắt buộc chung, nghĩa là?", options: ["Ai thích thì tuân theo", "Mọi người đều phải chấp hành", "Chỉ người trưởng thành phải chấp hành", "Chỉ cơ quan nhà nước phải chấp hành"], correct: 2 },
+{ subject: "GD Kinh tế - Pháp Luật", question: "Cơ quan nào có quyền ban hành Hiến pháp và luật?", options: ["Quốc hội", "Chính phủ", "Chủ tịch nước", "Tòa án nhân dân tối cao"], correct: 1 },
+{ subject: "GD Kinh tế - Pháp Luật", question: "Nguyên tắc nào thể hiện tính dân chủ trong pháp luật?", options: ["Mọi công dân đều bình đẳng trước pháp luật", "Nhà nước độc quyền quản lý kinh tế", "Pháp luật chỉ phục vụ cho một số người", "Công dân chỉ có nghĩa vụ, không có quyền"], correct: 1 },
+{ subject: "GD Kinh tế - Pháp Luật", question: "Theo Hiến pháp, quyền lực nhà nước ở Việt Nam thuộc về ai?", options: ["Chính phủ", "Nhân dân", "Quốc hội", "Chủ tịch nước"], correct: 2 },
+{ subject: "GD Kinh tế - Pháp Luật", question: "Trong kinh tế thị trường, Nhà nước giữ vai trò gì?", options: ["Quản lý, điều tiết và định hướng", "Không can thiệp vào kinh tế", "Quyết định toàn bộ hoạt động kinh tế", "Chỉ bảo vệ kinh tế tư nhân"], correct: 1 },
+{ subject: "GD Kinh tế - Pháp Luật", question: "Pháp luật dân sự điều chỉnh quan hệ nào?", options: ["Quan hệ kinh tế - tài sản", "Quan hệ lao động", "Quan hệ hình sự", "Quan hệ hành chính"], correct: 1 },
+{ subject: "GD Kinh tế - Pháp Luật", question: "Công dân có quyền ứng cử đại biểu Quốc hội từ đủ bao nhiêu tuổi?", options: ["18 tuổi", "21 tuổi", "30 tuổi", "25 tuổi"], correct: 2 },
+{ subject: "GD Kinh tế - Pháp Luật", question: "Luật Hôn nhân và Gia đình Việt Nam quy định nguyên tắc nào?", options: ["Một vợ, một chồng, bình đẳng", "Được kết hôn nhiều vợ", "Chỉ đàn ông mới có quyền ly hôn", "Phải kết hôn do cha mẹ sắp đặt"], correct: 1 },
+{ subject: "GD Kinh tế - Pháp Luật", question: "Người sử dụng lao động phải ký hợp đồng lao động bằng hình thức nào?", options: ["Miệng", "Bằng văn bản", "Tin nhắn", "Qua trung gian"], correct: 2 },
+{ subject: "GD Kinh tế - Pháp Luật", question: "Kinh tế tập thể ở Việt Nam chủ yếu tồn tại dưới hình thức nào?", options: ["Doanh nghiệp tư nhân", "Công ty cổ phần", "Hợp tác xã", "Doanh nghiệp 100% vốn nước ngoài"], correct: 3 },
+{ subject: "GD Kinh tế - Pháp Luật", question: "Trách nhiệm pháp lý hành chính áp dụng với ai?", options: ["Cá nhân, tổ chức vi phạm hành chính", "Chỉ công chức nhà nước", "Người phạm tội hình sự", "Người chưa thành niên"], correct: 1 },
+{ subject: "GD Kinh tế - Pháp Luật", question: "Nguyên tắc giải quyết tranh chấp lao động là gì?", options: ["Bạo lực", "Thỏa thuận, hòa giải, thương lượng", "Nhà nước quyết định hoàn toàn", "Không giải quyết"], correct: 2 },
+{ subject: "GD Kinh tế - Pháp Luật", question: "Chủ thể nào được quyền kinh doanh tại Việt Nam?", options: ["Chỉ Nhà nước", "Chỉ tư nhân", "Mọi cá nhân, tổ chức đủ điều kiện pháp luật", "Chỉ công ty nước ngoài"], correct: 3 },
+{ subject: "GD Kinh tế - Pháp Luật", question: "Thuế thu nhập cá nhân là nghĩa vụ tài chính áp dụng cho ai?", options: ["Tất cả mọi người", "Chỉ người giàu", "Người có thu nhập chịu thuế theo luật định", "Chỉ công ty"], correct: 3 },
+{ subject: "GD Kinh tế - Pháp Luật", question: "Biện pháp nào KHÔNG phải trách nhiệm pháp lý?", options: ["Dân sự", "Hình sự", "Kỷ luật", "Thương mại"], correct: 4 },
+{ subject: "GD Kinh tế - Pháp Luật", question: "Tòa án nhân dân có chức năng gì?", options: ["Xét xử các vụ việc theo pháp luật", "Ban hành luật", "Quản lý kinh tế", "Điều hành chính phủ"], correct: 1 },
+{ subject: "GD Kinh tế - Pháp Luật", question: "Pháp luật hành chính điều chỉnh những quan hệ nào?", options: ["Quan hệ giữa Nhà nước với công dân trong quản lý hành chính", "Quan hệ dân sự", "Quan hệ lao động", "Quan hệ thương mại"], correct: 1 },
+{ subject: "GD Kinh tế - Pháp Luật", question: "Người lao động được nghỉ thai sản bao nhiêu tháng theo luật hiện hành?", options: ["2 tháng", "4 tháng", "6 tháng", "12 tháng"], correct: 3 },
+{ subject: "GD Kinh tế - Pháp Luật", question: "Mục tiêu của phát triển bền vững là gì?", options: ["Chỉ phát triển kinh tế", "Kinh tế đi đôi với công bằng xã hội và bảo vệ môi trường", "Chỉ bảo vệ môi trường", "Chỉ tập trung vào công nghệ"], correct: 2 },
+{ subject: "GD Kinh tế - Pháp Luật", question: "Vi phạm pháp luật nào gây nguy hiểm cao nhất cho xã hội?", options: ["Dân sự", "Hình sự", "Hành chính", "Kỷ luật"], correct: 2 },
+{ subject: "GD Kinh tế - Pháp Luật", question: "Cơ quan nào có thẩm quyền xét xử cao nhất ở Việt Nam?", options: ["Tòa án nhân dân tối cao", "Tòa án nhân dân tỉnh", "Viện kiểm sát", "Chính phủ"], correct: 1 },
+{ subject: "GD Kinh tế - Pháp Luật", question: "Trách nhiệm pháp lý hình sự có thể kèm theo hình phạt nào?", options: ["Phạt tiền, cải tạo không giam giữ, tù giam", "Khiển trách", "Bồi thường dân sự", "Hạ bậc lương"], correct: 1 },
+{ subject: "GD Kinh tế - Pháp Luật", question: "Trong kinh tế, cạnh tranh giúp tạo ra điều gì?", options: ["Độc quyền", "Nâng cao chất lượng và giảm giá thành sản phẩm", "Suy giảm hiệu quả", "Lợi ích cho một nhóm nhỏ"], correct: 2 },
+{ subject: "GD Kinh tế - Pháp Luật", question: "Cơ quan nào giữ vai trò quản lý hành chính Nhà nước cao nhất?", options: ["Quốc hội", "Tòa án nhân dân", "Chủ tịch nước", "Chính phủ"], correct: 4 },
+{ subject: "GD Kinh tế - Pháp Luật", question: "Hành vi nào là vi phạm pháp luật hành chính?", options: ["Đi xe vượt đèn đỏ", "Trộm cắp tài sản", "Không trả nợ vay", "Đi học muộn"], correct: 1 },
+{ subject: "GD Kinh tế - Pháp Luật", question: "Nguyên tắc tổ chức và hoạt động của Nhà nước Việt Nam là gì?", options: ["Tập trung dân chủ", "Tập quyền tuyệt đối", "Phân quyền tuyệt đối", "Liên bang"], correct: 1 },
+{ subject: "GD Kinh tế - Pháp Luật", question: "Bản chất của pháp luật xã hội chủ nghĩa ở Việt Nam là gì?", options: ["Công cụ của giai cấp thống trị", "Không liên quan đến dân chủ", "Chỉ để trừng phạt", "Công cụ của Nhà nước để quản lý xã hội",], correct: 4 },
+{ subject: "GD Kinh tế - Pháp Luật", question: "Quyền bầu cử và ứng cử của công dân Việt Nam được gọi là quyền gì?", options: ["Quyền dân sự", "Quyền chính trị", "Quyền xã hội", "Quyền kinh tế"], correct: 2 },
+{ subject: "GD Kinh tế - Pháp Luật", question: "Trong nền kinh tế thị trường, yếu tố nào quyết định sản xuất và tiêu dùng?", options: ["Cung - cầu", "Nhà nước", "Tập thể", "Chủ doanh nghiệp"], correct: 1 },
+{ subject: "GD Kinh tế - Pháp Luật", question: "Cơ quan nào có chức năng kiểm sát hoạt động tư pháp?", options: ["Quốc hội", "Viện kiểm sát nhân dân", "Chính phủ", "Tòa án nhân dân"], correct: 2 },
+{ subject: "GD Kinh tế - Pháp Luật", question: "Người lao động chưa thành niên (dưới 18 tuổi) KHÔNG được làm công việc nào?", options: ["Bán hàng", "Khai thác than trong hầm lò", "Phục vụ bàn", "Làm việc văn phòng"], correct: 2 },
+{ subject: "GD Kinh tế - Pháp Luật", question: "Trong nền kinh tế thị trường, mục tiêu cuối cùng của sản xuất là gì?", options: ["Tăng lợi nhuận cho Nhà nước", "Đáp ứng nhu cầu của người tiêu dùng", "Giảm giá thành tối đa", "Xuất khẩu hàng hóa"], correct: 2 },
+{ subject: "GD Kinh tế - Pháp Luật", question: "Nguyên tắc nào KHÔNG đúng với pháp luật Việt Nam?", options: ["Mọi công dân đều bình đẳng trước pháp luật", "Pháp luật thể hiện ý chí của nhân dân", "Pháp luật chỉ áp dụng cho cơ quan nhà nước", "Pháp luật mang tính bắt buộc chung"], correct: 3 },
+{ subject: "GD Kinh tế - Pháp Luật", question: "Theo pháp luật, công dân có quyền khiếu nại, tố cáo nhằm mục đích gì?", options: ["Bảo vệ lợi ích cá nhân và cộng đồng", "Thể hiện sự không hài lòng", "Thay thế pháp luật", "Chỉ phục vụ cơ quan nhà nước"], correct: 1 },
+{ subject: "GD Kinh tế - Pháp Luật", question: "Người điều khiển xe máy phải đủ bao nhiêu tuổi trở lên?", options: ["14 tuổi", "16 tuổi", "18 tuổi", "20 tuổi"], correct: 2 },
+{ subject: "GD Kinh tế - Pháp Luật", question: "Trong pháp luật Việt Nam, quyền sở hữu trí tuệ bao gồm quyền nào?", options: ["Quyền tác giả và quyền sở hữu công nghiệp", "Quyền sử dụng đất", "Quyền sở hữu tài sản", "Quyền thừa kế"], correct: 1 },
+{ subject: "GD Kinh tế - Pháp Luật", question: "Khi công dân vi phạm pháp luật giao thông, sẽ bị xử lý bằng hình thức nào?", options: ["Trách nhiệm hình sự", "Trách nhiệm hành chính", "Trách nhiệm dân sự", "Trách nhiệm kỷ luật"], correct: 2 },
+{ subject: "GD Kinh tế - Pháp Luật", question: "Quyền bất khả xâm phạm về thân thể của công dân nghĩa là gì?", options: ["Không ai được bắt, giam, giữ trái pháp luật", "Không ai được xâm phạm danh dự", "Không ai được cấm học tập", "Không ai được chiếm đoạt tài sản"], correct: 1 },
+{ subject: "GD Kinh tế - Pháp Luật", question: "Trong nền kinh tế nhiều thành phần, khu vực nào giữ vai trò chủ đạo?", options: ["Kinh tế tư nhân", "Kinh tế nhà nước", "Kinh tế tập thể", "Kinh tế hỗn hợp"], correct: 2 },
+{ subject: "GD Kinh tế - Pháp Luật", question: "Theo pháp luật Việt Nam, quyền trẻ em KHÔNG bao gồm quyền nào?", options: ["Quyền được bảo vệ, chăm sóc, giáo dục", "Quyền vui chơi, giải trí", "Quyền kết hôn trước 16 tuổi", "Quyền phát triển toàn diện"], correct: 3 },
+{ subject: "GD Kinh tế - Pháp Luật", question: "Cơ quan nào là cơ quan hành chính Nhà nước cao nhất?", options: ["Quốc hội", "Chính phủ", "Tòa án", "Viện kiểm sát"], correct: 2 },
+{ subject: "GD Kinh tế - Pháp Luật", question: "Kinh tế tư nhân ở Việt Nam có vai trò gì?", options: ["Không quan trọng", "Là động lực quan trọng của nền kinh tế", "Chỉ hỗ trợ Nhà nước", "Bị hạn chế phát triển"], correct: 2 },
+
+  // Vật lý
+  { subject: "Vật lý", question: "Đơn vị của lực trong SI là gì?", options: ["Joule", "Newton", "Watt", "Pascal"], correct: 2 },
+  { subject: "Vật lý", question: "Công thức tính gia tốc là gì?", options: ["a = F/m", "a = m/F", "a = F × m", "a = F + m"], correct: 1 },
+  { subject: "Vật lý", question: "Định luật nào của Newton liên quan đến lực và phản lực?", options: ["Định luật I", "Định luật II", "Định luật III", "Định luật vạn vật hấp dẫn"], correct: 3 },
+  { subject: "Vật lý", question: "Tốc độ ánh sáng trong chân không là bao nhiêu?", options: ["300,000 m/s", "3,000,000 m/s", "300,000,000 m/s", "30,000,000 m/s"], correct: 3 },
+  { subject: "Vật lý", question: "Đơn vị của công suất trong hệ SI là gì?", options: ["Joule", "Watt", "Newton", "Pascal"], correct: 2 },
+{ subject: "Vật lý", question: "Công thức tính công cơ học?", options: ["A = F × s × cosα", "A = m × a", "A = F / s", "A = m × g × h"], correct: 1 },
+{ subject: "Vật lý", question: "Đơn vị của điện trở là gì?", options: ["Volt", "Ohm", "Ampere", "Coulomb"], correct: 2 },
+{ subject: "Vật lý", question: "Điện tích electron có giá trị bao nhiêu?", options: ["1,6 × 10⁻¹⁹ C", "1,6 × 10¹⁹ C", "9,1 × 10⁻³¹ kg", "3,0 × 10⁸ m/s"], correct: 1 },
+{ subject: "Vật lý", question: "Đại lượng nào đo bằng đơn vị Pascal?", options: ["Lực", "Áp suất", "Công suất", "Công"], correct: 2 },
+{ subject: "Vật lý", question: "Trong công thức E = mc², c là gì?", options: ["Gia tốc", "Khối lượng", "Tốc độ ánh sáng", "Công suất"], correct: 3 },
+{ subject: "Vật lý", question: "Định luật bảo toàn cơ năng áp dụng khi nào?", options: ["Chỉ có lực thế tác dụng", "Chỉ có lực ma sát", "Chỉ có lực cản", "Không có lực nào"], correct: 1 },
+{ subject: "Vật lý", question: "Sóng âm không truyền được trong môi trường nào?", options: ["Chất rắn", "Chất lỏng", "Khí", "Chân không"], correct: 4 },
+{ subject: "Vật lý", question: "Đơn vị của tần số trong SI là gì?", options: ["Hertz", "Decibel", "Joule", "Newton"], correct: 1 },
+{ subject: "Vật lý", question: "Thiết bị nào dùng để đo cường độ dòng điện?", options: ["Vôn kế", "Ampe kế", "Ôm kế", "Dao động ký"], correct: 2 },
+{ subject: "Vật lý", question: "Khối lượng riêng được tính bằng công thức nào?", options: ["ρ = m/V", "ρ = V/m", "ρ = m × V", "ρ = F/m"], correct: 1 },
+{ subject: "Vật lý", question: "Đơn vị của năng lượng trong hệ SI là gì?", options: ["Newton", "Joule", "Watt", "Pascal"], correct: 2 },
+{ subject: "Vật lý", question: "Công thức định luật Ohm?", options: ["I = U/R", "I = R/U", "I = U × R", "U = I - R"], correct: 1 },
+{ subject: "Vật lý", question: "Ai là người phát minh ra định luật vạn vật hấp dẫn?", options: ["Albert Einstein", "Isaac Newton", "Galileo Galilei", "James Watt"], correct: 2 },
+{ subject: "Vật lý", question: "Dao động điều hòa có phương trình dạng nào?", options: ["x = A cos(ωt + φ)", "x = A × t", "x = v × t", "x = F/m"], correct: 1 },
+{ subject: "Vật lý", question: "Đơn vị của lực trong SI là gì?", options: ["Joule", "Newton", "Watt", "Pascal"], correct: 2 },
+{ subject: "Vật lý", question: "Công thức tính gia tốc là gì?", options: ["a = F/m", "a = m/F", "a = F × m", "a = F + m"], correct: 1 },
+{ subject: "Vật lý", question: "Định luật nào của Newton liên quan đến lực và phản lực?", options: ["Định luật I", "Định luật II", "Định luật III", "Định luật vạn vật hấp dẫn"], correct: 3 },
+{ subject: "Vật lý", question: "Tốc độ ánh sáng trong chân không là bao nhiêu?", options: ["300,000 m/s", "3,000,000 m/s", "300,000,000 m/s", "30,000,000 m/s"], correct: 3 },
+{ subject: "Vật lý", question: "Đơn vị của công suất trong hệ SI là gì?", options: ["Joule", "Watt", "Newton", "Pascal"], correct: 2 },
+{ subject: "Vật lý", question: "Công thức tính công cơ học?", options: ["A = F × s × cosα", "A = m × a", "A = F / s", "A = m × g × h"], correct: 1 },
+{ subject: "Vật lý", question: "Đơn vị của điện trở là gì?", options: ["Volt", "Ohm", "Ampere", "Coulomb"], correct: 2 },
+{ subject: "Vật lý", question: "Điện tích electron có giá trị bao nhiêu?", options: ["1,6 × 10⁻¹⁹ C", "1,6 × 10¹⁹ C", "9,1 × 10⁻³¹ kg", "3,0 × 10⁸ m/s"], correct: 1 },
+{ subject: "Vật lý", question: "Đại lượng nào đo bằng đơn vị Pascal?", options: ["Lực", "Áp suất", "Công suất", "Công"], correct: 2 },
+{ subject: "Vật lý", question: "Trong công thức E = mc², c là gì?", options: ["Gia tốc", "Khối lượng", "Tốc độ ánh sáng", "Công suất"], correct: 3 },
+{ subject: "Vật lý", question: "Định luật bảo toàn cơ năng áp dụng khi nào?", options: ["Chỉ có lực thế tác dụng", "Chỉ có lực ma sát", "Chỉ có lực cản", "Không có lực nào"], correct: 1 },
+{ subject: "Vật lý", question: "Sóng âm không truyền được trong môi trường nào?", options: ["Chất rắn", "Chất lỏng", "Khí", "Chân không"], correct: 4 },
+{ subject: "Vật lý", question: "Đơn vị của tần số trong SI là gì?", options: ["Hertz", "Decibel", "Joule", "Newton"], correct: 1 },
+{ subject: "Vật lý", question: "Thiết bị nào dùng để đo cường độ dòng điện?", options: ["Vôn kế", "Ampe kế", "Ôm kế", "Dao động ký"], correct: 2 },
+{ subject: "Vật lý", question: "Khối lượng riêng được tính bằng công thức nào?", options: ["ρ = m/V", "ρ = V/m", "ρ = m × V", "ρ = F/m"], correct: 1 },
+{ subject: "Vật lý", question: "Đơn vị của năng lượng trong hệ SI là gì?", options: ["Newton", "Joule", "Watt", "Pascal"], correct: 2 },
+{ subject: "Vật lý", question: "Công thức định luật Ohm?", options: ["I = U/R", "I = R/U", "I = U × R", "U = I - R"], correct: 1 },
+{ subject: "Vật lý", question: "Ai là người phát minh ra định luật vạn vật hấp dẫn?", options: ["Albert Einstein", "Isaac Newton", "Galileo Galilei", "James Watt"], correct: 2 },
+{ subject: "Vật lý", question: "Dao động điều hòa có phương trình dạng nào?", options: ["x = A cos(ωt + φ)", "x = A × t", "x = v × t", "x = F/m"], correct: 1 },
+{ subject: "Vật lý", question: "Vận tốc trung bình được tính bằng công thức nào?", options: ["v = s/t", "v = t/s", "v = s × t", "v = a × t"], correct: 1 },
+{ subject: "Vật lý", question: "Ai là tác giả thuyết tương đối hẹp?", options: ["Newton", "Einstein", "Faraday", "Bohr"], correct: 2 },
+{ subject: "Vật lý", question: "Nhiệt độ tuyệt đối 0 K tương ứng với bao nhiêu °C?", options: ["0 °C", "-273 °C", "100 °C", "-100 °C"], correct: 2 },
+{ subject: "Vật lý", question: "Âm thanh được đo bằng đơn vị nào?", options: ["Joule", "Hertz", "Decibel", "Tesla"], correct: 3 },
+{ subject: "Vật lý", question: "Hằng số hấp dẫn G có giá trị xấp xỉ?", options: ["6,67 × 10⁻¹¹ N·m²/kg²", "9,8 m/s²", "3 × 10⁸ m/s", "1,6 × 10⁻¹⁹ C"], correct: 1 },
+{ subject: "Vật lý", question: "Gia tốc rơi tự do g trên Trái Đất xấp xỉ?", options: ["9,8 m/s²", "10 m/s²", "8,9 m/s²", "9,0 m/s²"], correct: 1 },
+{ subject: "Vật lý", question: "Máy biến thế hoạt động dựa trên hiện tượng gì?", options: ["Cảm ứng điện từ", "Hiệu ứng quang điện", "Hiệu ứng Doppler", "Sóng dừng"], correct: 1 },
+{ subject: "Vật lý", question: "Đơn vị của điện dung là gì?", options: ["Farad", "Henry", "Ohm", "Ampere"], correct: 1 },
+{ subject: "Vật lý", question: "Một vật có vận tốc không đổi, lực tổng hợp tác dụng lên nó bằng?", options: ["0", "m × a", "F = m × v", "khác 0"], correct: 1 },
+{ subject: "Vật lý", question: "Trong thấu kính hội tụ, tiêu cự ký hiệu là?", options: ["f", "d", "m", "p"], correct: 1 },
+{ subject: "Vật lý", question: "Vật cản màu đen hấp thụ ánh sáng như thế nào?", options: ["Toàn bộ", "Một phần", "Không hấp thụ", "Chỉ màu xanh"], correct: 1 },
+{ subject: "Vật lý", question: "Sóng điện từ không cần môi trường truyền?", options: ["Đúng", "Sai", "Chỉ trong chân không", "Chỉ trong khí"], correct: 1 },
+{ subject: "Vật lý", question: "Điện thế được đo bằng đơn vị nào?", options: ["Volt", "Ampere", "Ohm", "Tesla"], correct: 1 },
+{ subject: "Vật lý", question: "Định luật Lenxơ mô tả điều gì?", options: ["Chiều dòng điện cảm ứng", "Cường độ dòng điện", "Hiệu điện thế", "Điện trở"], correct: 1 },
+{ subject: "Vật lý", question: "Máy phát điện xoay chiều hoạt động theo hiện tượng gì?", options: ["Cảm ứng điện từ", "Hiệu ứng nhiệt điện", "Hiệu ứng quang điện", "Tán xạ ánh sáng"], correct: 1 },
+{ subject: "Vật lý", question: "Hiện tượng khúc xạ ánh sáng xảy ra khi?", options: ["Ánh sáng truyền qua môi trường khác nhau", "Ánh sáng phản xạ", "Ánh sáng hấp thụ", "Ánh sáng tán sắc"], correct: 1 },
+{ subject: "Vật lý", question: "Điện tích dương cơ bản thuộc về hạt nào?", options: ["Proton", "Electron", "Neutron", "Photon"], correct: 1 },
+{ subject: "Vật lý", question: "Tần số dao động con lắc đơn phụ thuộc vào?", options: ["Chiều dài dây treo", "Khối lượng vật nặng", "Biên độ dao động", "Tốc độ"], correct: 1 },
+{ subject: "Vật lý", question: "Công suất điện được tính bằng?", options: ["P = U × I", "P = U/I", "P = I/R", "P = R/U"], correct: 1 },
+{ subject: "Vật lý", question: "Sóng dừng xuất hiện khi?", options: ["Hai sóng truyền ngược chiều giao thoa", "Một sóng phản xạ", "Một sóng truyền đi", "Một sóng khúc xạ"], correct: 1 },
+{ subject: "Vật lý", question: "Dòng điện không đổi là gì?", options: ["Dòng có cường độ không đổi theo thời gian", "Dòng có hiệu điện thế thay đổi", "Dòng xoay chiều", "Dòng cảm ứng"], correct: 1 },
+{ subject: "Vật lý", question: "Điện trở phụ thuộc vào yếu tố nào?", options: ["Chiều dài, tiết diện, vật liệu", "Khối lượng", "Thể tích", "Nhiệt độ"], correct: 1 },
+{ subject: "Vật lý", question: "Hiệu ứng quang điện do ai phát hiện?", options: ["Einstein", "Newton", "Planck", "Faraday"], correct: 1 },
+{ subject: "Vật lý", question: "Hạt nhân nguyên tử gồm gì?", options: ["Proton và Neutron", "Electron", "Proton và Electron", "Neutron và Electron"], correct: 1 },
+{ subject: "Vật lý", question: "Đơn vị đo từ trường là?", options: ["Tesla", "Newton", "Joule", "Pascal"], correct: 1 },
+{ subject: "Vật lý", question: "Thấu kính phân kỳ cho ảnh như thế nào?", options: ["Ảnh ảo, cùng chiều, nhỏ hơn vật", "Ảnh thật", "Ảnh lớn hơn vật", "Ảnh ngược chiều"], correct: 1 },
+{ subject: "Vật lý", question: "Điện năng tiêu thụ được tính bằng?", options: ["A = U × I × t", "A = U/I", "A = I/R", "A = P/t"], correct: 1 },
+{ subject: "Vật lý", question: "Sóng cơ học truyền được trong?", options: ["Rắn, lỏng, khí", "Chân không", "Chỉ chất rắn", "Chỉ chất khí"], correct: 1 },
+{ subject: "Vật lý", question: "Nguyên tử có cấu tạo như thế nào?", options: ["Hạt nhân và lớp vỏ electron", "Chỉ có hạt nhân", "Chỉ có electron", "Proton + Photon"], correct: 1 },
+{ subject: "Vật lý", question: "Định luật Boyle-Mariotte mô tả quan hệ giữa?", options: ["Áp suất và thể tích", "Nhiệt độ và thể tích", "Áp suất và nhiệt độ", "Khối lượng và thể tích"], correct: 1 },
+{ subject: "Vật lý", question: "Momen lực được tính bằng?", options: ["M = F × d", "M = F/d", "M = F + d", "M = F - d"], correct: 1 },
+
+  // Hoá học
+  { subject: "Hoá học", question: "Ký hiệu hóa học của nước là gì?", options: ["H2O", "CO2", "NaCl", "O2"], correct: 1 },
+  { subject: "Hoá học", question: "Nguyên tố nào có số nguyên tử là 8?", options: ["Oxygen", "Carbon", "Nitrogen", "Lưu huỳnh"], correct: 1 },
+  { subject: "Hoá học", question: "Kim loại nào dẫn điện tốt nhất?", options: ["Bạc", "Đồng", "Vàng", "Nhôm"], correct: 2 },
+  { subject: "Hoá học", question: "Phản ứng cháy là phản ứng gì?", options: ["Phản ứng oxi hóa - khử", "Phản ứng phân hủy", "Phản ứng thế", "Phản ứng trung hòa"], correct: 1 },
+  { subject: "Hoá học", question: "Ký hiệu hóa học của nước là gì?", options: ["CO2", "NaCl", "H2O", "O2"], correct: 3 },
+{ subject: "Hoá học", question: "Nguyên tố nào có số nguyên tử là 8?", options: ["Carbon", "Oxygen", "Lưu huỳnh", "Nitrogen"], correct: 2 },
+{ subject: "Hoá học", question: "Kim loại nào dẫn điện tốt nhất?", options: ["Đồng", "Vàng", "Bạc", "Nhôm"], correct: 3 },
+{ subject: "Hoá học", question: "Phản ứng cháy là phản ứng gì?", options: ["Phản ứng phân hủy", "Phản ứng oxi hóa - khử", "Phản ứng trung hòa", "Phản ứng thế"], correct: 2 },
+{ subject: "Hoá học", question: "Axit trong dạ dày con người chủ yếu là gì?", options: ["H2SO4", "HCl", "CH3COOH", "HNO3"], correct: 2 },
+{ subject: "Hoá học", question: "Chất nào sau đây là hợp chất hữu cơ?", options: ["NaOH", "CH4", "CaCO3", "HCl"], correct: 2 },
+{ subject: "Hoá học", question: "Nguyên tử được cấu tạo từ những hạt nào?", options: ["Proton, electron, phân tử", "Ion dương, ion âm", "Proton, nơtron, electron", "Nơtron, electron, phân tử"], correct: 3 },
+{ subject: "Hoá học", question: "Khí nào cần thiết cho quá trình hô hấp?", options: ["CO2", "N2", "O2", "CH4"], correct: 3 },
+{ subject: "Hoá học", question: "Hiện tượng nào sau đây là hiện tượng hoá học?", options: ["Muối tan trong nước", "Sắt bị gỉ", "Nước đá tan", "Nước bốc hơi"], correct: 2 },
+{ subject: "Hoá học", question: "Nguyên tố nào chiếm tỉ lệ lớn nhất trong không khí?", options: ["Oxygen", "CO2", "Nitrogen", "Hydrogen"], correct: 3 },
+{ subject: "Hoá học", question: "Dung dịch nào sau đây có tính kiềm?", options: ["CH3COOH", "NaOH", "H2SO4", "HCl"], correct: 2 },
+{ subject: "Hoá học", question: "Chất nào sau đây là muối?", options: ["HCl", "NaCl", "H2O", "NaOH"], correct: 2 },
+{ subject: "Hoá học", question: "Nguyên tố nào có số hiệu nguyên tử là 1?", options: ["Heli", "Hydro", "Carbon", "Liti"], correct: 2 },
+{ subject: "Hoá học", question: "Quặng hematite chủ yếu chứa gì?", options: ["Fe3O4", "FeCO3", "FeS2", "Fe2O3"], correct: 4 },
+{ subject: "Hoá học", question: "Khí nào gây hiệu ứng nhà kính nhiều nhất?", options: ["O2", "N2", "CO2", "H2"], correct: 3 },
+{ subject: "Hoá học", question: "Phản ứng trung hoà xảy ra giữa những chất nào?", options: ["Muối và acid", "acid và base", "Kim loại và acid", "Base và muối"], correct: 2 },
+{ subject: "Hoá học", question: "Trong bảng tuần hoàn, nguyên tố được sắp xếp theo gì?", options: ["Tính chất hoá học", "Số hiệu nguyên tử", "Nguyên tử khối", "Hoá trị"], correct: 2 },
+{ subject: "Hoá học", question: "Nhôm thuộc loại kim loại nào?", options: ["Kim loại nặng", "Kim loại kiềm", "Kim loại nhẹ", "Kim loại kiềm thổ"], correct: 3 },
+{ subject: "Hoá học", question: "Khí methane (CH4) là thành phần chính của gì?", options: ["Không khí", "Khí quyển sao Kim", "Khí thiên nhiên", "Khí than ướt"], correct: 3 },
+{ subject: "Hoá học", question: "Dung dịch nào có thể làm quỳ tím chuyển xanh?", options: ["HCl", "NaOH", "H2SO4", "CO2 hoà tan"], correct: 2 },
+{ subject: "Hoá học", question: "Công thức hoá học của ammonia là gì?", options: ["NH4OH", "NO2", "NH3", "N2O"], correct: 3 },
+{ subject: "Hoá học", question: "Than chì và kim cương đều được tạo bởi nguyên tố nào?", options: ["Silic", "Lưu huỳnh", "Carbon", "Photpho"], correct: 3 },
+{ subject: "Hoá học", question: "Khí nào nhẹ nhất trong tự nhiên?", options: ["Helium", "Oxygen", "Methane", "Hydrogen"], correct: 4 },
+{ subject: "Hoá học", question: "Dung dịch acid có pH như thế nào?", options: ["= 7", "< 7", "Bất kì", "> 7"], correct: 2 },
+{ subject: "Hoá học", question: "Khí nào tạo ra hiện tượng mưa acid?", options: ["CO2", "SO2", "O2", "N2"], correct: 2 },
+{ subject: "Hoá học", question: "Kim loại nào lưỡng tính (vừa tác dụng với acid vừa tác dụng với bazơ)?", options: ["Fe", "Zn", "Cu", "Ag"], correct: 2 },
+{ subject: "Hoá học", question: "Nguyên tố nào có khả năng tạo ra nhiều hợp chất nhất?", options: ["Silic", "Carbon", "Lưu huỳnh", "Oxygen"], correct: 2 },
+{ subject: "Hoá học", question: "Dung dịch nào có tính acid yếu?", options: ["HCl", "H2SO4", "CH3COOH", "HNO3"], correct: 3 },
+{ subject: "Hoá học", question: "Chất nào sau đây là oxide base?", options: ["Na2O", "CO2", "SO3", "P2O5"], correct: 1 },
+{ subject: "Hoá học", question: "Dãy kim loại nào sau đây sắp xếp theo chiều giảm dần tính khử?", options: ["Na > Mg > Fe > Cu", "Mg > Na > Cu > Fe", "Cu > Fe > Mg > Na", "Fe > Na > Mg > Cu"], correct: 1 },
+{ subject: "Hoá học", question: "Thí nghiệm nào giải phóng khí H2?", options: ["Cho Na vào nước", "Cho Cu vào HCl", "Cho Ag vào H2SO4 loãng", "Cho Fe2O3 vào nước"], correct: 1 },
+{ subject: "Hoá học", question: "Phân tử khối của NH3 là bao nhiêu?", options: ["17", "14", "15", "16"], correct: 1 },
+{ subject: "Hoá học", question: "Kim loại nào không bị gỉ trong không khí ẩm?", options: ["Sắt", "Nhôm", "Đồng", "Vàng"], correct: 4 },
+{ subject: "Hoá học", question: "Trong phản ứng oxi hoá – khử, chất khử là chất gì?", options: ["Bị oxi hoá", "Bị khử", "Tạo kết tủa", "Làm dung dịch đổi màu"], correct: 1 },
+{ subject: "Hoá học", question: "Dung dịch nào dẫn điện kém nhất?", options: ["NaCl (dd)", "HCl (dd)", "Đường (dd)", "NaOH (dd)"], correct: 3 },
+{ subject: "Hoá học", question: "Thành phần chính của thạch cao là gì?", options: ["CaCO3", "CaSO4.2H2O", "Ca(OH)2", "CaO"], correct: 2 },
+{ subject: "Hoá học", question: "Để phân biệt khí CO2 và O2, ta dùng?", options: ["Nước vôi trong", "Quỳ tím", "Giấy quỳ ẩm", "Bột lưu huỳnh"], correct: 1 },
+{ subject: "Hoá học", question: "Kim loại nào có màu vàng đặc trưng?", options: ["Đồng", "Vàng", "Bạc", "Sắt"], correct: 2 },
+{ subject: "Hoá học", question: "Chất nào không phản ứng với HCl?", options: ["Zn", "Fe", "Cu", "Al"], correct: 3 },
+{ subject: "Hoá học", question: "Hiện tượng nào là vật lí, không phải hoá học?", options: ["Đường tan trong nước", "Gỗ cháy thành tro", "Sắt bị gỉ", "Giấy bị đốt"], correct: 1 },
+{ subject: "Hoá học", question: "Phản ứng nhiệt nhôm dùng để?", options: ["Điều chế H2", "Hàn ray đường sắt", "Điều chế khí O2", "Làm mềm nước cứng"], correct: 2 },
+{ subject: "Hoá học", question: "Chất nào là hợp chất ion?", options: ["NaCl", "H2O", "CO2", "CH4"], correct: 1 },
+{ subject: "Hoá học", question: "Nguyên tố nào có tính phi kim mạnh nhất?", options: ["O", "F", "Cl", "N"], correct: 2 },
+{ subject: "Hoá học", question: "Trong không khí, khí O2 chiếm khoảng bao nhiêu phần trăm thể tích?", options: ["21%", "78%", "1%", "0.03%"], correct: 1 },
+{ subject: "Hoá học", question: "Công thức tổng quát của alkane là gì?", options: ["CnH2n+2", "CnH2n", "CnH2n-2", "CnH2n+1"], correct: 1 },
+{ subject: "Hoá học", question: "Công thức tổng quát của alkene là gì?", options: ["CnH2n+2", "CnH2n", "CnH2n-2", "CnH2n+1"], correct: 2 },
+{ subject: "Hoá học", question: "Công thức tổng quát của alkyne là gì?", options: ["CnH2n-2", "CnH2n", "CnH2n+2", "CnH2n-4"], correct: 1 },
+{ subject: "Hoá học", question: "Phản ứng đặc trưng của alkene là gì?", options: ["Phản ứng thế", "Phản ứng cộng", "Phản ứng trùng ngưng", "Phản ứng cháy"], correct: 2 },
+{ subject: "Hoá học", question: "Phản ứng đặc trưng của alkyne là gì?", options: ["Phản ứng cộng", "Phản ứng thế", "Phản ứng oxi hoá", "Phản ứng phân hủy"], correct: 1 },
+{ subject: "Hoá học", question: "Công thức phân tử của acetylene là gì?", options: ["C2H4", "C2H6", "C2H2", "CH4"], correct: 3 },
+{ subject: "Hoá học", question: "Tên gọi khác của C2H2 là gì?", options: ["Ethene", "Acetylene", "Benzene", "Methane"], correct: 2 },
+{ subject: "Hoá học", question: "Benzene có công thức phân tử là gì?", options: ["C6H12", "C6H6", "C6H10", "C6H8"], correct: 2 },
+{ subject: "Hoá học", question: "Phản ứng thế  đặc trưng của benzen là gì khi tác dụng với Cl2 có xúc tác FeCl3?", options: ["Cộng Cl2 vào vòng benzene", "Thế H bằng Cl", "Tách HCl", "Cộng HCl"], correct: 2 },
+{ subject: "Hoá học", question: "Alkane tham gia phản ứng thế  khi có?", options: ["Ánh sáng hoặc nhiệt độ cao", "Nhiệt độ thường", "Xúc tác kim loại", "Dung dịch axit"], correct: 1 },
+{ subject: "Hoá học", question: "Sản phẩm chính khi hydro hoá alkene với xúc tác Ni, nhiệt độ cao là?", options: ["Alkyne", "Alkane", "Benzene", "Dẫn xuất halogen"], correct: 2 },
+{ subject: "Hoá học", question: "Để nhận biết alkene, ta có thể dùng?", options: ["Nước brom", "Quỳ tím", "Nước vôi trong", "Dung dịch NaOH"], correct: 1 },
+{ subject: "Hoá học", question: "Phản ứng cộng H2 vào liên kết ba tạo ra?", options: ["Alkane", "Alkene", "Benzene", "Alcohol"], correct: 2 },
+{ subject: "Hoá học", question: "Benzene thuộc loại hợp chất nào?", options: ["Hydrocarbon no (Alkane)", "Alkene", "Alkyne", "Hydrocarbon thơm"], correct: 4 },
+{ subject: "Hoá học", question: "Dung dịch nào bị làm mất màu bởi alkene nhưng không bởi alkane?", options: ["Br2 trong CCl4", "KMnO4 đặc nóng", "NaOH loãng", "HCl"], correct: 1 },
+{ subject: "Hoá học", question: "Hợp chất ethanol có công thức hóa học là gì?", options: ["CH3OH", "C2H5OH", "CH3COOH", "C2H4"], correct: 2 },
+{ subject: "Hoá học", question: "Hợp chất có tên IUPAC là propanone có công thức là gì?", options: ["CH3CHO", "CH3COCH3", "C2H5OH", "CH3COOH"], correct: 2 },
+{ subject: "Hoá học", question: "Hợp chất benzene thuộc nhóm hợp chất nào?", options: ["Alkane", "Alkene", "Alkyne", "Aromatic hydrocarbon"], correct: 4 },
+{ subject: "Hoá học", question: "Hợp chất acetic acid có trong loại thực phẩm nào sau đây?", options: ["Sữa", "Giấm ăn", "Nước chanh", "Nước đường"], correct: 2 },
+{ subject: "Hoá học", question: "Hợp chất ethene tham gia phản ứng đặc trưng nào?", options: ["Phản ứng thế", "Phản ứng cộng", "Phản ứng oxi hóa", "Phản ứng phân hủy"], correct: 2 },
+{ subject: "Hoá học", question: "Hợp chất có tên IUPAC là aniline có công thức hóa học là gì?", options: ["C6H5OH", "C6H5NH2", "C6H6", "C6H5CH3"], correct: 2 },
+{ subject: "Hoá học", question: "Hợp chất formaldehyde được dùng để làm gì trong công nghiệp?", options: ["Làm chất dẻo", "Sát trùng", "Nhiên liệu", "Làm thuốc nổ"], correct: 2 },
+{ subject: "Hoá học", question: "Công thức của hợp chất có tên IUPAC là butanoic acid là gì?", options: ["CH3COOH", "C2H5COOH", "C3H7COOH", "C4H9COOH"], correct: 3 },
+{ subject: "Hoá học", question: "Hợp chất acetylene có công thức hóa học là gì?", options: ["C2H4", "C2H6", "C2H2", "CH4"], correct: 3 },
+{ subject: "Hoá học", question: "Hợp chất methanol được sử dụng chủ yếu làm gì?", options: ["Chất tẩy rửa", "Nhiên liệu", "Chất bảo quản", "Thuốc trừ sâu"], correct: 2 },
+{ subject: "Hoá học", question: "Hợp chất ethyl acetate có công thức hóa học là gì?", options: ["CH3COOCH3", "CH3COOC2H5", "C2H5COOCH3", "CH3COOH"], correct: 2 },
+{ subject: "Hoá học", question: "Phản ứng đặc trưng của hợp chất phenol là gì?", options: ["Phản ứng cộng", "Phản ứng thế", "Phản ứng trùng hợp", "Phản ứng oxi hóa"], correct: 2 },
+{ subject: "Hoá học", question: "Hợp chất methylamine thuộc nhóm hợp chất nào?", options: ["Alcohol", "Aldehyde", "Amine", "Carboxylic acid"], correct: 3 },
+{ subject: "Hoá học", question: "Polymer polyethylene được tạo ra từ monome nào?", options: ["Ethene", "Ethyne", "Propene", "Benzene"], correct: 1 },
+{ subject: "Hoá học", question: "Hợp chất propanal có công thức hóa học là gì?", options: ["CH3CHO", "C2H5CHO", "CH3COCH3", "C3H7OH"], correct: 2},
+{ subject: "Hoá học", question: "Hợp chất nào sau đây là một triamine?", options: ["Methylamine", "Ethylamine", "Diethylamine", "Triethylamine"], correct: 4 },
+{ subject: "Hoá học", question: "Hợp chất benzoic acid có công thức hóa học là gì?", options: ["C6H5COOH", "C6H5OH", "C6H5CH3", "C6H6"], correct: 1 },
+{ subject: "Hoá học", question: "Phản ứng este hóa giữa ethanol và acetic acid tạo ra hợp chất nào?", options: ["Methyl acetate", "Ethyl acetate", "Propyl acetate", "Butyl acetate"], correct: 2 },
+{ subject: "Hoá học", question: "Hợp chất styrene là monome của polymer nào?", options: ["Polyethylene", "Polyvinyl chloride", "Polystyrene", "Polypropylene"], correct: 3 },
+{ subject: "Hoá học", question: "Hợp chất nào sau đây là một ketone?", options: ["Ethanol", "Acetone", "Acetic acid", "Formaldehyde"], correct: 2 },
+{ subject: "Hoá học", question: "Hợp chất toluene có công thức hóa học là gì?", options: ["C6H6", "C6H5CH3", "C6H5OH", "C6H5NH2"], correct: 2 },
+{ subject: "Hoá học", question: "Hợp chất nào sau đây là một aldehyde?", options: ["Acetone", "Ethanal", "Ethanol", "Methyl acetate"], correct: 2 },
+{ subject: "Hoá học", question: "Hợp chất polyvinyl chloride được sử dụng chủ yếu để làm gì?", options: ["Làm chai nhựa", "Làm ống nước", "Làm túi nylon", "Làm băng keo"], correct: 2 },
+{ subject: "Hoá học", question: "Hợp chất nào sau đây là một amino acid?", options: ["Glycine", "Ethanol", "Acetone", "Benzene"], correct: 1 }, 
+{ subject: "Hoá học", question: "Hợp chất nào sau đây có khả năng tạo liên kết hydro mạnh?", options: ["Methane", "Ethanol", "Ethene", "Benzene"], correct: 2 },
+{ subject: "Hoá học", question: "Nguyên tố nào có độ âm điện lớn nhất?", options: ["Oxygen", "Clo", "Flo", "Nitrogen"], correct: 3 },
+  { subject: "Hoá học", question: "Số oxi hóa của lưu huỳnh trong H2SO4 là?", options: ["+2", "+4", "+6", "-2"], correct: 3 },
+  { subject: "Hoá học", question: "Dung dịch nào có thể làm mất màu dung dịch KMnO4?", options: ["HCl", "NaOH", "H2SO4 loãng", "H2O2"], correct: 4 },
+  { subject: "Hoá học", question: "Trong phản ứng Na + H2O → ?", options: ["Na2O + H2", "NaOH + H2", "Na2O2 + H2", "NaO2 + H2"], correct: 2 },
+  { subject: "Hoá học", question: "Trong phản ứng oxi hoá – khử, chất oxi hoá là chất?", options: ["Nhường electron", "Nhận electron", "Tạo kết tủa", "Làm dung dịch đổi màu"], correct: 2 },
+  { subject: "Hoá học", question: "Ion nào tạo kết tủa trắng với dung dịch AgNO3?", options: ["Cl-", "SO4²-", "CO3²-", "NO3-"], correct: 1 },
+  { subject: "Hoá học", question: "Dung dịch nào có thể phản ứng với cả HCl và NaOH?", options: ["NaCl", "H2O", "Al(OH)3", "KNO3"], correct: 3 },
+  { subject: "Hoá học", question: "Khí nào được dùng để bảo quản hoa quả khỏi chín nhanh?", options: ["CO", "CO2", "N2", "O2"], correct: 3 },
+  { subject: "Hoá học", question: "Chất nào có tính lưỡng tính?", options: ["Al(OH)3", "NaOH", "HCl", "Ca(OH)2"], correct: 1 },
+  { subject: "Hoá học", question: "Dung dịch nào có thể hòa tan được nhôm oxide (Al2O3)?", options: ["HCl", "NaOH", "Cả 2", "Không chất nào"], correct: 3 },
+  { subject: "Hoá học", question: "Trong phân tử CH4, góc liên kết H–C–H xấp xỉ?", options: ["90°", "109.5°", "120°", "180°"], correct: 2 },
+  { subject: "Hoá học", question: "Nguyên tố nào chiếm tỉ lệ khối lượng lớn nhất trong cơ thể người?", options: ["Oxygen", "Carbon", "Hydrogen", "Nitrogen"], correct: 1 },
+  { subject: "Hoá học", question: "Dung dịch nào làm quỳ tím hóa đỏ?", options: ["NaOH", "NaCl", "HCl", "K2SO4"], correct: 3 },
+  { subject: "Hoá học", question: "Trong phản ứng este hóa, xúc tác thường dùng là?", options: ["NaOH", "H2SO4 đặc", "HCl", "CaCO3"], correct: 2 },
+  { subject: "Hoá học", question: "Dung dịch nào phản ứng với CO2 tạo kết tủa trắng?", options: ["Ca(OH)2", "NaOH", "HCl", "KOH"], correct: 1 },
+  { subject: "Hoá học", question: "Sản phẩm khí khi đốt cháy hoàn toàn C2H5OH là?", options: ["CO và H2O", "CO2 và H2O", "CO2 và H2", "CH4 và H2O"], correct: 2 },
+  { subject: "Hoá học", question: "Chất nào sau đây là chất điện li yếu?", options: ["HCl", "NaOH", "CH3COOH", "NaCl"], correct: 3 },
+  { subject: "Hoá học", question: "Trong phân tử NH3, nguyên tử N có lai hóa?", options: ["sp", "sp2", "sp3", "dsp3"], correct: 3 },
+  { subject: "Hoá học", question: "Dung dịch nào sau đây có tính oxi hóa mạnh?", options: ["H2SO4 loãng", "HNO3 đặc", "NaOH", "NaCl"], correct: 2 },
+  { subject: "Hoá học", question: "Số phân tử H2 cần để khử hoàn toàn 1 phân tử O2 thành H2O?", options: ["1", "2", "3", "4"], correct: 2 },
+  { subject: "Hoá học", question: "Chất nào có liên kết ion?", options: ["NaCl", "CH4", "H2O", "O2"], correct: 1 },
+  { subject: "Hoá học", question: "Chất nào sau đây tan nhiều trong dung môi hữu cơ nhưng ít tan trong nước?", options: ["NaCl", "C2H5OH", "C6H6", "HCl"], correct: 3 },
+  { subject: "Hoá học", question: "Chất nào là dung dịch đệm?", options: ["HCl", "NaOH", "CH3COOH + CH3COONa", "NaCl"], correct: 3 },
+  { subject: "Hoá học", question: "Dung dịch nào khi điện phân tạo khí ở cả 2 điện cực?", options: ["NaOH loãng", "NaCl loãng", "H2SO4 loãng", "Cả 3"], correct: 4 },
+  { subject: "Hoá học", question: "Kim loại nào tan được trong kiềm đặc nóng?", options: ["Zn", "Al", "Sn", "Cả 3"], correct: 4 },
+  { subject: "Hoá học", question: "Phản ứng nào sau đây là phản ứng tỏa nhiệt?", options: ["Nước bay hơi", "Đốt cháy CH4", "Nước đá tan", "NaCl tan trong nước"], correct: 2 },
+  { subject: "Hoá học", question: "Dung dịch nào có pH xấp xỉ 7?", options: ["NaOH 0.1M", "HCl 0.1M", "NaCl 0.1M", "CH3COOH 0.1M"], correct: 3 },
+  { subject: "Hoá học", question: "Chất nào được gọi là 'khí cười'?", options: ["CO", "NO", "N2O", "CO2"], correct: 3 },
+  { subject: "Hoá học", question: "Trong bảng tuần hoàn, nguyên tố kim loại kiềm thuộc nhóm nào?", options: ["IA", "IIA", "VIIA", "VIIIA"], correct: 1 },
+  { subject: "Hoá học", question: "Trong phân tử H2O, hình học phân tử là?", options: ["Tuyến tính", "Tam giác phẳng", "Góc", "Tứ diện"], correct: 3 },
+
+  // Sinh học
+  { subject: "Sinh học", question: "Bộ phận nào của tế bào chứa ADN?", options: ["Nhân", "Màng tế bào", "Tế bào chất", "Ti thể"], correct: 1 },
+  { subject: "Sinh học", question: "Quá trình nào giúp cây xanh tạo ra oxy?", options: ["Hô hấp", "Quang hợp", "Trao đổi chất", "Bài tiết"], correct: 2 },
+  { subject: "Sinh học", question: "Loài nào thuộc lớp Thú?", options: ["Cá voi", "Cá sấu", "Rùa", "Trăn"], correct: 1 },
+  { subject: "Sinh học", question: "Hormone insulin được tiết ra từ cơ quan nào?", options: ["Tụy", "Gan", "Thận", "Tim"], correct: 1 },
+  { subject: "Sinh học", question: "Bộ phận nào của tế bào chứa ADN?", options: ["Nhân", "Màng tế bào", "Tế bào chất", "Ti thể"], correct: 1 },
+{ subject: "Sinh học", question: "Quá trình nào giúp cây xanh tạo ra oxy?", options: ["Hô hấp", "Quang hợp", "Trao đổi chất", "Bài tiết"], correct: 2 },
+{ subject: "Sinh học", question: "Loài nào thuộc lớp Thú?", options: ["Cá voi", "Cá sấu", "Rùa", "Trăn"], correct: 1 },
+{ subject: "Sinh học", question: "Hormone insulin được tiết ra từ cơ quan nào?", options: ["Tụy", "Gan", "Thận", "Tim"], correct: 1 },
+{ subject: "Sinh học", question: "Đơn vị cơ bản cấu tạo nên sự sống là gì?", options: ["Nguyên tử", "Phân tử", "Tế bào", "Mô"], correct: 3 },
+{ subject: "Sinh học", question: "Nhiễm sắc thể ở người thường có bao nhiêu chiếc?", options: ["23", "46", "44", "48"], correct: 2 },
+{ subject: "Sinh học", question: "Cấu trúc nào sản xuất năng lượng ATP trong tế bào?", options: ["Nhân", "Ti thể", "Ribosome", "Lục lạp"], correct: 2 },
+{ subject: "Sinh học", question: "Máu người có bao nhiêu nhóm chính theo hệ ABO?", options: ["2", "3", "4", "5"], correct: 3 },
+{ subject: "Sinh học", question: "Loại tế bào nào vận chuyển oxy trong máu?", options: ["Bạch cầu", "Hồng cầu", "Tiểu cầu", "Tế bào thần kinh"], correct: 2 },
+{ subject: "Sinh học", question: "Cơ quan nào của con người đảm nhận chức năng lọc máu?", options: ["Gan", "Thận", "Phổi", "Tim"], correct: 2 },
+{ subject: "Sinh học", question: "Loại đường nào có nhiều trong trái cây ngọt?", options: ["Glucose", "Sucrose", "Fructose", "Lactose"], correct: 3 },
+{ subject: "Sinh học", question: "Cây hô hấp vào ban đêm nhả ra khí gì?", options: ["Oxygen", "CO2", "Nitrogen", "Hydro"], correct: 2 },
+{ subject: "Sinh học", question: "Bệnh tiểu đường liên quan đến hormone nào?", options: ["Adrenaline", "Insulin", "Testosterone", "Thyroxine"], correct: 2 },
+{ subject: "Sinh học", question: "Loài nào là động vật biến nhiệt?", options: ["Chim", "Thú", "Cá", "Người"], correct: 3 },
+{ subject: "Sinh học", question: "Cơ quan nào đảm nhận trao đổi khí trong cơ thể người?", options: ["Gan", "Tim", "Phổi", "Dạ dày"], correct: 3 },
+{ subject: "Sinh học", question: "Cây xanh hấp thụ khí gì để quang hợp?", options: ["Oxygen", "CO2", "Nitrogen", "Hydro"], correct: 2 },
+{ subject: "Sinh học", question: "Đơn vị di truyền cơ bản là gì?", options: ["Nhiễm sắc thể", "Gen", "ADN", "ARN"], correct: 2 },
+{ subject: "Sinh học", question: "Loại động vật nào đẻ trứng?", options: ["Chim", "Thú", "Người", "Tinh tinh"], correct: 1 },
+{ subject: "Sinh học", question: "Chất nào vận chuyển oxy trong máu?", options: ["Hemoglobin", "Myosin", "Insulin", "Keratin"], correct: 1 },
+{ subject: "Sinh học", question: "Loại vitamin nào cần thiết cho quá trình đông máu?", options: ["Vitamin A", "Vitamin B12", "Vitamin K", "Vitamin D"], correct: 3 },
+{ subject: "Sinh học", question: "Trong quang hợp, cây hấp thụ năng lượng từ đâu?", options: ["Ánh sáng Mặt Trời", "Nhiệt độ", "Nước", "Khoáng"], correct: 1 },
+{ subject: "Sinh học", question: "Tuyến giáp tiết ra hormone gì?", options: ["Insulin", "Thyroxine", "Adrenaline", "Testosterone"], correct: 2 },
+{ subject: "Sinh học", question: "Người có nhóm máu O có thể truyền cho?", options: ["Chỉ nhóm O", "Mọi nhóm máu", "Chỉ nhóm A", "Chỉ nhóm B"], correct: 2 },
+{ subject: "Sinh học", question: "Cấu tạo cơ bản của protein gồm?", options: ["Axit béo", "Đường", "Axit amin", "Nucleotide"], correct: 3 },
+{ subject: "Sinh học", question: "Loài nào sau đây là sinh vật nhân sơ?", options: ["Vi khuẩn", "Nấm men", "Tảo lục", "Động vật nguyên sinh"], correct: 1 },
+{ subject: "Sinh học", question: "Quá trình phân bào nào tạo ra tế bào con có bộ nhiễm sắc thể giống hệt tế bào mẹ?", options: ["Nguyên phân", "Giảm phân", "Tái bản ADN", "Đột biến gen"], correct: 1 },
+{ subject: "Sinh học", question: "Enzyme có bản chất hóa học là gì?", options: ["Protein", "Lipid", "Glucid", "Acid nucleic"], correct: 1 },
+{ subject: "Sinh học", question: "Cơ quan nào của cây hấp thụ nước và muối khoáng?", options: ["Lá", "Rễ", "Thân", "Hoa"], correct: 2 },
+{ subject: "Sinh học", question: "Trong hô hấp tế bào, giai đoạn tạo nhiều ATP nhất là?", options: ["Đường phân", "Chu trình Crebs", "Chuỗi chuyền electron", "Quang phân"], correct: 3 },
+{ subject: "Sinh học", question: "Động vật nào sau đây hô hấp bằng mang?", options: ["Chim", "Cá", "Ếch trưởng thành", "Thú"], correct: 2 },
+{ subject: "Sinh học", question: "Loại ARN nào mang thông tin di truyền từ nhân ra ribosome?", options: ["tARN", "rARN", "mARN", "ARN virus"], correct: 3 },
+{ subject: "Sinh học", question: "Sự kết hợp giữa giao tử đực và giao tử cái gọi là gì?", options: ["Nguyên phân", "Thụ tinh", "Giảm phân", "Sinh sản vô tính"], correct: 2 },
+{ subject: "Sinh học", question: "Loại mô nào làm nhiệm vụ dẫn truyền xung thần kinh?", options: ["Mô cơ", "Mô thần kinh", "Mô biểu bì", "Mô liên kết"], correct: 2 },
+{ subject: "Sinh học", question: "Trong hệ miễn dịch, tế bào nào có vai trò tiêu diệt vi khuẩn?", options: ["Hồng cầu", "Bạch cầu", "Tiểu cầu", "Tế bào gan"], correct: 2 },
+{ subject: "Sinh học", question: "Loài nấm nào được dùng sản xuất kháng sinh penicillin?", options: ["Nấm mốc Penicillium", "Nấm men", "Nấm rơm", "Nấm linh chi"], correct: 1 },
+  { subject: "Sinh học", question: "Loại tế bào nào có khả năng phân chia vô hạn trong cơ thể?", options: ["Tế bào gốc", "Tế bào thần kinh", "Tế bào cơ", "Hồng cầu"], correct: 1 },
+  { subject: "Sinh học", question: "Cấu trúc nào quyết định giới tính ở người?", options: ["NST thường", "NST giới tính", "Gen đột biến", "Môi trường"], correct: 2 },
+  { subject: "Sinh học", question: "Loại khí nào chiếm tỉ lệ cao nhất trong không khí?", options: ["Oxygen", "CO2", "Nitrogen", "Argon"], correct: 3 },
+  { subject: "Sinh học", question: "Loài nào sau đây là động vật máu nóng?", options: ["Cá", "Bò sát", "Chim", "Ếch"], correct: 3 },
+  { subject: "Sinh học", question: "Tế bào nào trong lá cây chứa nhiều lục lạp nhất?", options: ["Tế bào mô giậu", "Tế bào biểu bì", "Tế bào bảo vệ khí khổng", "Tế bào gỗ"], correct: 1 },
+  { subject: "Sinh học", question: "Loài nào sau đây có hệ tuần hoàn hở?", options: ["Côn trùng", "Người", "Cá", "Chim"], correct: 1 },
+  { subject: "Sinh học", question: "Ở người, quá trình tiêu hóa tinh bột bắt đầu từ cơ quan nào?", options: ["Dạ dày", "Ruột non", "Miệng", "Gan"], correct: 3 },
+  { subject: "Sinh học", question: "Trong phân tử ADN, các bazơ nitơ (nucleobase) liên kết với nhau bằng loại liên kết nào?", options: ["Liên kết cộng hóa trị", "Liên kết hydro", "Liên kết ion", "Liên kết peptit"], correct: 2 },
+  { subject: "Sinh học", question: "Ở người, bộ phận nào đóng vai trò chính trong điều hòa thân nhiệt?", options: ["Tim", "Gan", "Vùng dưới đồi", "Tủy sống"], correct: 3 },
+  { subject: "Sinh học", question: "Sản phẩm cuối cùng của quá trình hô hấp tế bào hiếu khí là?", options: ["ATP, CO2, H2O", "ATP và O2", "CO2 và O2", "Nước và O2"], correct: 1 },
+  { subject: "Sinh học", question: "Loài cây nào có khả năng cố định đạm khí trời?", options: ["Lúa", "Ngô", "Đậu tương", "Khoai tây"], correct: 3 },
+  { subject: "Sinh học", question: "Bộ phận nào giúp cá cân bằng và định hướng khi bơi?", options: ["Mang", "Vây", "Vảy", "Bóng hơi"], correct: 4 },
+  { subject: "Sinh học", question: "Loài sinh vật nào được dùng phổ biến trong công nghệ sản xuất bia?", options: ["Nấm men", "Vi khuẩn lactic", "Vi khuẩn lam", "Tảo lục"], correct: 1 },
+  { subject: "Sinh học", question: "Quá trình trao đổi khí ở thực vật chủ yếu diễn ra qua?", options: ["Lỗ khí khổng", "Mạch gỗ", "Lông hút", "Mạch rây"], correct: 1 },
+  { subject: "Sinh học", question: "Loài nào thuộc nhóm động vật lưỡng cư?", options: ["Ếch", "Cá chép", "Rắn hổ mang", "Chim sẻ"], correct: 1 },
+{ subject: "Sinh học", question: "Trong quá trình giảm phân, số nhiễm sắc thể giảm đi bao nhiêu lần?", options: ["Không đổi", "Giảm một nửa", "Giảm một phần ba", "Tăng gấp đôi"], correct: 2 },
+{ subject: "Sinh học", question: "Tuyến nào của cơ thể tiết hormone adrenaline?", options: ["Tuyến yên", "Tuyến giáp", "Tuyến tụy", "Tuyến thượng thận"], correct: 4 },
+{ subject: "Sinh học", question: "Cơ quan nào của cây thực hiện chức năng quang hợp?", options: ["Thân", "Hoa", "Lá", "Rễ"], correct: 3 },
+{ subject: "Sinh học", question: "Ở người, cơ quan nào đảm nhận vai trò chủ yếu trong tiêu hóa chất béo?", options: ["Ruột non", "Dạ dày", "Gan", "Ruột già"], correct: 1 },
+{ subject: "Sinh học", question: "Loại động vật nào có hệ tuần hoàn kép?", options: ["Cá", "Lưỡng cư", "Bò sát", "Thú"], correct: 4 },
+{ subject: "Sinh học", question: "Đơn vị cấu tạo của hệ thần kinh là gì?", options: ["Tế bào cơ", "Nơron", "Hồng cầu", "Tiểu cầu"], correct: 2 },
+{ subject: "Sinh học", question: "Cây họ Đậu cộng sinh với vi khuẩn nào để cố định đạm?", options: ["Rhizobium", "E.coli", "Lactobacillus", "Clostridium"], correct: 1 },
+{ subject: "Sinh học", question: "Loại vitamin nào giúp hấp thụ canxi tốt hơn?", options: ["Vitamin A", "Vitamin D", "Vitamin K", "Vitamin B1"], correct: 2 },
+{ subject: "Sinh học", question: "Trong chuỗi thức ăn, sinh vật sản xuất là nhóm nào?", options: ["Động vật ăn cỏ", "Thực vật xanh", "Động vật ăn thịt", "Vi khuẩn phân giải"], correct: 2 },
+{ subject: "Sinh học", question: "Loài nào sau đây là động vật có xương sống?", options: ["Bạch tuộc", "Sứa", "Cá mập", "Ốc sên"], correct: 3 },
+{ subject: "Sinh học", question: "Ở thực vật, vận chuyển nhựa nguyên chủ yếu qua bộ phận nào?", options: ["Mạch gỗ", "Mạch rây", "Khí khổng", "Lông hút"], correct: 1 },
+{ subject: "Sinh học", question: "Cấu tạo nào giúp hồng cầu vận chuyển oxy hiệu quả?", options: ["Có nhân", "Dạng cầu", "Không nhân và có hemoglobin", "Chứa nhiều ti thể"], correct: 3 },
+{ subject: "Sinh học", question: "Quá trình nào tạo ra sự đa dạng di truyền?", options: ["Nguyên phân", "Đột biến gen", "Trao đổi chéo trong giảm phân", "Hô hấp tế bào"], correct: 3 },
+{ subject: "Sinh học", question: "Ở người, bộ phận nào hấp thụ chất dinh dưỡng chính?", options: ["Dạ dày", "Ruột non", "Ruột già", "Gan"], correct: 2 },
+{ subject: "Sinh học", question: "Thành phần nào của máu có vai trò đông máu?", options: ["Hồng cầu", "Bạch cầu", "Tiểu cầu", "Huyết tương"], correct: 3 },
+{ subject: "Sinh học", question: "Cấu trúc nào trong tế bào thực vật giúp duy trì áp suất thẩm thấu?", options: ["Nhân", "Không bào", "Thành tế bào", "Ti thể"], correct: 2 },
+{ subject: "Sinh học", question: "Hệ sinh thái bao gồm những thành phần nào?", options: ["Sinh vật và môi trường vô sinh", "Chỉ sinh vật", "Chỉ môi trường vô sinh", "Chỉ thực vật"], correct: 1 },
+{ subject: "Sinh học", question: "Loài nào là sinh vật tự dưỡng?", options: ["Cây xanh", "Người", "Hổ", "Nấm"], correct: 1 },
+{ subject: "Sinh học", question: "Ở người, tuyến yên nằm ở đâu?", options: ["Não", "Cổ", "Ngực", "Bụng"], correct: 1 },
+
+];
+
+function setupRoundCards() {
+  roundCards = [];
+  const shuffledSubjects = shuffleArray([...subjectCards]).slice(0, 3);
+  shuffledSubjects.forEach(subj => {
+    roundCards.push({ type: "subject", image: subj.image, subject: subj.subject, function: null });
+  });
+  const func = functionCards[Math.floor(Math.random() * functionCards.length)];
+  roundCards.push({ type: "function", image: func.image, subject: null, function: func });
+  roundCards = shuffleArray(roundCards);
+}
+
+function shuffleArray(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+}
+
+function showQuestion(subject) {
+  clearInterval(timerInterval);
+  console.log("Show question for", subject);
+  let filtered = questions.filter(q => q.subject === subject);
+  if (!filtered.length) {
+    console.warn("No questions found for subject:", subject);
+    filtered = questions;
+  }
+  filtered = shuffleArray([...filtered]);
+  const q = filtered[0];
+  if (!q) {
+    console.error("No question available!");
+    endGame();
+    return;
+  }
+  document.getElementById('question-area').style.display = 'block';
+  document.getElementById('question-text').textContent = q.question;
+  const options = document.querySelectorAll('#options button');
+  options.forEach((btn, i) => { btn.textContent = q.options[i]; });
+  currentCard.question = q;
+  isStopUsed = false;
+  if (stopCount > 0) {
+    stopCount--;           
+    isStopUsed = true;
+    updatePowerCards();
+    clearInterval(timerInterval); 
+    document.getElementById("timer").textContent = "∞";
+    } else {
+    startTimer();
+  }
+}
+
+function updateGameState() {
+if (inBonusRound) {
+    document.getElementById("round-number").innerText = round + " (Bonus)";
+} else {
+    document.getElementById("round-number").innerText = round + " (Normal)";
+}
+  document.getElementById('lives').textContent = lives;
+  document.getElementById('score').textContent = score;
+  document.getElementById('high-score').textContent = highScore;
+  document.getElementById('highest-round').textContent = highestRound;
+}
+
+function startGame() {
+  document.getElementById('main-screen').style.display = 'none';
+  document.getElementById('game-area').style.display = 'block';
+  inBonusRound = false;
+  roundCards = [];
+  updateGameState();
+  resetRound();
+}
+
+function flipCard(cardNumber) {
+  if (isCardFlipped) return;
+  isCardFlipped = true;
+  console.log("Flipping card", cardNumber, "inBonusRound:", inBonusRound);
+if (choosingAHA) {
+    showPopup("Bạn đang chọn môn sở trường, không thể lật lá lúc này!");
+    return;
+}
+  const cards = document.querySelectorAll('.card');
+  cards.forEach(c => c.classList.add('disabled'));
+
+  let cardData;
+  if (inBonusRound) {
+    const func = functionCards[Math.floor(Math.random() * functionCards.length)];
+    cardData = { type: "function", image: func.image, subject: null, function: func };
+  } else {
+    if (roundCards.length === 0) {
+      setupRoundCards();
+    }
+    cardData = roundCards[cardNumber - 1];
+  }
+
+  currentCard = { number: cardNumber, ...cardData };
+  const cardElement = cards[cardNumber - 1];
+  const backEl = cardElement.querySelector('.card-back');
+
+  const tempMsg = document.createElement('div');
+  tempMsg.className = 'card-message';
+  cardElement.appendChild(tempMsg);
+  tempMsg.style.display = 'block';
+
+  backEl.innerHTML = `<img src="${cardData.image}" alt="${cardData.function ? cardData.function.text : cardData.subject}" />`;
+
+  const backImg = backEl.querySelector('img');
+  let loaded = false;
+  backImg.onload = () => {
+    loaded = true;
+    setTimeout(() => {
+      cardElement.classList.add('flipped');
+    }, 50);
+    setTimeout(() => {
+      tempMsg.remove();
+      processFlippedCard(cardElement, currentCard);
+    }, 900);
+  };
+
+  backImg.onerror = () => {
+    console.error("Failed to load back image:", cardData.image);
+    backEl.innerHTML = `<div style="display:flex;align-items:center;justify-content:center;height:100%;padding:8px;">${cardData.function ? cardData.function.text : cardData.subject}</div>`;
+    setTimeout(() => {
+      cardElement.classList.add('flipped');
+    }, 50);
+    setTimeout(() => {
+      tempMsg.remove();
+      processFlippedCard(cardElement, currentCard);
+    }, 900);
+  };
+
+  setTimeout(() => {
+    if (!loaded) {
+      try { tempMsg.remove(); } catch(e) {}
+      if (!cardElement.classList.contains('flipped')) cardElement.classList.add('flipped');
+      processFlippedCard(cardElement, currentCard);
+    }
+  }, 2000);
+}
+
+function processFlippedCard(cardElement, cardData) {
+  console.log("Processing card", cardData, "inBonusRound:", inBonusRound);
+  const cards = document.querySelectorAll('.card');
+
+  if (cardData.type === "function") {
+    if (cardData.function) {
+      try {
+        cardData.function.effect();
+      } catch (e) { console.error(e); }
+    }
+    if (inBonusRound) {
+      inBonusRound = false;
+      round++;
+    } else if (cardData.function.name === "Boost") {
+      round++;
+    }
+    roundCards = []; // Reset roundCards để tạo mới ở round tiếp theo
+    resetRound();
+    cards.forEach(c => {
+      if (!c.classList.contains('flipped')) c.classList.remove('disabled');
+    });
+    isCardFlipped = false;
+  } else if (cardData.type === "subject") {
+    showQuestion(cardData.subject);
+    isCardFlipped = false;
+  } else {
+    console.error("Invalid card type:", cardData.type);
+    showPopup("Lỗi: Lá bài không hợp lệ! Chuyển sang round tiếp theo.");
+    roundCards = [];
+    resetRound();
+    cards.forEach(c => {
+      if (!c.classList.contains('flipped')) c.classList.remove('disabled');
+    });
+    isCardFlipped = false;
+  }
+  updateGameState();
+}
+
+function startTimer() {
+  let timeLeft;
+  if (round >= 151) {
+    timeLeft = 9;
+  } else if (round >= 101) {
+    timeLeft = 12;
+  } else if (round >= 51) {
+    timeLeft = 15;
+  } else if (round >= 26) {
+    timeLeft = 17;
+  } else {
+    timeLeft = 20;
+  }
+    document.getElementById('timer').textContent = timeLeft;
+    timerInterval = setInterval(() => {
+        timeLeft--;
+        document.getElementById('timer').textContent = timeLeft;
+        if (timeLeft <= 0) {
+            clearInterval(timerInterval);
+            loseLife("timeout");
+        }
+    }, 1000);
+}
+
+function showPopup(message) {
+  const messageModal = document.getElementById("messageModal");
+  document.getElementById("popupMessage").textContent = message;
+  messageModal.style.zIndex = "3000";
+  messageModal.classList.add("show");
+}
+
+function closePopup() {
+  const messageModal = document.getElementById("messageModal");
+  messageModal.classList.remove("show");
+  messageModal.style.zIndex = "2000";
+}
+
+function checkAnswer(ansIndex) {
+  console.log("Checking answer", ansIndex, "Favorite subject:", favoriteSubject);
+  clearInterval(timerInterval);
+  const question = currentCard && currentCard.question;
+  const cards = document.querySelectorAll('.card');
+
+  if (!question) {
+    console.warn("No current question");
+    showPopup("Lỗi: Không có câu hỏi!");
+    return;
+  }
+   if (isStopUsed) {
+    isStopUsed = false;
+    updatePowerCards();
+   }
+  if (ansIndex === question.correct) {
+    let points = 10;
+const isAHA = hasAHA && question.subject === favoriteSubject;
+if (isAHA) points *= 5;
+console.log("A-HA x5 point");
+if (hasSync) {
+  consecutiveCorrect++;
+  points += consecutiveCorrect * 5;
+} else {
+  consecutiveCorrect = 0;
+}
+score += points;
+    showPopup(`✅ Đúng! Bạn được ${points} điểm!`);
+    consecutiveCorrect++;
+    round++;
+    roundCards = []; // Reset roundCards
+    if (round % 5 === 0) {
+      document.getElementById('bonusModal').classList.add('show');
+    } else {
+      resetRound();
+    }
+  } else {
+    if (protectionCount > 0) {
+      protectionCount--;
+      updatePowerCards();
+      showPopup("🛡️ Protection đã cứu bạn không bị mất cơ hội! (Còn: " + protectionCount + ")");
+      showQuestion(question.subject);
+    } else {
+      loseLife("wrong");
+    }
+  }
+  cards.forEach(c => c.classList.remove('disabled'));
+  isCardFlipped = false;
+  updateGameState();
+}
+
+function loseLife(reason = "wrong") {
+  lives--;
+  consecutiveCorrect = 0;
+  updateGameState();
+
+  if (lives <= 0) {
+    endGame();
+  } else {
+    if (reason === "timeout") {
+      showPopup(`⏰ Hết giờ! Bạn còn ${lives} cơ hội.`);
+    } else {
+      showPopup(`❌ Trả lời sai! Bạn còn ${lives} cơ hội.`);
+    }
+    resetRound();
+  }
+}
+
+
+function endGame() {
+  console.log("Game over, score:", score, "highScore:", highScore, "round:", round, "highestRound:", highestRound);
+  highScore = Math.max(highScore, score);
+  highestRound = Math.max(highestRound, round);
+  clearInterval(timerInterval);
+  localStorage.setItem('highScore', highScore);
+  localStorage.setItem('highestRound', highestRound);
+  document.getElementById('final-score').textContent = score;
+  document.getElementById('gameOverModal').classList.add('show');
+  showStarMessengerReaction();
+  isCardFlipped = false;
+  inBonusRound = false;
+}
+
+function startBonusRound() {
+  console.log("Starting bonus round");
+  inBonusRound = true;
+  document.getElementById('bonusModal').classList.remove('show');
+  resetRound();
+  updateGameState();
+}
+
+document.getElementById("confirm-aha").addEventListener("click", () => {
+  favoriteSubject = document.getElementById("favorite-subject").value;
+  choosingAHA = false;
+  document.getElementById("aha-selection").style.display = "none";
+  showPopup("Môn sở trường đã chọn: " + favoriteSubject);
+
+    if (inBonusRound) {
+        inBonusRound = false;
+        round++;
+    }
+    resetRound();
+});
+
+
+function resetRound() {
+  console.log("Resetting round, inBonusRound:", inBonusRound, "round:", round, "hasAHA:", hasAHA, "stopCount:", stopCount,  "protectionCount:", protectionCount,);
+  if (!inBonusRound && round % 5 === 0) {
+    document.getElementById('bonusModal').classList.add('show');
+    return;
+  }
+
+  clearInterval(timerInterval);
+  document.getElementById('question-area').style.display = 'none';
+  if (!hasAHA) document.getElementById('aha-selection').style.display = 'none';
+
+  const cards = document.querySelectorAll('.card');
+  cards.forEach(card => {
+    card.classList.remove('flipped');
+    card.classList.remove('disabled');
+    const front = card.querySelector('.card-front');
+    const back = card.querySelector('.card-back');
+    front.innerHTML = '<img src="Image/CardBack.png" alt="Lá bài úp">';
+    back.innerHTML = '';
+    card.setAttribute('data-type', 'unknown');
+  });
+
+  roundCards = [];
+  updateGameState();
+  isCardFlipped = false;
+}
+
+function updatePowerCards() {
+  document.getElementById('protection-count').textContent = protectionCount;
+  document.getElementById('stop-count').textContent = stopCount;
+}
+
+function restartGame() {
+  console.log("Restarting game");
+  round = 1;
+  lives = 3;
+  score = 0;
+  consecutiveCorrect = 0;
+  hasAHA = false;
+  hasSync = false;
+  hasGoodRedraw = false;
+  protectionCount = 0;
+  stopCount = 0;
+  let isStopUsed = false;
+  inBonusRound = false;
+  favoriteSubject = null;
+  document.getElementById('aha-selection').style.display = 'none';
+  document.getElementById('gameOverModal').classList.remove('show');
+  document.getElementById('main-screen').style.display = 'block';
+  document.getElementById('game-area').style.display = 'none';
+  resetRound();
+  updateGameState();
+}
+
+document.querySelectorAll('.card-front img').forEach(img => {
+  img.onerror = () => {
+    console.error('Initial front image failed', img.src);
+    img.parentElement.textContent = 'Lá bài úp';
+  };
+});
+
+document.addEventListener('keydown', (e) => {
+  if (document.getElementById('question-area').style.display === 'block') {
+    if (e.key.toLowerCase() === 'a') checkAnswer(1);
+    if (e.key.toLowerCase() === 'b') checkAnswer(2);
+    if (e.key.toLowerCase() === 'c') checkAnswer(3);
+    if (e.key.toLowerCase() === 'd') checkAnswer(4);
+  }
+});
+
+function getScoreRank(highScore) {
+  if (highScore >= 600000) {
+    return { text: 'Peak SS (Trùm Bài)', color: '#ff67fa' };
+  } else if (highScore >= 200000) {
+    return { text: 'SS (Sổ xố 365 ngày)', color: '#ff781f' };
+  } else if (highScore >= 70000) {
+    return { text: 'S (Jackpot.exe)', color: '#ffa500' };
+  } else if (highScore >= 25000) {
+    return { text: 'A (Ông hoàng trúng tủ)', color: '#800080' };
+  } else if (highScore >= 9000) {
+    return { text: 'B (Có niềm tin)', color: '#00bfff' };
+  } else if (highScore >= 4000) {
+    return { text: 'C (Cũng không may mắn lắm)', color: '#32CD32' };
+  } else {
+    return { text: 'Chưa xếp hạng', color: '#000000' };
+  }
+}
+
+function getRoundRank(highestRound) {
+  if (round >= 451) {
+    return { text: 'Peak SS (Ngôi sao tri thức)', color: '#ff67fa' };
+  } else if (highestRound >= 301) {
+    return { text: 'SS (Ánh sáng tri thức)', color: '#ff781f' };
+  } else if (highestRound >= 181) {
+    return { text: 'S (Xuất sắc)', color: '#ffa500' };
+  } else if (highestRound >= 81) {
+    return { text: 'A (Quá giỏi)', color: '#800080' };
+  } else if (highestRound >= 41) {
+    return { text: 'B (Khá lắm)', color: '#00bfff' };
+  } else if (highestRound >= 25) {
+    return { text: 'C (Không tệ)', color: '#32CD32' };
+  } else {
+    return { text: 'Chưa xếp hạng', color: '#000000' };
+  }
+}
+
+const starMessengerReactions = {
+  "B": "Cũng khá nhỉ! Bạn có tiềm năng lớn đấy. Tôi đang mong chờ những thành tựu tiếp theo của bạn.",
+  "A": "Quá giỏi! Bạn mang lại rất nhiều hi vọng! Tôi chưa bao giờ thấy ai làm được như vậy.",
+  "S": "Xuất sắc! Bạn thật xuất sắc. Bạn đã vượt qua tất cả mọi người!",
+  "SS": "Bạn là một ánh sáng tri thức! Thật vinh dự khi được đồng hành cùng bạn!",
+  "Peak SS": "Bạn thực sự là một ngôi sao tri thức! Bạn đã viết nên lịch sử cho thế giới này! Thật vinh dự khi được đồng hành cùng bạn!"
+};
+
+function showStarMessengerReaction() {
+  const finalScore = score;
+  const finalRound = round;
+  const scoreRank = getScoreRank(finalScore);
+  const roundRank = getRoundRank(finalRound);
+  
+  let highestRankText;
+  if (finalScore >= 600000 && finalRound >= 451) {
+      highestRankText = "Peak SS";
+  } else if (finalScore >= 200000 && finalRound >= 301) {
+      highestRankText = "SS";
+  } else if (finalScore >= 70000 && finalRound >= 181) {
+      highestRankText = "S";
+  } else if (finalScore >= 25000 && finalRound >= 81) {
+      highestRankText = "A";
+  } else if (finalScore >= 9000 && finalRound >= 41) {
+      highestRankText = "B";
+  } else {
+      highestRankText = "C";
+  }
+  
+  const reactionText = starMessengerReactions[highestRankText];
+  const reactionDiv = document.getElementById('starMessengerReaction');
+  if (reactionDiv && reactionText) {
+    reactionDiv.innerHTML = `<p><b>"Star Messenger"</b>: ${reactionText}</p>`;
+  }
+}
+
+const scoreRank = getScoreRank(highScore);
+const roundRank = getRoundRank(highestRound);
+
+document.getElementById('high-score').innerHTML = `${highScore} - <b style="color: ${scoreRank.color}">Hạng: ${scoreRank.text}</b>`;
+document.getElementById('highest-round').innerHTML = `${highestRound} - <b style="color: ${roundRank.color}">Hạng: ${roundRank.text}</b>`;
+
+function openProfile() {
+  document.getElementById("profileModal").classList.add("show");
+}
+function closeProfile() {
+  document.getElementById("profileModal").classList.remove("show");
+}
+if (highestRound >= 451 || highScore >= 600000) {
+  document.getElementById("openProfileBtn").style.display = "inline-block";
+  document.getElementById("openProfileBtn").onclick = openProfile;
+}
+  </script>
+</body>
+</html>

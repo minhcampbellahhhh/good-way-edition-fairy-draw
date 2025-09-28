@@ -1538,7 +1538,7 @@ function getScoreRank(highScore) {
 }
 
 function getRoundRank(highestRound) {
-  if (round >= 451) {
+  if (highestRound >= 451) {
     return { text: 'Peak SS (Ngôi sao tri thức)', color: '#ff67fa' };
   } else if (highestRound >= 301) {
     return { text: 'SS (Ánh sáng tri thức)', color: '#ff781f' };
@@ -1610,6 +1610,7 @@ if (highestRound >= 451 || highScore >= 600000) {
   </script>
 </body>
 </html>
+
 
 
 

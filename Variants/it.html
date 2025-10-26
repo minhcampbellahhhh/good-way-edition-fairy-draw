@@ -77,6 +77,16 @@
       background: #FFECA1; border-radius: 8px;
     }
     h1 { margin-bottom: 20px; color: #333; }
+    .stats-bar {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      background: #efebff;
+      padding: 8px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      font-size: 18px;
+    }
     .game-container {
       text-align: center;
       max-width: 1500px;
@@ -138,7 +148,7 @@
       max-width: 600px; width: 90%; box-shadow: 0 0 10px rgba(0,0,0,0.3);
     }
     .modal-content button { background: #6100d8; color: white; }
-    .modal-content button:hover { background: #6100d8; }
+    .modal-content button:hover { background: #360078; }
     .show { display: flex !important; }
     footer { background: #222; color: white; text-align: center; padding: 30px; margin-top: 40px; }
     .card-message {
@@ -210,11 +220,19 @@
   <div class="game-container" id="main-screen">
     <p style="font-size: 24px"><strong>Chào mừng bạn đến với Good-way Edition: Fairy Draw (Phiên bản IT)!</strong><br>-Nơi mang lại Công Nghệ - Tin Học hoàn mỹ-</p>
     <p>Hãy dùng máy tính, máy tính bảng hoặc laptop trên website để có trải nghiệm tốt nhất!</p>
-    <div class="score">Điểm cao nhất: <b><span id="high-score">0</span></b><br>Round cao nhất: <b><span id="highest-round">0</span></b></div>
-    <p style="font-size: 12px">Nhấn Ctrl+F5 để lấy lại xếp hạng.</p>
+    <div class="stats-bar">
+      <div>Điểm cao nhất: <b><span id="high-score">0</span></b></div>
+      <div>Round cao nhất: <b><span id="highest-round">0</span></b></div>
+    </div>
+    <p style="font-size: 12px">Nhấn Ctrl+F5 để lấy lại xếp hạng. Lưu ý: Hãy đợi trang tải đủ dữ liệu để bắt đầu game</p>
     <button class="start"; onclick="startGame()"; style="font-size: 24px">Bắt đầu chơi</button>
     <br>
-    <a href="../index.html"><b>Chuyển sang Phiên bản gốc</b></a>
+    <table style="background-color: transparent;">
+      <tr>
+          <td style="width: 20px;"><a href="../index.html"><b>Phiên bản gốc</b></a></td>
+          <td style="width: 20px;"><a href="matrix.html"><b>Phiên bản Tiếng Anh</b></a></td>
+      </tr>
+    </table>
     <div class="instructions" style="margin-top:15px;">
       <br>
       <h3 style="font-size: 20px; color:#ff0000">----------- Hướng dẫn chơi -----------</h3>
@@ -224,18 +242,27 @@
         <li>Cứ sau 5 round, bạn nhận được Bonus Round với 4 lá chức năng nhưng trong round đấy chỉ được phép bốc 1 lần.</li>
         <li>Trả lời câu hỏi trắc nghiệm (4 đáp án) trong 20 giây. Trả lời đúng câu hỏi sẽ được 10 điểm (Môn học) hoặc 20 điểm (Ngôn ngữ lập trình), và có quyền vào round tiếp theo. Càng về sau, thời gian trả lời sẽ giảm đi.</li>
         <li>Mỗi người chơi có 3 cơ hội. Trả lời sai hoặc hết giờ sẽ mất 1 cơ hội và không đến round tiếp theo.</li>
+        <li>Nội dung lá chức năng sẽ được đề cập ở phần dưới!</li>
       </ul>
     <div class="ticker">
      <div class="ticker__track">
       <div class="ticker__list">
         <span class="ticker__item">Dự án game thuộc về Trần Đặng Bình Minh (MinhCampbell) - Trưởng bộ phận BMSTORY Entertainment và Các thành viên trong CLB Tin học của Trường Đại Học Kinh Tế - Kỹ Thuật Công Nghiệp.</span>
-        <span class="ticker__item">Phiên bản cập nhật Beta v25.10.16: Sửa lỗi logic hiện ảnh.</span>
-        <span class="ticker__item">Thông báo cập nhật và bảo trì dự kiến vào ngày 27/10/2025: Thêm thẻ chức năng, ngôn ngữ lập trình mới - Pascal.</span>
+        <span class="ticker__item">Phiên bản cập nhật Beta v25.9.16: Sửa lỗi, nâng cấp tính năng game, Xếp hạng.</span>
+        <span class="ticker__item">Thông báo cập nhật và bảo trì dự kiến vào tháng 10/2025: Thêm thẻ chức năng, ngôn ngữ lập trình mới.</span>
         <span class="ticker__item">Thông báo gửi câu hỏi cụ thể ở phần dưới của trang web này. Đọc kỹ nội dung trước khi gửi về ban tổ chức.</span>
         <span class="ticker__item">Cảm ơn các bạn đã cùng chơi và đồng hành với chúng tôi!</span>
       </div>
     </div>
     </div>
+    <h3 style="font-size: 20px; color:#ff0000">----------- Nội dung cập nhật (Ngày 27/10/2025) -----------</h3>
+      <ul style="text-align: left; line-height: 1.8;">
+        <li>Thêm lá chức năng mới: Deal It. Chỉnh sửa chức năng của lá Sync. (Nội dung thay đổi ở phần dưới)</li>
+        <li>Thêm bộ câu hỏi ngôn ngữ lập trình mới: Pascal.</li>
+        <li>Cập nhật giao diện game. Chỉnh sửa cột mốc.</li>
+        <li>Video hướng dẫn chơi sẽ được cập nhật trong vòng 4 ngày tới.</li>
+        <li>Sự kiện Ngày Nhà Giáo Việt Nam 20/11/2025: Coming Soon!</li>
+      </ul>
     <br>
     <br>
       <table>
@@ -252,7 +279,7 @@
       </tr>
       <tr>
         <td><img src="../Image/AHA.png" style="width: 150px; vertical-align: middle;"></td>
-        <td><b>A-HA!</b> - Nhân 5 lần (x5) điểm nhận được khi trả lời đúng câu hỏi môn sở trường (Sau khi bốc trúng lá A-HA! thì sẽ có lựa chọn môn sở trường).<br>Lưu ý: Chỉ được chọn 1 môn duy nhất, có thể thay đổi khi bốc lá A-HA! lần thứ 2.</td>
+        <td><b>A-HA!</b> - Cộng thêm 50 điểm khi trả lời đúng câu hỏi môn sở trường (Sau khi bốc trúng lá A-HA! thì sẽ có lựa chọn môn sở trường).<br>Lưu ý: Chỉ được chọn 1 môn duy nhất, có thể thay đổi khi bốc lá A-HA! lần thứ 2.</td>
       </tr>
       <tr>
         <td><img src="../Image/Boost.png" style="width: 150px; vertical-align: middle;"></td>
@@ -264,11 +291,15 @@
       </tr>
       <tr>
         <td><img src="../Image/Sync.png" style="width: 150px; vertical-align: middle;"></td>
-        <td><b>Sync</b> - Cộng thêm 5-10 điểm khi trả lời đúng và cộng dồn cho các câu hỏi được trả lời chính xác liên tiếp sau đó.</td>
+        <td><b>Sync</b> - Cộng thêm 5-10 điểm khi trả lời đúng và cộng dồn cho các câu hỏi được trả lời chính xác liên tiếp sau đó.<br>Lưu ý: Điểm cộng có thể cộng dồn khi bốc nhiều lá Sync cùng lúc!</td>
       </tr>
       <tr>
         <td><img src="../Image/STOP.png" style="width: 150px; vertical-align: middle;"></td>
         <td><b>STOP</b> - Bỏ hẹn giờ để trả lời câu hỏi kế tiếp (Có thể giữ nhiều lá cùng lúc)<br>Lưu ý: Chỉ được dừng 1 lần/câu hỏi duy nhất và sẽ mất đi sau khi trả lời xong.</td>
+      </tr>
+      <tr>
+        <td><img src="../Image/DealIt.png" style="width: 150px; vertical-align: middle;"></td>
+        <td><b>Deal It!</b> - Đặt cược câu hỏi khi đang trả lời nếu chắc chắn (Có thể giữ nhiều lá cùng lúc)<br>Kết quả: Nếu trả lời đúng, thưởng thêm [25*số round] điểm. Nếu trả lời sai, trừ nửa số điểm hiện tại. Protection sẽ giúp không bị trừ điểm!</td>
       </tr>
     </table>
     </div>
@@ -285,32 +316,32 @@
       <tr>
         <td style="font-size: 24px; color:#32CD32"><b>C</b></td>
         <td><b>25-40</b>: Không tệ</td>
-        <td><b>3000-7999</b>: Cũng không may mắn lắm</td>
+        <td><b>4500-17999</b>: Cũng không may mắn lắm</td>
       </tr>
       <tr>
         <td style="font-size: 24px; color:#00bfff"><b>B</b></td>
         <td><b>41-80</b>: Khá lắm</td>
-        <td><b>8000-19999</b>: Có niềm tin</td>
+        <td><b>18000-71999</b>: Có niềm tin</td>
       </tr>
       <tr>
         <td style="font-size: 24px; color:#800080"><b>A</b></td>
         <td><b>81-179</b>: Quá giỏi</td>
-        <td><b>20000-49999</b>: Ông hoàng trúng tủ</td>
+        <td><b>72000-277999</b>: Ông hoàng trúng tủ</td>
       </tr>
       <tr>
         <td style="font-size: 24px; color:#ffa500"><b>S</b></td>
         <td><b>181-300</b>: Xuất sắc</td>
-        <td><b>50000-119999</b>: Jackpot.exe</td>
+        <td><b>288000-1151999</b>: Jackpot.exe</td>
       </tr>
       <tr>
         <td style="font-size: 24px; color:#ff781f"><b>SS</b></td>
         <td><b>301-450</b>: Tinh hoa Công Nghệ</td>
-        <td><b>120000-299999</b>: Sổ xố 365 ngày</td>
+        <td><b>1152000-4607999</b>: Sổ xố 365 ngày</td>
       </tr>
       <tr>
         <td style="font-size: 24px; color:#ff67fa"><b>Peak SS</b></td>
         <td><b>451 trở lên</b>: Siêu sao Công Nghệ</td>
-        <td><b>300000 trở lên</b>: Trùm bài</td>
+        <td><b>4608000 trở lên</b>: Trùm bài</td>
       </tr>
     </table>
     <br>
@@ -339,7 +370,7 @@
       </tr>
     </table>
     <br>
-        <table>
+    <table>
       <tr>
         <th colspan="5" style="font-size: 20px; background: #7b00ff;"><b>Danh sách các ngôn ngữ lập trình</b></th>
       </tr>
@@ -354,6 +385,7 @@
         <td><img src="../Image/PHP.png" style="width: 125px; vertical-align: middle;"></td>
         <td><img src="../Image/Swift.png" style="width: 125px; vertical-align: middle;"></td>
         <td><img src="../Image/SQL.png" style="width: 125px; vertical-align: middle;"></td>
+        <td><img src="../Image/Pascal.png" style="width: 125px; vertical-align: middle;"></td>
       </tr>
     </table>
     <br>
@@ -378,6 +410,7 @@
     <div style="margin-top: 15px;">
   <button id="openProfileBtn" style="display:none;">Thông tin của "Database Chief"</button>
 </div>
+
 <div class="modal" id="profileModal">
   <div class="modal-content" style="max-width: 1000px; background-color: #d0b3ed;">
     <h2>🌟 Profile của "Database Chief" - "Trưởng gia Cơ sở dữ liệu"🌟</h2>
@@ -404,7 +437,7 @@
   </div>
 </div>
 <br><br>
-   <a href="https://docs.google.com/forms/d/e/1FAIpQLSdiVWExH6H6uRWmtgtw_vj6qtsSnBgvgdrJQOyENXv4xZXnww/viewform?usp=header" target="_blank"><button class="start"><b>Gửi thêm câu hỏi cho nhà phát hành</b></button></a>
+  <a href="https://docs.google.com/forms/d/e/1FAIpQLSdiVWExH6H6uRWmtgtw_vj6qtsSnBgvgdrJQOyENXv4xZXnww/viewform?usp=header" target="_blank"><button class="start"><b>Gửi thêm câu hỏi cho nhà phát hành</b></button></a>
   </div>
 
   <div class="game-container" id="game-area" style="display:none;">
@@ -415,7 +448,7 @@
         <td>Cơ hội còn lại: <b><span id="lives">3</span></b></td>
       </tr>
       <tr>
-        <td colspan="3">Lá chức năng tích lỹ: Protection x <b id="protection-count">0</b> | STOP x <b id="stop-count">0</b></div></td>
+        <td colspan="3">Lá chức năng tích lỹ: Protection x <b id="protection-count">0</b> | STOP x <b id="stop-count">0</b> | Deal It x <b id="deal-count">0</b></td>
       </tr>
     </table>
 
@@ -434,6 +467,7 @@
         <button onclick="checkAnswer(3)">C</button>
         <button onclick="checkAnswer(4)">D</button>
       </div>
+      <button id="deal-btn" onclick="useDealIt()" style="display:none; background:#ff9800; color:white;">Dùng Deal It!</button>
       <div class="timer">Thời gian: <b><span id="timer">20</span></b> giây</div>
     </div>
 
@@ -503,15 +537,19 @@ let choosingAHA = false;
 let protectionCount = 0;
 let stopCount = 0;
 let isStopUsed = false;
+let dealCount = 0;
+let isDealActive = false;
+let syncBonusLevel = 1;
 
 // --- Data ---
 const functionCards = [
   { name: "Jackpot", image: "../Image/Jackpot.png", text: "Jackpot", effect: () => { score *= 2; showPopup("Jackpot! Điểm của bạn được nhân đôi!"); } },
-  { name: "A-HA", image: "../Image/AHA.png", text: "A-HA", effect: () => { hasAHA = true; choosingAHA = true; document.getElementById('aha-selection').style.display = 'block'; showPopup("A-HA! Chọn môn sở trường để x5 điểm khi trả lời đúng!"); } },
+  { name: "A-HA", image: "../Image/AHA.png", text: "A-HA", effect: () => { hasAHA = true; choosingAHA = true; document.getElementById('aha-selection').style.display = 'block'; showPopup("A-HA! Chọn môn sở trường để thêm điểm khi trả lời đúng!"); } },
   { name: "Boost", image: "../Image/Boost.png", text: "Boost", effect: () => { score += 50; showPopup("Boost! Cộng 50 điểm và chuyển đến round tiếp theo!"); } },
-  { name: "Protection", image: "../Image/Protection.png", text: "Protection", effect: () => { protectionCount++; updatePowerCards(); showPopup("Bạn nhận được 1 lá Protection! Bạn sẽ không bị mất cơ hội khi trả lời sai! (Còn: " + protectionCount + ")");} },
-  { name: "Sync", image: "../Image/Sync.png", text: "Sync", effect: () => { hasSync = true; showPopup("Sync! Thêm điểm khi trả lời đúng liên tiếp!"); } },
-  { name: "STOP", image: "../Image/STOP.png", text: "STOP", effect: () => { stopCount++; updatePowerCards(); showPopup("Bạn nhận được 1 lá STOP! Bỏ hẹn giờ trả lời câu hỏi! (Số lượng còn lại: " + stopCount + ")");} }
+  { name: "Protection", image: "../Image/Protection.png", text: "Protection", effect: () => { protectionCount++; updatePowerCards(); showPopup("Bạn nhận được 1 lá Protection! Bạn sẽ không bị mất cơ hội khi trả lời sai! (Số lá được giữ trong thanh trạng thái)");} },
+  { name: "Sync", image: "../Image/Sync.png", text: "Sync", effect: () => { hasSync = true; if (typeof syncBonusLevel === "undefined") syncBonusLevel = 1; else syncBonusLevel += 1; showPopup("Sync! Thêm điểm khi trả lời đúng liên tiếp!"); } },
+  { name: "STOP", image: "../Image/STOP.png", text: "STOP", effect: () => { stopCount++; updatePowerCards(); showPopup("Bạn nhận được 1 lá STOP! Bỏ hẹn giờ trả lời câu hỏi kế tiếp! (Số lá được giữ trong thanh trạng thái)");} },
+  { name: "Deal It", image: "../Image/DealIt.png", text: "Deal It", effect: () => { dealCount++; updatePowerCards(); showPopup("Bạn nhận được 1 lá Deal It! Bạn có thể đặt cược khi trả lời câu hỏi! (Số lá được giữ trong thanh trạng thái)"); } }
 ];
 
 const subjectCards = [
@@ -538,7 +576,8 @@ const programmingLanguages = [
   { subject: "React", image: "../Image/React.png", text: "React" },
   { subject: "PHP", image: "../Image/PHP.png", text: "PHP" },
   { subject: "Swift", image: "../Image/Swift.png", text: "Swift" },
-  { subject: "SQL", image: "../Image/SQL.png", text: "SQL" }
+  { subject: "SQL", image: "../Image/SQL.png", text: "SQL" },
+  { subject: "Pascal", image: "../Image/Pascal.png", text: "Pascal" },
 ];
 
 const questions = [
@@ -744,7 +783,7 @@ const questions = [
   { subject: "Cấu trúc dữ liệu - Giải thuật", question: "Cấu trúc dữ liệu nào hoạt động theo nguyên tắc FIFO?", options: ["Ngăn xếp", "Danh sách liên kết", "Hàng đợi", "Cây nhị phân"], correct: 3 },
   { subject: "Cấu trúc dữ liệu - Giải thuật", question: "Trong danh sách liên kết đơn, mỗi nút thường chứa gì?", options: ["Dữ liệu và con trỏ tới nút trước", "Dữ liệu và con trỏ tới nút sau", "Chỉ dữ liệu", "Chỉ con trỏ"], correct: 2 },
   { subject: "Cấu trúc dữ liệu - Giải thuật", question: "Thuật toán sắp xếp nào có độ phức tạp trung bình O(n log n)?", options: ["Bubble Sort", "Quick Sort", "Insertion Sort", "Selection Sort"], correct: 2 },
-  { subject: "Cấu trúc dữ liệu - Giải thuật", question: "Trong cây nhị phân tìm kiếm (BST), giá trị bên trái nút cha có đặc điểm gì?", options: ["Lớn hơn nút cha", "Nhỏ hơn nút cha", "Bằng nút cha", "Không xác định"], correct: 2 },
+  { subject: "Cấu trúc dữ liệu - Giải thuật", question: "Trong cây nhị phân tìm kiếm (BST), giá trị bên trái nút cha (nút giữa) có đặc điểm gì?", options: ["Lớn hơn nút cha", "Nhỏ hơn nút cha", "Bằng nút cha", "Không xác định"], correct: 2 },
   { subject: "Cấu trúc dữ liệu - Giải thuật", question: "Độ phức tạp tìm kiếm tuyến tính (linear search) là?", options: ["O(1)", "O(log n)", "O(n)", "O(n log n)"], correct: 3 },
   { subject: "Cấu trúc dữ liệu - Giải thuật", question: "Thuật toán Dijkstra dùng để giải quyết bài toán gì?", options: ["Tìm đường đi ngắn nhất", "Sắp xếp dãy số", "Tìm phần tử lớn nhất", "Tìm kiếm nhị phân"], correct: 1 },
   { subject: "Cấu trúc dữ liệu - Giải thuật", question: "Cấu trúc dữ liệu nào hỗ trợ đệ quy hiệu quả nhất?", options: ["Mảng", "Ngăn xếp", "Hàng đợi", "Danh sách"], correct: 2 },
@@ -854,6 +893,11 @@ const questions = [
   { subject: "Mạng máy tính", question: "NAT (Network Address Translation) có chức năng gì?", options: ["Chuyển đổi địa chỉ IP riêng thành địa chỉ công cộng", "Mã hóa dữ liệu", "Lọc gói tin", "Phân loại QoS"], correct: 1 },
   { subject: "Mạng máy tính", question: "Mạng không dây IEEE 802.11 còn được gọi là?", options: ["Bluetooth", "Ethernet", "ZigBee", "Wi-Fi"], correct: 4 },
   { subject: "Mạng máy tính", question: "Chuẩn Ethernet IEEE là?", options: ["802.3", "802.5", "802.11", "802.15"], correct: 1 },
+  { subject: "Mạng máy tính", question: "Đường truyền vật lí được chia thành:", options: ["Cáp đồng trục và cáp xoắn đôi", "Cáp đồng trục và cáp sợi quang", "Môi trường hữu tuyến, môi trường vô tuyến", "Cáp đồng trục và cáp sợi quang, cáp xoắn đôi"], correct: 3 },
+  { subject: "Mạng máy tính", question: "Nhược điểm của mạng peer to peer là", options: ["Cài đặt và cấu hình phức tạp", "Không thể sao chép dữ liệu tập trung", "Chi phí đắt hơn mạng client – server", "Quản trị và sửa chữa phức tạp"], correct: 2 },
+  { subject: "Mạng máy tính", question: "Điều nào dưới đây mô tả kiểu kết nối Point to Multipoint:", options: ["Topo dạng Star là kết nối kiểu point to point", "Các đường truyền nối từng cặp nút lại với nhau", "Các nút mạng cùng nối chung vào một đường BUS chung", "Mạng kiểu này còn được gọi là mạng lưu trữ và chuyển tiếp"], correct: 4 },
+  { subject: "Mạng máy tính", question: "Trong mạng Lan, loại cáp nào được sử dụng phổ biến nhất hiện nay?", options: ["Cáp quang", "Cáp UTP", "Cáp đồng trục", "Cáp STP"], correct: 2 },
+  { subject: "Mạng máy tính", question: "Trang thiết bị mạng trung tâm dùng để kết nối các máy tính trong mạng hình sao (STAR)?", options: ["Router", "NIC", "Repeater", "Switch"], correct: 4 },
 
 { subject: "Hệ điều hành", question: "Hệ điều hành nào là mã nguồn mở?", options: ["macOS", "iOS", "Linux", "Windows"], correct: 3 },
 { subject: "Hệ điều hành", question: "Tiến trình (process) là gì?", options: ["Thư mục", "Phần cứng", "Chương trình đang thực thi", "Tệp hệ thống"], correct: 3 },
@@ -904,7 +948,9 @@ const questions = [
 { subject: "Hệ điều hành", question: "Swap partition trong Linux dùng để?", options: ["Chia ổ đĩa", "Lưu file log", "Chạy tiến trình", "Hỗ trợ bộ nhớ ảo"], correct: 4 },
 { subject: "Hệ điều hành", question: "Hệ điều hành thời gian thực cần đảm bảo?", options: ["Ít RAM nhất", "Đáp ứng đúng hạn định thời gian", "Tốc độ cao nhất", "Ổ cứng nhanh nhất"], correct: 2 },
 { subject: "Hệ điều hành", question: "Một ví dụ hệ điều hành di động mã nguồn mở?", options: ["BlackBerry OS", "Android", "iOS", "Windows Phone"], correct: 2 },
-{ subject: "Hệ điều hành", question: "Hệ điều hành đầu tiên hỗ trợ đa nhiệm thực sự?", options: ["Unix", "MS-DOS", "Windows 3.1", "CP/M"], correct: 1 },
+{ subject: "Hệ điều hành", question: "Hệ điều hành đầu tiên hỗ trợ đa nhiệm thực sự?", options: ["Windows 3.1", "MS-DOS", "Unix", "CP/M"], correct: 3 },
+{ subject: "Hệ điều hành", question: "Thuật toán SJF (Shortest Job First) trong hệ điều hành ưu tiên tiến trình nào?", options: ["Tiến trình sử dụng CPU nhiều nhất", "Tiến trình có độ ưu tiên cao nhất", "Tiến trình đến sớm nhất", "Tiến trình có thời gian thực thi ngắn nhất"], correct: 4 },
+{ subject: "Hệ điều hành", question: "Thuật toán SRTF (Shortest Remaining Time First) là biến thể nào của SJF?", options: ["Dạng ưu tiên (preemptive) của SJF", "Dạng không ưu tiên (non-preemptive) của SJF", "Thuật toán vòng tròn (Round Robin)", "Thuật toán ưu tiên tĩnh"], correct: 1 },
 
   { subject: "Blockchain", question: "Blockchain chủ yếu được dùng để?", options: ["Giao dịch phi tập trung", "Lưu trữ tập trung", "Xử lý ảnh", "Tăng tốc internet"], correct: 1 },
   { subject: "Blockchain", question: "Khối (block) trong blockchain chứa gì?", options: ["Hình ảnh", "Dữ liệu giao dịch", "Tệp âm thanh", "Phần mềm"], correct: 2 },
@@ -957,8 +1003,29 @@ const questions = [
   { subject: "Blockchain", question: "Khi mất private key thì?", options: ["Nhà phát hành trả lại", "Không ảnh hưởng", "Mất quyền truy cập ví", "Có thể reset"], correct: 3 },
   { subject: "Blockchain", question: "Hash trong blockchain thường có dạng?", options: ["Âm thanh", "Chuỗi ký tự hex", "Hình ảnh", "Video"], correct: 2 },
 
-  { subject: "Tín hiệu - điện tử số", question: "Cổng logic AND cho kết quả 1 khi nào?", options: ["Một đầu vào là 1", "Tất cả đầu vào là 1", "Tất cả đầu vào là 0", "Một đầu vào là 0"], correct: 2 },
-  { subject: "Tín hiệu - điện tử số", question: "Flip-flop dùng để làm gì?", options: ["Lưu trữ bit", "Tăng tốc CPU", "Kết nối mạng", "Xử lý đồ họa"], correct: 1 },
+{ subject: "Tín hiệu - điện tử số", question: "Cổng logic AND cho kết quả 1 khi nào?", options: ["Một đầu vào là 1", "Tất cả đầu vào là 1", "Tất cả đầu vào là 0", "Một đầu vào là 0"], correct: 2 },
+{ subject: "Tín hiệu - điện tử số", question: "Flip-flop dùng để làm gì?", options: ["Lưu trữ bit", "Tăng tốc CPU", "Kết nối mạng", "Xử lý đồ họa"], correct: 1 },
+{ subject: "Tín hiệu - điện tử số", question: "Cổng logic OR cho kết quả 1 khi nào?", options: ["Tất cả đầu vào là 0", "Một đầu vào là 0", "Tất cả đầu vào là 1", "Một đầu vào là 1"], correct: 4 },
+{ subject: "Tín hiệu - điện tử số", question: "Cổng NOT có chức năng gì?", options: ["Giữ nguyên tín hiệu", "Cộng hai tín hiệu", "Đảo ngược tín hiệu đầu vào", "Nhân hai tín hiệu"], correct: 3 },
+{ subject: "Tín hiệu - điện tử số", question: "Cổng NAND là gì?", options: ["AND rồi đảo", "OR rồi đảo", "NOT rồi AND", "XOR rồi đảo"], correct: 1 },
+{ subject: "Tín hiệu - điện tử số", question: "Cổng NOR là gì?", options: ["AND rồi đảo", "OR rồi đảo", "NOT rồi AND", "XOR rồi đảo"], correct: 2 },
+{ subject: "Tín hiệu - điện tử số", question: "Cổng XOR cho kết quả 1 khi nào?", options: ["Hai đầu vào giống nhau", "Hai đầu vào khác nhau", "Tất cả đầu vào là 1", "Tất cả đầu vào là 0"], correct: 2 },
+{ subject: "Tín hiệu - điện tử số", question: "Đơn vị nhỏ nhất để lưu trữ thông tin trong máy tính là gì?", options: ["Byte", "Word", "Bit", "Nibble"], correct: 3 },
+{ subject: "Tín hiệu - điện tử số", question: "Mạch cộng 1 bit có hai đầu vào là gì?", options: ["Q và Q", "Sum và Carry", "Data và Clock", "A và B’"], correct: 4 },
+{ subject: "Tín hiệu - điện tử số", question: "Tín hiệu số chỉ có thể nhận các giá trị nào?", options: ["Liên tục", "Rời rạc", "Âm thanh", "Hình ảnh"], correct: 2 },
+{ subject: "Tín hiệu - điện tử số", question: "Mạch dao động dùng để làm gì?", options: ["Tạo tín hiệu xung", "Khuếch đại tín hiệu", "Lọc tín hiệu", "Giảm nhiễu tín hiệu"], correct: 1 },
+{ subject: "Tín hiệu - điện tử số", question: "Bộ đếm (Counter) dùng để làm gì?", options: ["Phát sóng radio", "Tăng điện áp", "Giảm dòng điện", "Đếm số xung"], correct: 4 },
+{ subject: "Tín hiệu - điện tử số", question: "Tần số của tín hiệu đo bằng đơn vị nào?", options: ["Volt", "Ohm", "Hertz", "Ampere"], correct: 3 },
+{ subject: "Tín hiệu - điện tử số", question: "Cổng logic nào cho kết quả 1 khi các đầu vào khác nhau?", options: ["NOR", "XOR", "AND", "OR"], correct: 2 },
+{ subject: "Tín hiệu - điện tử số", question: "Cổng logic nào cho kết quả ngược với cổng AND?", options: ["XNOR", "NAND", "XOR", "NOR"], correct: 2 },
+{ subject: "Tín hiệu - điện tử số", question: "Bộ giải mã (Decoder) có chức năng gì?", options: ["Khuếch đại tín hiệu", "Lưu trữ dữ liệu", "Chuyển mã sang tín hiệu tương ứng", "Cộng hai số nhị phân"], correct: 3 },
+{ subject: "Tín hiệu - điện tử số", question: "Bộ mã hóa (Encoder) có chức năng gì?", options: ["Kết hợp nhiều tín hiệu", "Đếm số xung", "Giảm tần số xung", "Chuyển tín hiệu sang dạng mã"], correct: 4 },
+{ subject: "Tín hiệu - điện tử số", question: "Thanh ghi (Register) dùng để làm gì?", options: ["Khuếch đại tín hiệu", "Phát xung đồng hồ", "Chuyển đổi tín hiệu tương tự", "Lưu trữ tạm thời dữ liệu"], correct: 4 },
+{ subject: "Tín hiệu - điện tử số", question: "Xung clock trong mạch số có vai trò gì?", options: ["Giảm nhiễu", "Điều khiển nhịp hoạt động", "Phát âm thanh", "Tăng điện áp"], correct: 2 },
+{ subject: "Tín hiệu - điện tử số", question: "Mạch logic tổ hợp là gì?", options: ["Mạch có dao động riêng", "Mạch chỉ dùng transistor", "Mạch không có phần nhớ", "Mạch có phần nhớ"], correct: 3 },
+{ subject: "Tín hiệu - điện tử số", question: "Mạch logic tuần tự khác mạch tổ hợp ở điểm nào?", options: ["Không có đầu vào", "Có bộ nhớ", "Không cần xung clock", "Không có đầu ra"], correct: 2 },
+{ subject: "Tín hiệu - điện tử số", question: "Bảng chân lý (Truth Table) dùng để làm gì?", options: ["Khuếch đại tín hiệu", "Mô tả hoạt động logic của cổng", "Lưu dữ liệu tạm thời", "Giảm điện áp"], correct: 2 },
+{ subject: "Tín hiệu - điện tử số", question: "IC số thường có ký hiệu bắt đầu bằng chữ gì?", options: ["74", "Q", "K", "U"], correct: 1 },
 
   { subject: "Toán rời rạc", question: "Quan hệ nào là quan hệ tương đương?", options: ["Phản xạ, đối xứng, bắc cầu", "Phản xạ, không đối xứng", "Không bắc cầu, đối xứng", "Không phản xạ"], correct: 1 },
   { subject: "Toán rời rạc", question: "Tập hợp rỗng có bao nhiêu phần tử?", options: ["1", "0", "Vô hạn", "Không xác định"], correct: 2 },
@@ -1215,7 +1282,7 @@ const questions = [
   { language: "C/C++/C#", question: "Trong C++, từ khóa 'public' thể hiện?", options: ["Phạm vi truy cập công khai", "Phạm vi truy cập riêng tư", "Chỉ trong lớp", "Chỉ trong file"], correct: 1 },
   { language: "C/C++/C#", question: "Trong C#, 'Console.ReadLine()' dùng để?", options: ["Nhập dữ liệu từ bàn phím", "In dữ liệu ra màn hình", "Đọc file", "Tạo biến"], correct: 1 },
   { language: "C/C++/C#", question: "Trong C, hàm 'strlen()' dùng để?", options: ["Đo độ dài chuỗi", "So sánh chuỗi", "Sao chép chuỗi", "Xóa chuỗi"], correct: 1 },
-  { language: "C/C++/C#", question: "Trong C++, template được dùng để?", options: ["Tạo hàm/ lớp tổng quát", "Tạo biến", "Tạo macro", "Khởi tạo constructor"], correct: 1 },
+  { language: "C/C++/C#", question: "Trong C++, template (khuôn hình) được dùng để?", options: ["Tạo hàm/ lớp tổng quát", "Tạo biến", "Tạo macro", "Khởi tạo constructor"], correct: 1 },
   { language: "C/C++/C#", question: "Trong C#, 'ArrayList' thuộc namespace nào?", options: ["System", "System.Collections", "System.IO", "System.Data"], correct: 2 },
   { language: "C/C++/C#", question: "Trong C, câu lệnh 'break' dùng để?", options: ["Thoát khỏi vòng lặp/ switch", "Kết thúc chương trình", "Bỏ qua 1 vòng lặp", "Tạm dừng chương trình"], correct: 1 },
   { language: "C/C++/C#", question: "Trong C++, toán tử '++i' gọi là?", options: ["Hậu tố tăng", "Tiền tố tăng", "Toán tử cộng", "Toán tử nhân"], correct: 2 },
@@ -1240,15 +1307,25 @@ const questions = [
   { language: "C/C++/C#", question: "Trong C#, từ khóa 'using' có tác dụng?", options: ["Khai báo không gian tên", "Định nghĩa lớp", "Gọi hàm", "Khai báo biến toàn cục"], correct: 1 },
   { language: "C/C++/C#", question: "Trong C, hàm 'printf' thuộc thư viện nào?", options: ["<string.h>", "<math.h>", "<stdio.h>", "<stdlib.h>"], correct: 3 },
   { language: "C/C++/C#", question: "Trong C++, 'vector' thuộc thư viện nào?", options: ["<array>", "<list>", "<vector>", "<queue>"], correct: 3 },
-  { language: "C/C++/C#", question: "Trong C#, 'bool' có thể nhận giá trị?", options: ["true/false", "0/1/2", "ký tự bất kỳ", "số nguyên"], correct: 1 },
-  { language: "C/C++/C#", question: "Trong C, toán tử '==' có ý nghĩa?", options: ["So sánh bằng", "Gán giá trị", "So sánh khác", "So sánh lớn hơn"], correct: 1 },
-  { language: "C/C++/C#", question: "Trong C++, 'cout' thường đi với toán tử nào?", options: ["<<", ">>", "::", "**"], correct: 1 },
-  { language: "C/C++/C#", question: "Trong C#, phương thức 'ToString()' dùng để?", options: ["Chuyển đối tượng thành chuỗi", "Xóa đối tượng", "Sao chép đối tượng", "So sánh đối tượng"], correct: 1 },
-  { language: "C/C++/C#", question: "Trong C++, toán tử '>>' thường dùng với?", options: ["cin", "cout", "vector", "map"], correct: 1 },
-  { language: "C/C++/C#", question: "Trong C, 'free(ptr)' có tác dụng?", options: ["Giải phóng bộ nhớ động", "Tạo biến mới", "So sánh chuỗi", "Định nghĩa macro"], correct: 1 },
-  { language: "C/C++/C#", question: "Trong C++, toán tử '::' gọi là?", options: ["Scope resolution operator", "Pointer operator", "Template operator", "Access operator"], correct: 1 },
-  { language: "C/C++/C#", question: "Trong C#, 'interface' khác 'class' ở điểm nào?", options: ["Không chứa triển khai", "Có constructor", "Có biến private", "Có destructor"], correct: 1 },
-  { language: "C/C++/C#", question: "Trong C#, 'try-catch' dùng để?", options: ["Xử lý ngoại lệ", "Khai báo biến", "Tạo vòng lặp", "Định nghĩa interface"], correct: 1 },
+  { language: "C/C++/C#", question: "Trong C#, 'bool' có thể nhận giá trị?", options: ["ký tự bất kỳ", "true/false", "số nguyên", "0/1/2"], correct: 2 },
+  { language: "C/C++/C#", question: "Trong C, toán tử '==' có ý nghĩa?", options: ["So sánh khác", "So sánh lớn hơn", "So sánh bằng", "Gán giá trị"], correct: 3 },
+  { language: "C/C++/C#", question: "Trong C++, 'cout' thường đi với toán tử nào?", options: ["**", ">>", "<<", "::"], correct: 3 },
+  { language: "C/C++/C#", question: "Trong C#, phương thức 'ToString()' dùng để?", options: ["Sao chép đối tượng", "So sánh đối tượng", "Chuyển đối tượng thành chuỗi", "Xóa đối tượng"], correct: 3 },
+  { language: "C/C++/C#", question: "Trong C++, toán tử '>>' thường dùng với?", options: ["map", "cin", "vector", "cout"], correct: 2 },
+  { language: "C/C++/C#", question: "Trong C, 'free(ptr)' có tác dụng?", options: ["Tạo biến mới", "Giải phóng bộ nhớ động", "So sánh chuỗi", "Định nghĩa macro"], correct: 2 },
+  { language: "C/C++/C#", question: "Trong C++, toán tử '::' gọi là?", options: ["Template operator", "Access operator", "Pointer operator", "Scope resolution operator"], correct: 4 },
+  { language: "C/C++/C#", question: "Trong C#, 'interface' khác 'class' ở điểm nào?", options: ["Có destructor", "Không chứa triển khai", "Có constructor", "Có biến private"], correct: 2 },
+  { language: "C/C++/C#", question: "Trong C#, 'try-catch' dùng để?", options: ["Xử lý ngoại lệ", "Định nghĩa interface", "Khai báo biến", "Tạo vòng lặp"], correct: 1 },
+  { language: "C/C++/C#", question: "Trong C++, toán tử '::' gọi là?", options: ["Pointer operator", "Template operator", "Access operator", "Scope resolution operator"], correct: 4 },
+  { language: "C/C++/C#", question: "Trong C++, toán tử '->' được dùng để?", options: ["Gán giá trị cho con trỏ", "Chuyển đổi kiểu dữ liệu", "So sánh hai con trỏ", "Truy cập thành viên của con trỏ đến đối tượng"], correct: 4 },
+  { language: "C/C++/C#", question: "Hàm 'swap(a, b)' trong C++ có tác dụng gì?", options: ["Gán a bằng b", "Đổi kiểu dữ liệu của a và b", "Tăng giá trị của a và b", "Hoán đổi giá trị của a và b"], correct: 4 },
+  { language: "C/C++/C#", question: "Toán tử '&&' trong C++ có nghĩa là gì?", options: ["Phép nhân", "Phép AND logic", "Phép OR logic", "Phép so sánh"], correct: 2 },
+  { language: "C/C++/C#", question: "Toán tử '++' trong C++ được dùng để?", options: ["Giảm giá trị biến", "Tăng giá trị biến thêm 1", "Tăng giá trị biến thêm 2", "Gán lại giá trị cho biến"], correct: 2 },
+  { language: "C/C++/C#", question: "Toán tử '?:' trong C++ là gì?", options: ["Toán tử ba ngôi (ternary operator)", "Toán tử logic", "Toán tử bit", "Toán tử ép kiểu"], correct: 1 },
+  { language: "C/C++/C#", question: "Toán tử 'new' trong C++ dùng để?", options: ["Tạo biến cục bộ", "Xóa vùng nhớ", "Cấp phát bộ nhớ động", "Gọi hàm khởi tạo"], correct: 3 },
+  { language: "C/C++/C#", question: "Toán tử 'delete' trong C++ có chức năng gì?", options: ["Giải phóng vùng nhớ được cấp phát bằng new", "Xóa giá trị của biến", "Hủy hàm khởi tạo", "Ngắt chương trình"], correct: 1 },
+  { language: "C/C++/C#", question: "Hàm auto trong C++ có chức năng gì?", options: ["Tự mở rộng vùng trống trong vector", "Tự xóa giá trị của biến", "Tự khai báo hàm và dữ liệu", "Tự thay thế toàn bộ dữ liệu"], correct: 4 },
+  { language: "C/C++/C#", question: "Hàm 'push_back()' trong C++ được dùng để làm gì?", options: [ "Thêm phần tử vào đầu vector hoặc danh sách", "Xóa phần tử cuối cùng trong vector hoặc danh sách", "Thêm phần tử vào cuối vector hoặc danh sách", "Sắp xếp lại các phần tử trong vector hoặc danh sách"], correct: 1 },
 
   { language: "Java", question: "Java được biên dịch thành gì trước khi chạy?", options: ["Bytecode", "Assembly", "Machine Code", "Script"], correct: 1 },
   { language: "Java", question: "JVM là gì?", options: ["Java Virtual Machine", "Java Version Manager", "Just-in-time Virtual Memory", "Java Visual Model"], correct: 1 },
@@ -1364,7 +1441,7 @@ const questions = [
   { language: "Python", question: "Trong Python, None có nghĩa là gì?", options: ["0", "False", "Không có giá trị", "Khoảng trắng"], correct: 3 },
   { language: "Python", question: "Kết quả của len([1,2,3]) là gì?", options: ["2", "3", "4", "Error"], correct: 2 },
   { language: "Python", question: "Câu lệnh nào tạo dictionary đúng trong Python?", options: ["{ 'a':1, 'b':2 }", "[ 'a':1, 'b':2 ]", "( 'a':1, 'b':2 )", "{ 'a', 1, 'b', 2 }"], correct: 1 },
-  { language: "Python", question: "Phương thức nào dùng để thêm phần tử vào list?", options: ["insert()", "append()", "add()", "push()"], correct: 2 },
+  { language: "Python", question: "Phương thức nào dùng để thêm phần tử vào list (danh sách)?", options: ["insert()", "append()", "add()", "push()"], correct: 2 },
   { language: "Python", question: "Phương thức nào xóa và trả về phần tử cuối của list?", options: ["remove()", "delete()", "pop()", "clear()"], correct: 3 },
   { language: "Python", question: "Hàm nào trả về số lớn nhất trong dãy?", options: ["top()", "max()", "largest()", "biggest()"], correct: 2 },
   { language: "Python", question: "Hàm nào trả về số nhỏ nhất trong dãy?", options: ["min()", "lowest()", "smallest()", "bottom()"], correct: 1 },
@@ -1409,10 +1486,21 @@ const questions = [
   { language: "Python", question: "Trong Python, hàm bin(10) trả về gì?", options: ["'01010'", "'0b1010'", "'1010'", "0b0010"], correct: 2 },
   { language: "Python", question: "Trong Python, hàm oct(8) trả về gì?", options: ["'0o08'", "'0o07'", "'0o10'", "10"], correct: 3 },
   { language: "Python", question: "Trong Python, hàm hex(15) trả về gì?", options: ["'0xf'", "'0xe'", "'0x15'", "f"], correct: 1 },
+  { language: "Python", question: "Trong Python, module 'os' được dùng để làm gì?", options: ["Xử lý biểu thức toán học", "Thao tác với hệ điều hành (file, thư mục...)", "Vẽ đồ thị và biểu đồ", "Làm việc với dữ liệu dạng bảng, tập hợp"], correct: 2 },
+  { language: "Python", question: "Trong Python, biểu thức a[5:] có nghĩa là gì?", options: ["Lấy 5 phần tử đầu của a", "Lấy từ phần tử thứ 5 đến hết", "Xóa phần tử thứ 5 của a", "Chèn phần tử tại vị trí 5"], correct: 2 },
+  { language: "Python", question: "Kết quả của biểu thức 'tạch' * 10 là gì?", options: ["Lỗi cú pháp", "Nhân chuỗi 'tạch' với 10 lần", "In chuỗi 'tạch' 10 dòng", "Tạo danh sách gồm 10 phần tử 'tạch'"], correct: 2 },
+  { language: "Python", question: "Trong chuỗi định dạng, %d dùng để hiển thị kiểu dữ liệu nào?", options: ["Số nguyên (int)", "Số thực (float)", "Chuỗi (string)", "Ký tự (char)"], correct: 1 },
+  { language: "Python", question: "Trong chuỗi định dạng, %f dùng để hiển thị kiểu dữ liệu nào?", options: ["Số nguyên (int)", "Số thực (float)", "Chuỗi (string)", "Danh sách (list)"], correct: 2 },
+  { language: "Python", question: "Hàm strip() trong Python dùng để làm gì?", options: ["Xóa ký tự đầu và cuối chuỗi (mặc định là khoảng trắng)", "Chuyển chuỗi thành chữ in hoa", "Tách chuỗi thành danh sách", "Thay thế ký tự trong chuỗi"], correct: 1 },
+  { language: "Python", question: "Hàm len() trong Python trả về gì?", options: ["Tổng giá trị các phần tử trong đối tượng", "Giá trị lớn nhất trong chuỗi", "Kiểu dữ liệu của biến", "Độ dài (số phần tử) trong đối tượng"], correct: 4 },
+  { language: "Python", question: "Trong chuỗi định dạng, %s dùng để hiển thị kiểu dữ liệu nào?", options: ["Ký tự (char)", "Số nguyên (int)", "Số thực (float)", "Chuỗi (string)"], correct: 4 },
+  { language: "Python", question: "Hàm join() trong Python dùng để làm gì?", options: ["Thay thế ký tự trong chuỗi", "Tách chuỗi thành danh sách/iterable", "Nối các phần tử trong danh sách/iterable thành chuỗi", "Ghép hai danh sách lại với nhau"], correct: 3 },
+  { language: "Python", question: "Hàm replace() trong Python có tác dụng gì?", options: ["Ghép hai chuỗi lại với nhau", "Xóa ký tự trong chuỗi", "Đổi vị trí hai ký tự", "Thay thế một chuỗi con bằng chuỗi khác"], correct: 4 },
+  { language: "Python", question: "Hàm enumerate() trong Python dùng để làm gì?", options: ["Tạo danh sách số ngẫu nhiên", "Đếm số phần tử trong danh sách", "Sắp xếp danh sách theo thứ tự tăng dần", "Lặp qua phần tử kèm chỉ số của nó"], correct: 4 },
 
-  { language: "React", question: "React sử dụng khái niệm nào để cập nhật UI hiệu quả?", options: ["Shadow DOM", "Virtual DOM", "Parallel DOM", "Fake DOM"], correct: 2 },
-  { language: "React", question: "Lệnh nào tạo component React?", options: ["function MyComp(){}", "createComponent()", "ReactDOM.create()", "React.addComponent()"], correct: 1 },
-  { language: "React", question: "Hook nào dùng để quản lý state trong function component?", options: ["useState", "useEffect", "useContext", "useReducer"], correct: 1 },
+{ language: "React", question: "React sử dụng khái niệm nào để cập nhật UI hiệu quả?", options: ["Shadow DOM", "Virtual DOM", "Parallel DOM", "Fake DOM"], correct: 2 },
+{ language: "React", question: "Lệnh nào tạo component React?", options: ["function MyComp(){}", "createComponent()", "ReactDOM.create()", "React.addComponent()"], correct: 1 },
+{ language: "React", question: "Hook nào dùng để quản lý state trong function component?", options: ["useState", "useEffect", "useContext", "useReducer"], correct: 1 },
 { language: "React", question: "Hook nào thường dùng cho side effect (như gọi API)?", options: ["useState", "useEffect", "useMemo", "useRef"], correct: 2 },
 { language: "React", question: "Props trong React được dùng để?", options: ["Quản lý vòng đời", "Truyền dữ liệu giữa component", "Lưu state cục bộ", "Tối ưu render"], correct: 2 },
 { language: "React", question: "ReactDOM.render() thường được dùng để?", options: ["Gắn component vào DOM thật", "Tạo Virtual DOM", "Xóa component", "Khởi tạo hook"], correct: 1 },
@@ -1432,6 +1520,26 @@ const questions = [
 { language: "React", question: "Trong React, props có thể?", options: ["Thay đổi bên trong component", "Chỉ đọc", "Tạo state mới", "Xóa component"], correct: 2 },
 { language: "React", question: "Hook nào tạo tham chiếu mutable giữ nguyên sau các lần render?", options: ["useState", "useRef", "useMemo", "useEffect"], correct: 2 },
 { language: "React", question: "React Router dùng để?", options: ["Quản lý giao diện", "Điều hướng trang", "Quản lý state", "Tối ưu build"], correct: 2 },
+{ language: "React", question: "useEffect() có thể return một hàm để làm gì?", options: ["Gọi API khác", "Dọn dẹp (cleanup) trước khi component unmount", "Thay đổi state", "Tạo component mới"], correct: 2 },
+{ language: "React", question: "Khi sử dụng map() để render danh sách, thuộc tính 'key' nên là gì?", options: ["Index của mảng", "Một giá trị duy nhất và ổn định", "Tên biến bất kỳ", "Không cần thiết"], correct: 2 },
+{ language: "React", question: "React.memo() được dùng để?", options: ["Tối ưu render bằng cách ghi nhớ component", "Tạo memo trong JSX", "Ghi nhớ state", "Tạo Virtual DOM"], correct: 1 },
+{ language: "React", question: "useCallback() khác useMemo() ở điểm nào?", options: ["useCallback trả về hàm, useMemo trả về giá trị", "Không có sự khác biệt", "useCallback chạy trước render", "useMemo chỉ dùng trong class component"], correct: 1 },
+{ language: "React", question: "Suspense trong React dùng để?", options: ["Tăng hiệu năng CSS", "Tạm dừng server", "Tạm dừng render khi dữ liệu chưa sẵn sàng", "Gọi API"], correct: 3 },
+{ language: "React", question: "Error Boundary trong React dùng để?", options: ["Dọn dẹp DOM và chặn lỗi", "Kiểm tra API lỗi", "Chặn lỗi server", "Bắt lỗi JavaScript trong cây component con"], correct: 4 },
+{ language: "React", question: "Hook nào giúp quản lý state phức tạp bằng reducer?", options: ["useState", "useEffect", "useReducer", "useMemo"], correct: 3 },
+{ language: "React", question: "useContext() được dùng để?", options: ["Tạo context mới", "Lấy giá trị từ Context Provider", "Cập nhật state toàn cục", "Truyền dữ liệu qua props"], correct: 2 },
+{ language: "React", question: "StrictMode trong React có tác dụng gì?", options: ["Phát hiện lỗi tiềm ẩn và cảnh báo trong quá trình phát triển", "Giới hạn số lần render", "Ngăn thay đổi state  trong quá trình phát triển", "Tăng tốc render"], correct: 1 },
+{ language: "React", question: "React key cần thiết vì sao?", options: ["Giúp React xác định phần tử nào thay đổi để render tối ưu", "Giúp React xác định giá trị nào đã tính toán để render tối ưu", "Không có lý do đặc biệt", "Tạo ID duy nhất cho CSS"], correct: 2 },
+{ language: "React", question: "React.lazy() và Suspense được dùng để?", options: ["Gộp các state", "Chạy đồng bộ tất cả component", "Tải component khi cần (lazy load)", "Tạo animation"], correct: 3 },
+{ language: "React", question: "Trong JSX, class HTML được thay bằng thuộc tính nào?", options: ["classname", "class", "className", "styleClass"], correct: 3 },
+{ language: "React", question: "Trong React, useEffect() với dependency rỗng [] sẽ chạy khi nào?", options: ["Mỗi lần render", "Chỉ khi component mount", "Khi state thay đổi", "Khi props thay đổi"], correct: 2 },
+{ language: "React", question: "Trong React, state nên được cập nhật như thế nào?", options: ["Trực tiếp gán giá trị mới", "Thông qua hàm setState hoặc setX", "Thay đổi biến cũ", "Sửa giá trị props"], correct: 2 },
+{ language: "React", question: "useMemo() được dùng để?", options: ["Xoá giá trị đã tính toán trong khi render", "Ghi nhớ hàm callback", "Gọi API", "Ghi nhớ giá trị đã tính toán để tránh tính lại khi render"], correct: 4 },
+{ language: "React", question: "React sử dụng DOM ảo để làm gì?", options: ["Giảm số lần thao tác với DOM thật, tăng hiệu năng", "Tạo file HTML mới", "Chạy code nhanh hơn trên server", "Thay thế DOM gốc"], correct: 1 },
+{ language: "React", question: "React có thể chạy ở đâu?", options: ["Chỉ trên trình duyệt", "Cả trình duyệt và server (SSR)", "Chỉ trong Node.js", "Chỉ trên di động"], correct: 2 },
+{ language: "React", question: "React Hook nào giúp tham chiếu đến phần tử DOM?", options: ["useCallback", "useState", "useMemo", "useRef"], correct: 4 },
+{ language: "React", question: "Khi state hoặc props thay đổi, React sẽ?", options: ["Xoá Virtual DOM", "Khởi động lại toàn bộ app", "Render lại component", "Dừng render"], correct: 3 },
+{ language: "React", question: "Trong React, component cha truyền dữ liệu xuống con qua?", options: ["Context", "State", "Ref", "Props"], correct: 4 },
 
   { language: "PHP", question: "PHP chạy chủ yếu ở đâu?", options: ["Client", "Server", "Trình duyệt", "Database"], correct: 2 },
   { language: "PHP", question: "Mở thẻ PHP bằng?", options: ["<php>", "<?php", "<script php>", "<?="], correct: 2 },
@@ -1455,6 +1563,13 @@ const questions = [
 { language: "PHP", question: "Hàm nào dùng để mã hóa mật khẩu an toàn trong PHP?", options: ["md5()", "sha1()", "password_hash()", "crypt()"], correct: 3 },
 { language: "PHP", question: "Trong PHP, cookie được thiết lập bằng hàm nào?", options: ["setcookie()", "create_cookie()", "cookie_set()", "addcookie()"], correct: 1 },
 { language: "PHP", question: "Trong PHP, biến toàn cục trong hàm được truy cập bằng từ khóa nào?", options: ["this", "global", "static", "public"], correct: 2 },
+{ language: "PHP", question: "Trong PHP, hàm nào dùng để hiển thị thông tin kiểu dữ liệu và giá trị của biến?", options: ["print()", "var_dump()", "echo()", "printf()"], correct: 2 },
+{ language: "PHP", question: "Trong PHP, biến hợp lệ nào dưới đây?", options: ["$9name", "$_name", "$-var", "$ name"], correct: 2 },
+{ language: "PHP", question: "Từ khóa nào trong PHP được dùng để định nghĩa một hằng số?", options: ["const", "define", "static", "final"], correct: 2 },
+{ language: "PHP", question: "Hàm nào trong PHP dùng để đếm số phần tử trong mảng?", options: ["sizeof()", "count()", "length()", "num()"], correct: 2 },
+{ language: "PHP", question: "Hàm nào trong PHP dùng để kiểm tra xem biến có tồn tại không?", options: ["isset()", "empty()", "exist()", "defined()"], correct: 1 },
+{ language: "PHP", question: "Trong PHP, để chèn một tệp khác vào, ta dùng lệnh nào?", options: ["#include", "import", "require", "attach"], correct: 3 },
+{ language: "PHP", question: "Trong PHP, $_POST và $_GET là gì?", options: ["Hàm xử lý chuỗi", "Biến siêu toàn cục (superglobal)", "Biến cục bộ", "Thư viện nhập dữ liệu"], correct: 2 },
 
   { language: "Swift", question: "Swift là ngôn ngữ của hệ điều hành nào?", options: ["Android", "iOS/macOS", "Windows", "Linux"], correct: 2 },
   { language: "Swift", question: "Biến hằng trong Swift được khai báo với?", options: ["let", "var", "const", "define"], correct: 1 },
@@ -1528,30 +1643,30 @@ const questions = [
   { language: "SQL", question: "Câu lệnh LIKE 'A%' sẽ tìm?", options: ["Chuỗi bắt đầu bằng A", "Chuỗi chứa A ở giữa", "Chuỗi kết thúc bằng A", "Chuỗi chỉ có A"], correct: 1 },
   { language: "SQL", question: "Câu lệnh LIKE '%A' sẽ tìm?", options: ["Chuỗi bắt đầu bằng A", "Chuỗi kết thúc bằng A", "Chuỗi có A ở bất kỳ đâu", "Chuỗi không có A"], correct: 2 },
   { language: "SQL", question: "Wildcard '_' trong LIKE nghĩa là?", options: ["Một ký tự bất kỳ", "Nhiều ký tự bất kỳ", "Không ký tự nào", "Chữ số bất kỳ"], correct: 1 },
-  { language: "SQL", question: "Wildcard '%' trong LIKE nghĩa là?", options: ["Nhiều ký tự bất kỳ", "Một ký tự bất kỳ", "Không ký tự nào", "Số nguyên bất kỳ"], correct: 1 },
+  { language: "SQL", question: "Wildcard '%' trong LIKE nghĩa là?", options: ["Một ký tự bất kỳ", "Nhiều ký tự bất kỳ", "Không ký tự nào", "Số nguyên bất kỳ"], correct: 2 },
   { language: "SQL", question: "Trong SQL, NULL có nghĩa là?", options: ["Không có giá trị", "Số 0", "Chuỗi rỗng", "Sai định dạng"], correct: 1 },
-  { language: "SQL", question: "Câu lệnh IS NULL dùng để?", options: ["Kiểm tra giá trị NULL", "Xoá NULL", "Thay thế NULL", "Tạo NULL"], correct: 1 },
-  { language: "SQL", question: "Câu lệnh IS NOT NULL dùng để?", options: ["Kiểm tra giá trị khác NULL", "Xoá giá trị", "Thay thế NULL", "Tạo giá trị"], correct: 1 },
-  { language: "SQL", question: "Hàm COALESCE(a, b, c) trả về?", options: ["Giá trị đầu tiên khác NULL", "Tổng các giá trị", "Số lớn nhất", "Số nhỏ nhất"], correct: 1 },
-  { language: "SQL", question: "Hàm NOW() trả về?", options: ["Ngày giờ hiện tại", "Ngày đầu năm", "Ngày cuối tháng", "Ngày hệ thống"], correct: 1 },
-  { language: "SQL", question: "Hàm UPPER(string) dùng để?", options: ["Chuyển thành chữ hoa", "Chuyển thành chữ thường", "Xoá chuỗi", "Đảo chuỗi"], correct: 1 },
-  { language: "SQL", question: "Hàm LOWER(string) dùng để?", options: ["Chuyển thành chữ thường", "Chuyển thành chữ hoa", "Xoá chuỗi", "Đảo chuỗi"], correct: 1 },
-  { language: "SQL", question: "Hàm CONCAT(a, b) dùng để?", options: ["Nối chuỗi", "So sánh chuỗi", "Cắt chuỗi", "Đảo chuỗi"], correct: 1 },
-  { language: "SQL", question: "Câu lệnh CHAR_LENGTH('Hello') trả về?", options: ["4", "5", "6", "7"], correct: 2 },
-  { language: "SQL", question: "Trong SQL, VIEW là gì?", options: ["Bảng ảo từ kết quả truy vấn", "Bảng vật lý", "Bảng hệ thống", "CSDL con"], correct: 1 },
-  { language: "SQL", question: "Lệnh CREATE VIEW dùng để?", options: ["Tạo bảng ảo", "Tạo bảng thật", "Tạo index", "Tạo user"], correct: 1 },
-  { language: "SQL", question: "Lệnh DROP VIEW dùng để?", options: ["Xoá view", "Xoá bảng", "Xoá DB", "Xoá user"], correct: 1 },
-  { language: "SQL", question: "Stored Procedure trong SQL là gì?", options: ["Thủ tục lưu trữ gồm nhiều lệnh SQL", "Trigger", "View", "Index"], correct: 1 },
-  { language: "SQL", question: "Trigger trong SQL là gì?", options: ["Thủ tục tự động chạy khi có sự kiện", "View", "Index", "Khoá ngoại"], correct: 1 },
-  { language: "SQL", question: "Câu lệnh GRANT trong SQL dùng để?", options: ["Cấp quyền cho user", "Xoá quyền", "Tạo user", "Xoá user"], correct: 1 },
-  { language: "SQL", question: "Câu lệnh REVOKE trong SQL dùng để?", options: ["Thu hồi quyền user", "Cấp quyền user", "Xoá user", "Tạo user"], correct: 1 },
-  { language: "SQL", question: "Trong SQL, TRANSACTION là gì?", options: ["Một tập hợp lệnh thực thi như một đơn vị", "Một bảng", "Một view", "Một trigger"], correct: 1 },
-  { language: "SQL", question: "Câu lệnh COMMIT dùng để?", options: ["Xác nhận thay đổi trong transaction", "Hoàn tác thay đổi", "Tạo transaction", "Xoá transaction"], correct: 1 },
-  { language: "SQL", question: "Câu lệnh ROLLBACK dùng để?", options: ["Hoàn tác thay đổi trong transaction", "Xác nhận thay đổi", "Xoá transaction", "Tạo transaction"], correct: 1 },
-  { language: "SQL", question: "ACID trong CSDL quan hệ gồm?", options: ["Atomicity, Consistency, Isolation, Durability", "Array, Column, Index, Data", "Access, Control, Integrity, Dependency", "Atomic, Central, Input, Data"], correct: 1 },
-  { language: "SQL", question: "NoSQL khác SQL ở điểm nào?", options: ["NoSQL lưu trữ phi quan hệ", "NoSQL luôn nhanh hơn", "NoSQL không dùng dữ liệu", "Không có khác biệt"], correct: 1 },
-  { language: "SQL", question: "DDL trong SQL là viết tắt của?", options: ["Data Definition Language", "Data Display Language", "Database Development Language", "Data Delete Language"], correct: 1 },
-  { language: "SQL", question: "SQL Injection là gì?", options: ["Cách tối ưu dữ liệu", "Kiểu dữ liệu mới", "Một loại trigger", "Một lỗi bảo mật do chèn lệnh SQL"], correct: 4 },
+  { language: "SQL", question: "Câu lệnh IS NULL dùng để?", options: ["Tạo giá trị NULL", "Xoá NULL", "Thay thế NULL", "Kiểm tra giá trị NULL"], correct: 4 },
+  { language: "SQL", question: "Câu lệnh IS NOT NULL dùng để?", options: ["Xoá giá trị", "Kiểm tra giá trị khác NULL", "Tạo giá trị", "Thay thế NULL"], correct: 2 },
+  { language: "SQL", question: "Hàm COALESCE(a, b, c) trả về?", options: ["Giá trị đầu tiên khác NULL", "Số lớn nhất", "Số nhỏ nhất", "Tổng các giá trị"], correct: 1 },
+  { language: "SQL", question: "Hàm NOW() trả về?", options: ["Ngày hệ thống", "Ngày đầu năm", "Ngày giờ hiện tại", "Ngày cuối tháng"], correct: 3 },
+  { language: "SQL", question: "Hàm UPPER(string) dùng để?", options: ["Đảo chuỗi", "Chuyển thành chữ hoa", "Chuyển thành chữ thường", "Xoá chuỗi"], correct: 2 },
+  { language: "SQL", question: "Hàm LOWER(string) dùng để?", options: ["Chuyển thành chữ hoa", "Đảo chuỗi", "Chuyển thành chữ thường", "Xoá chuỗi"], correct: 3 },
+  { language: "SQL", question: "Hàm CONCAT(a, b) dùng để?", options: ["Đảo chuỗi", "Cắt chuỗi", "Nối chuỗi", "So sánh chuỗi"], correct: 3 },
+  { language: "SQL", question: "Câu lệnh CHAR_LENGTH('Hello') trả về?", options: ["7", "4", "5", "6"], correct: 3 },
+  { language: "SQL", question: "Trong SQL, VIEW là gì?", options: ["Bảng ảo từ kết quả truy vấn", "CSDL con", "Bảng vật lý", "Bảng hệ thống"], correct: 1 },
+  { language: "SQL", question: "Lệnh CREATE VIEW dùng để?", options: ["Tạo bảng thật", "Tạo user", "Tạo index", "Tạo bảng ảo"], correct: 4 },
+  { language: "SQL", question: "Lệnh DROP VIEW dùng để?", options: ["Xoá DB", "Xoá user", "Xoá view", "Xoá bảng"], correct: 3 },
+  { language: "SQL", question: "Stored Procedure trong SQL là gì?", options: ["Trigger", "Index", "View", "Thủ tục lưu trữ gồm nhiều lệnh SQL"], correct: 4 },
+  { language: "SQL", question: "Trigger trong SQL là gì?", options: ["View", "Thủ tục tự động chạy khi có sự kiện", "Khoá ngoại", "Index"], correct: 2 },
+  { language: "SQL", question: "Câu lệnh GRANT trong SQL dùng để?", options: ["Cấp quyền cho user", "Xoá user", "Tạo user", "Xoá quyền"], correct: 1 },
+  { language: "SQL", question: "Câu lệnh REVOKE trong SQL dùng để?", options: ["Thu hồi quyền user", "Tạo user", "Cấp quyền user", "Xoá user"], correct: 1 },
+  { language: "SQL", question: "Trong SQL, TRANSACTION là gì?", options: ["Một view", "Một tập hợp lệnh thực thi như một đơn vị", "Một trigger", "Một bảng"], correct: 2 },
+  { language: "SQL", question: "Câu lệnh COMMIT dùng để?", options: ["Hoàn tác thay đổi", "Xác nhận thay đổi trong transaction", "Tạo transaction", "Xoá transaction"], correct: 2 },
+  { language: "SQL", question: "Câu lệnh ROLLBACK dùng để?", options: ["Hoàn tác thay đổi trong transaction", "Tạo transaction", "Xoá transaction", "Xác nhận thay đổi"], correct: 1 },
+  { language: "SQL", question: "ACID trong CSDL quan hệ gồm?", options: ["Array, Column, Index, Data", "Atomicity, Consistency, Isolation, Durability", "Atomic, Central, Input, Data", "Access, Control, Integrity, Dependency"], correct: 2 },
+  { language: "SQL", question: "NoSQL khác SQL ở điểm nào?", options: ["NoSQL lưu trữ phi quan hệ", "NoSQL không dùng dữ liệu", "Không có khác biệt", "NoSQL luôn nhanh hơn"], correct: 1 },
+  { language: "SQL", question: "DDL trong SQL là viết tắt của?", options: ["Database Development Language", "Data Delete Language", "Data Display Language", "Data Definition Language"], correct: 4 },
+  { language: "SQL", question: "SQL I bnjection là gì?", options: ["Cách tối ưu dữ liệu", "Kiểu dữ liệu mới", "Một loại trigger", "Một lỗi bảo mật do chèn lệnh SQL"], correct: 4 },
   { language: "SQL", question: "Trong SQL, chỉ mục (Index) được dùng để?", options: ["Tăng tốc truy vấn", "Lưu trữ nhiều dữ liệu hơn", "Xóa dữ liệu", "Ngăn lỗi trùng lặp"], correct: 1 },
   { language: "SQL", question: "Câu lệnh nào dùng để cấp quyền cho người dùng trong SQL?", options: ["GRANT", "INSERT", "UPDATE", "SELECT"], correct: 1 },
   { language: "SQL", question: "Câu lệnh nào dùng để thu hồi quyền trong SQL?", options: ["REMOVE", "DENY", "DELETE", "REVOKE"], correct: 4 },
@@ -1559,6 +1674,61 @@ const questions = [
   { language: "SQL", question: "Trong SQL, mệnh đề WHERE dùng để làm gì?", options: ["Sắp xếp kết quả", "Lọc dữ liệu theo điều kiện", "Nhóm dữ liệu", "Xóa dữ liệu"], correct: 2 },
   { language: "SQL", question: "Mệnh đề GROUP BY trong SQL dùng để?", options: ["Lọc dữ liệu", "Nhóm dữ liệu theo thuộc tính", "Sắp xếp dữ liệu", "Xóa dữ liệu"], correct: 2 },
   { language: "SQL", question: "Câu lệnh nào dùng để tạo bảng mới trong SQL?", options: ["ALTER TABLE", "CREATE TABLE", "INSERT INTO", "UPDATE"], correct: 2 },
+  { language: "SQL", question: "Trong SQL Server, phần mở rộng tệp nào lưu trữ dữ liệu chính của cơ sở dữ liệu?", options: [".ndf", ".ldf", ".mdf", ".sdf"], correct: 3 },
+  { language: "SQL", question: "Trong SQL Server, tệp có phần mở rộng .ldf dùng để làm gì?", options: ["Lưu dữ liệu chính", "Lưu chỉ mục", "Lưu file log giao dịch", "Lưu backup"], correct: 3 },
+  { language: "SQL", question: "Trong SQL Server, tệp .ndf có chức năng gì?", options: ["Tệp log", "Tệp backup", "Tệp script", "Tệp dữ liệu phụ"], correct: 4 },
+  { language: "SQL", question: "Trong lệnh CREATE DATABASE, từ khóa 'LOG ON' dùng để?", options: ["Tạo file dữ liệu phụ (.ndf)", "Chỉ định file log (.ldf)", "Tạo file dữ liệu chính (.mdf)", "Chỉ định dung lượng backup"], correct: 2 },
+  { language: "SQL", question: "Trong lệnh CREATE DATABASE, phần 'ON (...)' thường chỉ định?", options: ["File log", "File dữ liệu (.mdf/.ndf)", "File backup", "File script"], correct: 2 },
+  { language: "SQL", question: "Trong lệnh CREATE DATABASE, từ khóa 'PRIMARY ON' dùng để?", options: ["Chỉ định file dữ liệu chính (.mdf)", "Chỉ định file dữ liệu phụ (.ndf)", "Chỉ định file log (.ldf)", "Chỉ định file backup"], correct: 1 },
+  { language: "SQL", question: "Trong CREATE DATABASE, cặp từ khóa nào được dùng để khai báo file log?", options: ["ON PRIMARY", "ON", "LOG ON", "FILEGROUP"], correct: 3 },
+  { language: "SQL", question: "Trong SQL Server, lệnh 'ALTER DATABASE ... MODIFY NAME = NewName' dùng để?", options: ["Đổi tên cơ sở dữ liệu", "Đổi tên bảng", "Đổi tên cột", "Đổi tên file log"], correct: 1 },
+  { language: "SQL", question: "Trong SQL Server, để đổi tên logical file (.mdf hoặc .ldf), ta dùng?", options: ["ALTER TABLE ... RENAME", "ALTER DATABASE ... MODIFY FILE", "ALTER DATABASE ... MODIFY NAME", "sp_rename"], correct: 2 },
+  { language: "SQL", question: "Trong SQL Server, từ khóa COMPUTE dùng để làm gì?", options: ["Tạo cột ảo trong bảng", "Tính toán giá trị tổng hợp trong kết quả truy vấn", "Tính toán tự động khi chèn dữ liệu", "Tạo cột chỉ đọc"], correct: 2 },
+  { language: "SQL", question: "Chỉ mục CLUSTERED (Clustered Index) trong SQL Server có đặc điểm gì?", options: ["Chỉ dùng cho cột khóa ngoại", "Không ảnh hưởng đến thứ tự lưu trữ dữ liệu", "Lưu dữ liệu theo thứ tự vật lý của chỉ mục", "Chỉ dùng cho dữ liệu kiểu số"], correct: 3 },
+  { language: "SQL", question: "Lệnh nào sau đây được dùng để tạo chỉ mục (index) mới trong SQL Server?", options: ["CREATE INDEX TenIndex FROM TenBang(Cot)", "ALTER INDEX TenIndex ON TenBang", "INSERT INDEX INTO TenBang", "CREATE INDEX TenIndex ON TenBang(Cot)"], correct: 4 },
+  { language: "SQL", question: "Trong SQL Server, để hiển thị tiêu đề cột khác với tên trường thật trong SELECT, ta dùng cú pháp nào?", options: ["SELECT Cot AS 'TieuDeMoi' FROM Bang", "ALTER TABLE Bang RENAME COLUMN Cot TO TieuDeMoi", "sp_rename 'Bang.Cot', 'TieuDeMoi', 'COLUMN'", "SELECT * FROM Bang RENAME COLUMN"], correct: 1 },
+  { language: "SQL", question: "Trong SQL Server, để đổi tên cột trong bảng, ta dùng lệnh nào?", options: ["ALTER TABLE ... MODIFY NAME", "ALTER DATABASE ... MODIFY FILE", "sp_rename", "ALTER COLUMN ... RENAME"], correct: 3 },
+  { language: "SQL", question: "Trong SQL Server, lệnh 'INSERT INTO ... SELECT ...' dùng để làm gì?", options: ["Xoá dữ liệu trùng lặp trong bảng hiện tại", "Tạo bảng mới từ kết quả truy vấn", "Cập nhật dữ liệu trong bảng hiện tại", "Chèn dữ liệu từ một bảng khác vào bảng hiện tại"], correct: 4 },
+  { language: "SQL", question: "Trong SQL Server, lệnh 'UPDATE ... SET ...' dùng để làm gì?", options: ["Cập nhật giá trị của một dữ liệu trong bảng", "Cập nhật giá trị của một hoặc nhiều cột trong bảng", "Xóa dữ liệu của một hoặc nhiều cột trong bảng", "Sao chép dữ liệu giữa các bảng"], correct: 2 },
+
+{ language: "Pascal", question: "Pascal được phát triển bởi ai?", options: ["Guido van Rossum", "James Gosling", "Niklaus Wirth", "Dennis Ritchie"], correct: 3 },
+{ language: "Pascal", question: "Tập tin chương trình Pascal thường có phần mở rộng là?", options: [".cpp", ".pas", ".py", ".java"], correct: 2 },
+{ language: "Pascal", question: "Câu lệnh xuất dữ liệu ra màn hình là?", options: ["writeln()", "printf()", "print()", "cout<<"], correct: 1 },
+{ language: "Pascal", question: "Để bắt đầu chương trình Pascal, ta dùng từ khóa nào?", options: ["main", "begin", "start", "run"], correct: 2 },
+{ language: "Pascal", question: "Từ khóa nào kết thúc chương trình trong Pascal?", options: ["end.", "stop;", "return;", "finish;"], correct: 1 },
+{ language: "Pascal", question: "Lệnh nào dùng để khai báo biến trong Pascal?", options: ["declare", "let", "int", "var"], correct: 4 },
+{ language: "Pascal", question: "Kiểu dữ liệu logic trong Pascal là?", options: ["bit", "boolean", "logic", "bool"], correct: 2 },
+{ language: "Pascal", question: "Pascal thuộc loại ngôn ngữ gì?", options: ["Ngôn ngữ máy", "Bậc cao", "Assembly", "Bậc thấp"], correct: 2 },
+{ language: "Pascal", question: "Từ khóa nào được dùng để định nghĩa hằng số trong Pascal?", options: ["constant", "final", "const", "define"], correct: 3 },
+{ language: "Pascal", question: "Trong Pascal, ký tự ';' có chức năng gì?", options: ["Kết thúc chương trình", "Phân cách các câu lệnh", "Gọi hàm", "Chỉ ra lỗi"], correct: 2 },
+{ language: "Pascal", question: "Hàm nào dùng để nhập dữ liệu từ bàn phím trong Pascal?", options: ["input()", "readln()", "scanf()", "gets()"], correct: 2 },
+{ language: "Pascal", question: "Kiểu dữ liệu nào dùng để lưu chuỗi ký tự trong Pascal?", options: ["string", "char", "text", "word"], correct: 1 },
+{ language: "Pascal", question: "Phát biểu nào sau đây là đúng về Pascal?", options: ["Phân biệt chữ hoa và chữ thường", "Không phân biệt chữ hoa và chữ thường", "Chỉ dùng chữ hoa", "Chỉ dùng chữ thường"], correct: 2 },
+{ language: "Pascal", question: "Cấu trúc điều kiện trong Pascal bắt đầu bằng từ khóa nào?", options: ["case", "when", "switch", "if"], correct: 4 },
+{ language: "Pascal", question: "Từ khóa nào được dùng trong vòng lặp trong Pascal?", options: ["for", "while", "repeat", "Cả A, B và C đều đúng"], correct: 4 },
+{ language: "Pascal", question: "Trong Pascal, biểu thức 'div' dùng để làm gì?", options: ["Chia lấy phần dư", "Chia lấy phần nguyên", "Nhân 2 số nguyên", "Chia 2 số thực"], correct: 2 },
+{ language: "Pascal", question: "Phép toán lấy phần dư trong Pascal là?", options: ["%", "rem", "mod", "div"], correct: 3 },
+{ language: "Pascal", question: "Trong Pascal, câu lệnh 'writeln('Hello');' có nghĩa là gì?", options: ["Nhập từ bàn phím", "Ghi vào file", "Xuất ra màn hình", "Khai báo biến"], correct: 3 },
+{ language: "Pascal", question: "Cấu trúc chương trình Pascal chuẩn bắt đầu bằng từ khóa nào?", options: ["start", "program", "begin", "function"], correct: 2 },
+{ language: "Pascal", question: "Từ khóa nào được dùng để khai báo hàm trong Pascal?", options: ["function", "procedure", "method", "def"], correct: 1 },
+{ language: "Pascal", question: "Để khai báo thủ tục (procedure) trong Pascal, dùng từ khóa nào?", options: ["func", "procedure", "method", "proc"], correct: 2 },
+{ language: "Pascal", question: "Trong Pascal, lệnh 'repeat ... until' kết thúc khi nào?", options: ["Điều kiện đúng", "Điều kiện sai", "Khi người dùng nhấn Enter", "Khi hết vòng lặp for"], correct: 1 },
+{ language: "Pascal", question: "Khai báo biến toàn cục được viết ở đâu trong chương trình Pascal?", options: ["Trong thủ tục", "Sau từ khóa var, ngoài begin-end", "Sau từ khóa begin", "Trong câu lệnh if"], correct: 2 },
+{ language: "Pascal", question: "Kiểu dữ liệu nào dưới đây là kiểu số thực trong Pascal?", options: ["integer", "float", "real", "double"], correct: 3 },
+{ language: "Pascal", question: "Từ khóa 'uses' trong Pascal có ý nghĩa gì?", options: ["Khai báo biến", "Gọi thư viện", "Gọi hàm", "Kết thúc chương trình"], correct: 2 },
+{ language: "Pascal", question: "Trong Pascal, kiểu dữ liệu 'char' dùng để lưu trữ gì?", options: ["Một ký tự", "Chuỗi ký tự", "Một số nguyên", "Một mảng"], correct: 1 },
+{ language: "Pascal", question: "Lệnh nào dùng để dừng chương trình tạm thời chờ người dùng?", options: ["pause;", "readln;", "stop;", "wait;"], correct: 2 },
+{ language: "Pascal", question: "Phần mở rộng của tệp chứa mã nguồn Pascal là gì?", options: [".p", ".pp", ".psc", ".pas"], correct: 4 },
+{ language: "Pascal", question: "Sự khác biệt chính giữa 'procedure' và 'function' trong Pascal là gì?", options: ["Function không thể có tham số", "Procedure nhanh hơn function", "Function trả về giá trị, procedure thì không", "Function không có tên"], correct: 3 },
+{ language: "Pascal", question: "Câu lệnh nào đúng để khai báo một mảng trong Pascal?", options: ["integer array[10];", "array(1..10) integer;", "array[1..10] of integer;", "int array[10];"], correct: 3 },
+{ language: "Pascal", question: "Kết quả của biểu thức '7 div 2' trong Pascal là gì?", options: ["3.5", "2", "4", "3"], correct: 4 },
+{ language: "Pascal", question: "Kết quả của biểu thức '7 mod 2' trong Pascal là gì?", options: ["2", "0", "1", "3.5"], correct: 3 },
+{ language: "Pascal", question: "Trong Pascal, câu lệnh 'for i := 1 to 5 do writeln(i);' sẽ in ra gì?", options: ["1 2 3 4 5", "2 3 4 5 6", "0 1 2 3 4", "1 2 3 4"], correct: 1 },
+{ language: "Pascal", question: "Từ khóa nào dùng để khai báo kiểu dữ liệu do người dùng định nghĩa?", options: ["typedef", "record", "newtype", "type"], correct: 4 },
+{ language: "Pascal", question: "Trong Pascal, kiểu dữ liệu 'record' được dùng để làm gì?", options: ["Tạo vòng lặp", "Lưu nhiều kiểu dữ liệu khác nhau trong một biến", "Lặp lại các giá trị", "Khai báo hằng số"], correct: 2 },
+{ language: "Pascal", question: "Khi khai báo tham số có từ khóa 'var' trong Pascal, điều đó có nghĩa gì?", options: ["Truyền giá trị", "Truyền tham chiếu", "Không có ý nghĩa gì", "Biến cục bộ"], correct: 2 },
+{ language: "Pascal", question: "Lệnh nào dùng để thoát khỏi vòng lặp trong Pascal?", options: ["halt", "break", "exit", "continue"], correct: 3 },
+{ language: "Pascal", question: "Trong Pascal, câu lệnh 'case x of ... end;' tương đương với cấu trúc nào?", options: ["repeat ... until", "for ... do", "with ... do", "if ... then ... else if ..."], correct: 4 },
 ];
 
 function setupRoundCards() {
@@ -1588,6 +1758,7 @@ function shuffleArray(array) {
 }
 
 function showQuestion(subject) {
+  document.getElementById('deal-btn').style.display = dealCount > 0 ? 'inline-block' : 'none';
   clearInterval(timerInterval);
   console.log("Show question for", subject);
   let filtered = questions.filter(q => (q.subject === subject || q.language === subject));
@@ -1623,7 +1794,7 @@ function updateGameState() {
 if (inBonusRound) {
     document.getElementById("round-number").innerText = round + " (Bonus)";
 } else {
-    document.getElementById("round-number").innerText = round;
+    document.getElementById("round-number").innerText = round + " (Normal)";
 }
   document.getElementById('lives').textContent = lives;
   document.getElementById('score').textContent = score;
@@ -1745,6 +1916,16 @@ function processFlippedCard(cardElement, cardData) {
   updateGameState();
 }
 
+function useDealIt() {
+  if (dealCount > 0) {
+    isDealActive = true;
+    dealCount--;
+    updatePowerCards();
+    document.getElementById('deal-btn').style.display = 'none';
+    showPopup("Bạn đã kích hoạt Deal It! Trả lời đúng sẽ được thưởng thêm!");
+  }
+}
+
 function startTimer() {
   let timeLeft;
   if (round >= 151) {
@@ -1771,7 +1952,7 @@ function startTimer() {
 
 function showPopup(message) {
   const messageModal = document.getElementById("messageModal");
-  document.getElementById("popupMessage").textContent = message;
+  document.getElementById("popupMessage").innerHTML = message;
   messageModal.style.zIndex = "3000";
   messageModal.classList.add("show");
 }
@@ -1800,19 +1981,26 @@ function checkAnswer(ansIndex) {
   if (ansIndex === question.correct) {
     let points = currentCard.type === "subject" ? 10 : 20; // 10 điểm cho môn học, 20 điểm cho ngôn ngữ lập trình
     const isAHA = hasAHA && question.subject === favoriteSubject;
-    if (isAHA) points *= 5;
+    if (isAHA) points *= 6;
     console.log("A-HA x5 point");
     if (hasSync) {
-      consecutiveCorrect++;
-      points += consecutiveCorrect * 5;
+    consecutiveCorrect++;
+    points += consecutiveCorrect * syncBonusLevel * 5;
     } else {
-      consecutiveCorrect = 0;
+    consecutiveCorrect = 0;
     }
     score += points;
+    if (isDealActive) {
+    let dealPoints = 25 * round;
+    score += dealPoints;
+    showPopup(`✅ Đúng! Bạn được ${points} điểm!<br>(Đặt cược thành công!) Bạn đã được thưởng thêm ${dealPoints} điểm!`);
+    isDealActive = false;
+  } else {
     showPopup(`✅ Đúng! Bạn được ${points} điểm!`);
-    consecutiveCorrect++;
-    round++;
+  }
     roundCards = []; // Reset roundCards
+    resetRound();
+    round++;
     if (round % 5 === 0) {
       document.getElementById('bonusModal').classList.add('show');
     } else {
@@ -1821,6 +2009,7 @@ function checkAnswer(ansIndex) {
   } else {
     if (protectionCount > 0) {
       protectionCount--;
+      isDealActive = false;  
       updatePowerCards();
       showPopup("🛡️ Protection đã cứu bạn không bị mất cơ hội! (Còn: " + protectionCount + ")");
       showQuestion(question.subject || question.language);
@@ -1839,12 +2028,29 @@ function loseLife(reason = "wrong") {
   updateGameState();
 
   if (lives <= 0) {
+    if (isDealActive) {
+      score = Math.floor(score / 2);
+      isDealActive = false;
+    }
     endGame();
   } else {
     if (reason === "timeout") {
-      showPopup(`⏰ Hết giờ! Bạn còn ${lives} cơ hội.`);
+      if (isDealActive) {
+        score = Math.floor(score / 2);
+        showPopup(`⏰ Hết giờ! Bạn còn ${lives} cơ hội.<br>(Đặt cược thất bại!) Bạn bị trừ nửa số điểm hiện tại!`);
+      }
+      else {
+        showPopup(`⏰ Hết giờ! Bạn còn ${lives} cơ hội`);
+      }
     } else {
-      showPopup(`❌ Trả lời sai! Bạn còn ${lives} cơ hội.`);
+      if (isDealActive) {
+        score = Math.floor(score / 2);
+        showPopup(`❌ Trả lời sai! Bạn còn ${lives} cơ hội.<br>(Đặt cược thất bại!) Bạn bị trừ nửa số điểm hiện tại!`);
+        isDealActive = false;  
+      }
+      else {
+        showPopup(`❌ Trả lời sai! Bạn còn ${lives} cơ hội.`);
+    }
     }
     resetRound();
   }
@@ -1913,27 +2119,11 @@ function resetRound() {
 function updatePowerCards() {
   document.getElementById('protection-count').textContent = protectionCount;
   document.getElementById('stop-count').textContent = stopCount;
+  document.getElementById('deal-count').textContent = dealCount;
 }
 
 function restartGame() {
-  console.log("Restarting game");
-  round = 1;
-  lives = 3;
-  score = 0;
-  consecutiveCorrect = 0;
-  hasAHA = false;
-  hasSync = false;
-  protectionCount = 0;
-  stopCount = 0;
-  isStopUsed = false;
-  inBonusRound = false;
-  favoriteSubject = null;
-  document.getElementById('aha-selection').style.display = 'none';
-  document.getElementById('gameOverModal').classList.remove('show');
-  document.getElementById('main-screen').style.display = 'block';
-  document.getElementById('game-area').style.display = 'none';
-  resetRound();
-  updateGameState();
+  location.reload(true);
 }
 
 document.querySelectorAll('.card-front img').forEach(img => {
@@ -1953,17 +2143,17 @@ document.addEventListener('keydown', (e) => {
 });
 
 function getScoreRank(highScoreIT) {
-  if (highScoreIT >= 300000) {
+  if (highScoreIT >= 4608000) {
     return { text: 'Peak SS (Trùm Bài)', color: '#ff67fa' };
-  } else if (highScoreIT >= 120000) {
+  } else if (highScoreIT >= 1152000) {
     return { text: 'SS (Sổ xố 365 ngày)', color: '#ff781f' };
-  } else if (highScoreIT >= 50000) {
+  } else if (highScoreIT >= 288000) {
     return { text: 'S (Jackpot.exe)', color: '#ffa500' };
-  } else if (highScoreIT >= 20000) {
+  } else if (highScoreIT >= 72000) {
     return { text: 'A (Ông hoàng trúng tủ)', color: '#800080' };
-  } else if (highScoreIT >= 8000) {
+  } else if (highScoreIT >= 18000) {
     return { text: 'B (Có niềm tin)', color: '#00bfff' };
-  } else if (highScoreIT >= 3000) {
+  } else if (highScoreIT >= 4500) {
     return { text: 'C (Cũng không may mắn lắm)', color: '#32CD32' };
   } else {
     return { text: 'Chưa xếp hạng', color: '#000000' };
@@ -2066,10 +2256,3 @@ function getCookie(name) {
   </script>
 </body>
 </html>
-
-
-
-
-
-
-

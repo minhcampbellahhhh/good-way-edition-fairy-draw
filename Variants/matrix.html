@@ -1,0 +1,944 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Good-way Edition: Fairy Draw (English Matrix)</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #66ea75, #4ba29c);
+      margin: 0;
+      padding: 0;
+      text-align: center;
+      user-select: none;
+      overflow-x: hidden;
+      overflow-y: scroll;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+    body::-webkit-scrollbar { display: none; }
+    table {
+      width: 90%;
+      margin: auto;
+      border-collapse: collapse;
+      background: rgba(255,255,255,0.9);
+      box-shadow: 0 0 20px rgba(0,0,0,0.1);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    nav {
+      display: flex;
+      align-items: center;
+      background-color: #fff8;
+      backdrop-filter: blur(6px);
+      padding: 10px 30px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+    
+    .logo { 
+      display: flex; 
+      align-items: center; 
+      gap: 10px;
+      font-size: 24px;
+      font-weight: bold;
+      color: #764ba2;
+    }
+    .logo img { width: 150px; vertical-align: middle; }
+    .ticker {
+        position: relative;
+        overflow: hidden;
+        background: #00bc42;
+        color: #ffffff;
+        border: 4px solid #229100;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        font: 500 15px/1.2 system-ui, Arial, sans-serif;
+        border-radius: 10px;
+        }
+        .ticker__track {
+        position: relative;
+        flex: 1 1 auto;
+        overflow: hidden;
+        }
+        .ticker__list {
+        color: #ffffff ;
+        display: inline-flex;
+        white-space: nowrap;
+        gap: 30px;
+        padding-left: 100%;      
+        animation: ticker-move 48s linear infinite;
+        }
+        .ticker__item::after {          
+        content: "•";
+        margin-left: 28px;
+        opacity: .5;
+        }
+        @keyframes ticker-move {
+        0%   { transform: translateX(0); }
+        100% { transform: translateX(-100%); }
+        }
+    h1 { 
+      margin: 20px 0;
+      color: white;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    }
+    
+    .game-container {
+      text-align: center;
+      max-width: 1500px;
+      margin: 20px auto;
+      background: #ffffffcc;
+      border-radius: 10px;
+      padding: 20px;
+    }
+    
+    .card-container { 
+      display: flex; 
+      justify-content: center; 
+      gap: 20px; 
+      margin: 20px 0; 
+      flex-wrap: wrap; 
+    }
+    
+    .card {
+      width: 165px; 
+      height: 240px; 
+      perspective: 1000px; 
+      cursor: pointer; 
+      position: relative;
+    }
+    
+    .card-inner {
+      width: 100%; 
+      height: 100%; 
+      position: relative;
+      transform-style: preserve-3d;
+      transition: transform 0.8s;
+      border-radius: 8px;
+    }
+    
+    .card.flipped .card-inner { transform: rotateY(180deg); }
+    
+    .card-front, .card-back {
+      position: absolute; 
+      width: 100%; 
+      height: 100%;
+      backface-visibility: hidden;
+      border-radius: 8px; 
+      overflow: hidden;
+      display: flex; 
+      align-items: center; 
+      justify-content: center;
+    }
+    
+    .card-front { 
+      background: #2a2a2a; 
+      color: white; 
+      font-size: 14px; 
+    }
+    
+    .card-front img, .card-back img {
+      width: 100%; 
+      height: 100%; 
+      object-fit: cover; 
+      display: block;
+    }
+    
+    .card-back { 
+      transform: rotateY(180deg); 
+      background: #ddd; 
+      color: #111; 
+      font-weight: 600; 
+    }
+    
+    .card.disabled { 
+      pointer-events: none; 
+      opacity: 0.45; 
+    }
+    
+    .question-area { 
+      display: none; 
+      margin: 20px 0; 
+      background: #fff; 
+      padding: 15px; 
+      border-radius: 10px; 
+    }
+    
+    .stats-bar {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      background: white;
+      padding: 8px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      font-size: 18px;
+    }
+    
+    .time-bar-container {
+      width: 50%;
+      height: 40px;
+      background: #e0e0e0;
+      border-radius: 20px;
+      overflow: hidden;
+      position: relative;
+      margin: 20px 0;
+    }
+    
+    .time-bar {
+      height: 100%;
+      background: linear-gradient(90deg, #4CAF50, #8BC34A);
+      transition: width 0.1s linear;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: bold;
+      font-size: 20px;
+    }
+    
+    .time-bar.warning {
+      background: linear-gradient(90deg, #FF9800, #FFC107);
+    }
+    
+    .time-bar.danger {
+      background: linear-gradient(90deg, #F44336, #E91E63);
+    }
+    
+    button {
+      padding: 10px 20px; 
+      margin: 5px; 
+      font-size: 16px; 
+      border-radius: 10px;
+      border: none; 
+      background: #009717; 
+      color: white;
+      cursor: pointer; 
+      transition: 0.2s ease;
+    }
+    
+    button:hover { 
+      background: #00660f; 
+      box-shadow: 0 0 5px rgba(0,0,0,0.3); 
+    }
+    
+    button:disabled { 
+      background: #cccccc; 
+      cursor: not-allowed; 
+    }
+    
+    .start {
+      padding: 15px 30px;
+      font-size: 24px;
+      border: 4px solid #00510c;
+    }
+    
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0; 
+      left: 0;
+      width: 100%; 
+      height: 100%;
+      background: rgba(0,0,0,0.5);
+      justify-content: center;
+      align-items: center;
+      z-index: 2000;
+    }
+    
+    .modal-content {
+      background: #fff; 
+      padding: 20px; 
+      border-radius: 10px; 
+      text-align: center;
+      max-width: 700px; 
+      width: 90%; 
+      box-shadow: 0 0 10px rgba(0,0,0,0.3);
+    }
+    
+    .show { display: flex !important; }
+    
+    .message-box {
+      background: #fff3cd;
+      border: 2px solid #ffc107;
+      border-radius: 10px;
+      padding: 15px;
+      margin: 15px 0;
+      font-size: 16px;
+      min-height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .message-box.success {
+      background: #d4edda;
+      border-color: #28a745;
+    }
+    
+    .message-box.error {
+      background: #f8d7da;
+      border-color: #dc3545;
+    }
+    
+    footer { 
+      background: #222; 
+      color: white; 
+      text-align: center; 
+      padding: 30px; 
+      margin-top: 40px; 
+    }
+    #countdown-overlay {
+      animation: popFade 1s ease-in-out;
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <div class="logo">
+      <img src="../Image/BMSTORY.png" alt="Logo"><p style="color:#009266">HTML Games</p>
+    </div>
+    <ul class="menu">
+      <p>This is game system which was made with CSS and JavaScript. By BMSTORY Entertainment.</p>
+    </ul>
+  </nav>
+  <h1>Good-way Edition: Fairy Draw (English Matrix)</h1>
+  <div class="game-container" id="main-screen">
+    <p style="font-size: 24px"><strong>Welcome to Good-way Edition: Fairy Draw (English Matrix)</strong><br>Improve your English through fun challenges!</p>
+    <p>Use your computer, tablet or laptop on the website for the best experience!</p>
+    <div class="stats-bar">
+      <div>High Score: <b><span id="high-score-english">0</span></b></div>
+      <div>Best Correct(s): <b><span id="highest-questions">0</span></b></div>
+    </div>
+    <button class="start" onclick="startGame()">Start Game</button>
+    <p>Note: Can not pause while you are in a game!</p>
+    
+    <div style="margin-top:30px; text-align: left; max-width: 800px; margin: 30px auto;">
+      <h3 style="color: #764ba2; text-align: center;">---- How to Play ----</h3>
+      <ul style="line-height: 1.8;">
+        <li>You start with 60 seconds on the clock</li>
+        <li>Each round, flip 1 of 4 cards (3 topic cards + 1 power card)</li>
+        <li>Answer multiple-choice questions correctly to earn points and time</li>
+        <li>Correct answer: +6s (5s after 51 corrects, 4s after 101 corrects, 3s after 201 corrects, 2s after 301 corrects, 1s after 451 corrects)</li>
+        <li>Wrong answer: -5s</li>
+        <li>Game ends when time runs out!</li>
+        <li>Test your grammar, vocabulary, and comprehension skills across multiple topics!</li>
+      </ul>
+      </div>
+      <div class="ticker">
+     <div class="ticker__track">
+      <div class="ticker__list">
+        <span class="ticker__item">This project belongs to Trần Đặng Bình Minh (MinhCampbell) from BMSTORY Entertainment.</span>
+        <span class="ticker__item">Update Notice - October 27th 2025: Bugs fixing, upgrading functions.</span>
+        <span class="ticker__item">Next Update Announcement - November 25th 2025: Increasing question, new power card.</span>
+        <span class="ticker__item">Thank you for playing and supporting us!</span>
+      </div>
+    </div>
+    </div>
+    <div style="margin-top:30px; text-align: left; max-width: 800px; margin: 30px auto;">
+      <h3 style="color: #764ba2; text-align: center;">--- Power Cards ---</h3>
+      <ul style="line-height: 1.8;">
+        <li><b>Jackpot</b> - Double your current score (×2)</li>
+        <li><b>Time Buffing</b> - Add 15 seconds to your timer</li>
+        <li><b>Protection</b> - Add 8s and no time penalty on next wrong answer</li>
+        <li><b>Sync</b> - Earn bonus points for consecutive correct answers</li>
+      </ul>
+    </div>
+    <table style="background-color: transparent;">
+      <tr>
+        <th colspan="8" style="font-size: 20px;">Card List</th>
+      </tr>
+      <tr>
+          <td><img src="../Image/CardBackE.png" style="width: 125px; vertical-align: middle;"></td>
+          <td><img src="../Image/Vocabulary.png" style="width: 125px; vertical-align: middle;"></td>
+          <td><img src="../Image/Grammar.png" style="width: 125px; vertical-align: middle;"></td>
+          <td><img src="../Image/Reading.png" style="width: 125px; vertical-align: middle;"></td>
+          <td><img src="../Image/JackpotE.png" style="width: 125px; vertical-align: middle;"></td>
+          <td><img src="../Image/TimeBuff.png" style="width: 125px; vertical-align: middle;"></td>
+          <td><img src="../Image/ProtectionE.png" style="width: 125px; vertical-align: middle;"></td>
+          <td><img src="../Image/SyncE.png" style="width: 125px; vertical-align: middle;"></td>
+      </tr>
+    </table>
+    <br>
+    <h3 style="color: #764ba2; text-align: center;">---- Phiên bản khác ----</h3>
+    <table style="background-color: transparent;">
+      <tr>
+          <td style="width: 20px;"><a href="../index.html"><b>Phiên bản gốc</b></a></td>
+          <td style="width: 20px;"><a href="it.html"><b>Phiên bản Công Nghệ Thông Tin</b></a></td>
+      </tr>
+    </table>
+    </div>
+    <table></table>
+  </div>
+
+  <div class="game-container" id="game-area" style="display:none;">
+    <div class="stats-bar">
+      <div>Correct(s): <b><span id="question-number">0</span></b></div>
+      <div>Score: <b><span id="score">0</span></b></div>
+      <div>Power(s): Protection×<b id="protection-count">0</b></div>
+      <div class="time-bar-container">
+      <div class="time-bar" id="time-bar">60s</div>
+    </div>
+    </div>
+
+    <div class="card-container" id="card-container">
+      <div class="card" data-index="1" onclick="flipCard(1)">
+        <div class="card-inner">
+          <div class="card-front"><img src="../Image/CardBackE.png" alt="Card Back"></div>
+          <div class="card-back"></div>
+        </div>
+      </div>
+      <div class="card" data-index="2" onclick="flipCard(2)">
+        <div class="card-inner">
+          <div class="card-front"><img src="../Image/CardBackE.png" alt="Card Back"></div>
+          <div class="card-back"></div>
+        </div>
+      </div>
+      <div class="card" data-index="3" onclick="flipCard(3)">
+        <div class="card-inner">
+          <div class="card-front"><img src="../Image/CardBackE.png" alt="Card Back"></div>
+          <div class="card-back"></div>
+        </div>
+      </div>
+      <div class="card" data-index="4" onclick="flipCard(4)">
+        <div class="card-inner">
+          <div class="card-front"><img src="../Image/CardBackE.png" alt="Card Back"></div>
+          <div class="card-back"></div>
+        </div>
+      </div>
+    </div>
+    <h2>Status List</h2>
+    <div class="message-box" id="message-box">Flip a card to begin!</div>
+
+    <div class="question-area" id="question-area">
+      <h3 id="question-text">Question will appear here</h3>
+      <div id="options">
+        <button onclick="checkAnswer(1)">A</button>
+        <button onclick="checkAnswer(2)">B</button>
+        <button onclick="checkAnswer(3)">C</button>
+        <button onclick="checkAnswer(4)">D</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="gameOverModal">
+    <div class="modal-content">
+      <h2 style="color: #764ba2;">Game Over!</h2>
+      <p style="font-size: 20px;">Final Score: <b><span id="final-score">0</span></b></p>
+      <p style="font-size: 18px;">Total Correct(s): <b><span id="final-questions">0</span></b></p>
+      <button onclick="restartGame()">Play Again</button>
+    </div>
+  </div>
+
+  <div id="countdown-overlay" style="
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 100px;
+  color: white;
+  font-weight: bold;
+  z-index: 3000;
+  display: none;
+  text-shadow: 4px 4px 10px #000;
+  ">
+</div>
+
+  <footer>© 2025 BMSTORY Entertainment</footer>
+
+  <script>
+    let questionNumber = 0;
+    let score = 0;
+    let timeLeft = 60;
+    let highScoreE = localStorage.getItem('highScoreE') ? parseInt(localStorage.getItem('highScoreE')) : 0;
+    let highestQuestions = localStorage.getItem('highestQuestions') ? parseInt(localStorage.getItem('highestQuestions')) : 0;
+    let currentCard = null;
+    let timerInterval = null;
+    let hasSync = false;
+    let consecutiveCorrect = 0;
+    let isCardFlipped = false;
+    let roundCards = [];
+    let protectionCount = 0;
+    let protectionActive = false;
+    let lastTime = Date.now();
+
+    const functionCards = [
+      { name: "Jackpot", text: "Jackpot", effect: () => { score *= 2; showMessage("🎰 Jackpot! Score doubled!", "success"); } },
+      { name: "Time Buffing", text: "Time Buffing", effect: () => { addTime(15); showMessage("⏰ +15 seconds added!", "success"); } },
+      { name: "Protection", text: "Protection", effect: () => { protectionCount++; updatePowerCards(); showMessage("🛡️ Protection activated! +8s and no penalty on next wrong answer!", "success"); } },
+      { name: "Sync", text: "Sync", effect: () => { hasSync = true; showMessage("🔗 Sync activated! Bonus points for consecutive correct answers!", "success"); } }
+    ];
+
+    const subjectCards = [
+      { subject: "Grammar", text: "Grammar" },
+      { subject: "Vocabulary", text: "Vocabulary" },
+      { subject: "Reading", text: "Reading" }
+    ];
+
+    const questions = [
+      // Grammar
+{ subject: "Grammar", question: "Which is correct?", options: ["He go to school", "He goes to school", "He going to school", "He gone to school"], correct: 2 },
+{ subject: "Grammar", question: "Choose the correct form:", options: ["I have saw", "I have seen", "I has seen", "I seen"], correct: 2 },
+{ subject: "Grammar", question: "Which sentence is in past continuous?", options: ["I walk", "I walked", "I was walking", "I have walked"], correct: 3 },
+{ subject: "Grammar", question: "Complete: If I ___ rich, I would travel.", options: ["am", "was", "were", "be"], correct: 3 },
+{ subject: "Grammar", question: "Which is the correct comparative?", options: ["more good", "gooder", "best", "better"], correct: 4 },
+{ subject: "Grammar", question: "Choose the correct sentence:", options: ["She don’t like coffee.", "She doesn’t like coffee.", "She isn’t like coffee.", "She not like coffee."], correct: 2 },
+{ subject: "Grammar", question: "Which sentence is in present perfect?", options: ["I have finished my homework.", "I finish my homework.", "I am finishing my homework.", "I was finishing my homework."], correct: 1 },
+{ subject: "Grammar", question: "Choose the correct passive form:", options: ["The cake is baked by Mary.", "Mary bake the cake.", "The cake baked Mary.", "The cake is bake by Mary."], correct: 1 },
+{ subject: "Grammar", question: "Find the correct order of adjectives:", options: ["A red beautiful car", "A beautiful red car", "A car red beautiful", "A car beautiful red"], correct: 2 },
+{ subject: "Grammar", question: "Choose the correct preposition: He is interested ___ music.", options: ["on", "in", "at", "for"], correct: 2 },
+{ subject: "Grammar", question: "Which sentence uses 'used to' correctly?", options: ["I used to play soccer.", "I use to play soccer.", "I was used play soccer.", "I am used play soccer."], correct: 1 },
+{ subject: "Grammar", question: "Choose the correct conditional: If it rains, we ___ stay home.", options: ["have", "would", "would have", "will"], correct: 4 },
+{ subject: "Grammar", question: "Select the correct relative pronoun: The man ___ lives next door is kind.", options: ["which", "where", "who", "whose"], correct: 3 },
+{ subject: "Grammar", question: "Identify the correct reported speech: She said, 'I am tired.'", options: ["She said she is tired.", "She said she was tired.", "She says she was tired.", "She said that I was tired."], correct: 2 },
+{ subject: "Grammar", question: "Choose the correct question tag: You’re a student, ___?", options: ["isn’t you", "aren’t you", "don’t you", "are you"], correct: 2 },
+{ subject: "Grammar", question: "Which is correct?", options: ["It’s raining heavily.", "Its raining heavily.", "It rains heavy.", "Its rains heavily."], correct: 1 },
+{ subject: "Grammar", question: "Find the correct plural form:", options: ["childs", "childes", "children", "childrens"], correct: 3 },
+{ subject: "Grammar", question: "Which sentence is in future perfect?", options: ["I will have finished by then.", "I will finish by then.", "I am finishing by then.", "I finish by then."], correct: 1 },
+{ subject: "Grammar", question: "Choose the correct word: She speaks English ___ than me.", options: ["more fluent", "fluentlier", "more fluently", "fluentlyer"], correct: 3 },
+{ subject: "Grammar", question: "Find the correct sentence:", options: ["There is a few milk left.", "There are a little milk left.", "There is a little milk left.", "There are few milk left."], correct: 3 },
+{ subject: "Grammar", question: "Choose the correct form: I wish I ___ taller.", options: ["am", "was", "were", "be"], correct: 3 },
+{ subject: "Grammar", question: "Select the correct article: She is ___ honest person.", options: ["a", "an", "the", "no article"], correct: 2 },
+{ subject: "Grammar", question: "Which sentence uses the infinitive correctly?", options: ["He wants go home.", "He wants to go home.", "He want to go home.", "He wanting to go home."], correct: 2 },
+{ subject: "Grammar", question: "Choose the correct modal verb: You ___ study harder.", options: ["should", "musted", "can to", "was should"], correct: 1 },
+{ subject: "Grammar", question: "Find the correct conjunction: I was tired ___ I went to bed early.", options: ["but", "because", "although", "so"], correct: 4 },
+{ subject: "Grammar", question: "Choose the correct tense: By next year, I ___ in this company for 10 years.", options: ["work", "have worked", "will have worked", "am working"], correct: 3 },
+{ subject: "Grammar", question: "Find the correct sentence:", options: ["He doesn’t has a car.", "He not have a car.", "He doesn’t have a car.", "He don’t have car."], correct: 3 },
+{ subject: "Grammar", question: "Which sentence is correct?", options: ["She is good in singing.", "She is good at singing.", "She is good on singing.", "She is good with singing."], correct: 2 },
+{ subject: "Grammar", question: "Choose the correct indirect question:", options: ["Can you tell me where is the bank?", "Can you tell me where the bank is?", "Can you tell me where the bank it is?", "Can you tell me the bank is where?"], correct: 2 },
+{ subject: "Grammar", question: "Select the correct sentence:", options: ["Neither of them are ready.", "Neither of them is ready.", "Neither of them be ready.", "Neither of them were ready."], correct: 2 },
+{ subject: "Grammar", question: "Which sentence is in past perfect?", options: ["I had already eaten before you arrived.", "I already eat before you arrive.", "I have already eaten before you arrive.", "I already ate before you arrived."], correct: 1 },
+{ subject: "Grammar", question: "Choose the correct comparative form:", options: ["This book is more interesting than that one.", "This book is interestinger than that one.", "This book is most interesting than that one.", "This book is interest than that one."], correct: 1 },
+{ subject: "Grammar", question: "Which sentence is correct?", options: ["Everyone have finished.", "Everybody has finished.", "All person has finished.", "Each people have finished."], correct: 2 },
+{ subject: "Grammar", question: "Find the correct conditional:", options: ["If I knew his number, I will call him.", "If I know his number, I would call him.", "If I knew his number, I would call him.", "If I known his number, I would call him."], correct: 3 },
+{ subject: "Grammar", question: "Choose the correct relative clause:", options: ["This is the house who Jack built.", "This is the house which Jack built.", "This is the house where Jack built.", "This is the house whom Jack built."], correct: 2 },
+{ subject: "Grammar", question: "Choose the correct inversion:", options: ["Never I have seen such a view.", "Never have I seen such a view.", "Never I seen have such a view.", "Never I saw such a view."], correct: 2 },
+{ subject: "Grammar", question: "Select the correct sentence using 'had better':", options: ["You had better to study now.", "You better had study now.", "You had better study now.", "You have better study now."], correct: 3 },
+{ subject: "Grammar", question: "Choose the correct form of the subjunctive mood:", options: ["I suggest that he studies harder.", "I suggest that he study harder.", "I suggest that he studying harder.", "I suggest that he to study harder."], correct: 2 },
+{ subject: "Grammar", question: "Find the correct sentence:", options: ["Hardly had I arrived when it started to rain.", "Hardly I had arrived when it started to rain.", "Hardly I arrived when it started to rain.", "Hardly had I arrived when it starts to rain."], correct: 1 },
+{ subject: "Grammar", question: "Choose the correct collocation:", options: ["Take a decision", "Do a decision", "Make a decision", "Perform a decision"], correct: 3 },
+{ subject: "Grammar", question: "Select the correct conditional structure:", options: ["Were I you, I would take the job.", "Was I you, I would take the job.", "If I were you, I will take the job.", "If I was you, I take the job."], correct: 1 },
+{ subject: "Grammar", question: "Which sentence uses the causative correctly?", options: ["I got repair my car yesterday.", "I have repaired my car yesterday.", "I repaired my car had yesterday.", "I had my car repaired yesterday."], correct: 4 },
+{ subject: "Grammar", question: "Choose the correct expression:", options: ["No sooner had he left than she arrived.", "No sooner he had left than she arrived.", "No sooner had he left when she arrived.", "No sooner he left than she arrived."], correct: 1 },
+{ subject: "Grammar", question: "Find the correct form:", options: ["It’s high time you go to bed.", "It’s high time you went to bed.", "It’s high time you going to bed.", "It’s high time to you go to bed."], correct: 2 },
+{ subject: "Grammar", question: "Choose the correct usage of 'wish':", options: ["I wish I knowing her name.", "I wish I know her name.", "I wish I knew her name.", "I wish to know her name (for past regret)."], correct: 3 },
+{ subject: "Grammar", question: "Identify the correct inversion form:", options: ["Only after had he left did I realize my mistake.", "Only after he had left did I realize my mistake.", "Only after had he left I realized my mistake.", "Only after he had left I realized my mistake."], correct: 2 },
+{ subject: "Grammar", question: "Choose the correctly punctuated sentence with a non-defining relative clause:", options: ["My brother who lives, in London is a doctor.", "My brother, who lives in London, is a doctor.", "My brother who, lives in London, is a doctor.", "My brother who lives in London is a doctor."], correct: 2 },
+{ subject: "Grammar", question: "Select the sentence using a mixed conditional correctly:", options: ["If I had studied harder, I would pass the exam now.", "If I studied harder, I will pass the exam.", "If I had studied harder, I will pass now.", "If I study harder, I would have passed the exam."], correct: 1 },
+{ subject: "Grammar", question: "Find the correct form expressing preference:", options: ["I'd rather you went home now.", "I'd rather you going home now.", "I'd rather you go home now.", "I'd rather you to go home now."], correct: 1 },
+{ subject: "Grammar", question: "Choose the correct sentence using 'so...that' inversion:", options: ["So the view was beautiful that we stopped to look.", "So was beautiful the view that we stopped to look.", "So beautiful was the view that we stopped to look.", "So beautiful the view was that we stopped to look."], correct: 3 },
+{ subject: "Grammar", question: "Select the correct form of reported speech:", options: ["He said he finished his work.", "He said he had finished his work.", "He said he has finished his work.", "He said he finishes his work."], correct: 2 },
+{ subject: "Grammar", question: "Find the grammatically correct sentence:", options: ["Not until I reached home did I realize my wallet was missing.", "Not until I had reached home I realized my wallet was missing.", "Not until reached I home did I realize my wallet was missing.", "Not until I reached home I realized my wallet was missing."], correct: 1 },
+{ subject: "Grammar", question: "Choose the correct use of the subjunctive in formal English:", options: ["It is important that she is present.", "It is important that she was present.", "It is important that she being present.", "It is important that she be present."], correct: 4 },
+{ subject: "Grammar", question: "Which sentence correctly uses a reduced relative clause?", options: ["The man who standing over there is my uncle.", "The man standing over there is my uncle.", "The man stands over there is my uncle.", "The man who is standing over there is my uncle."], correct: 2 },
+{ subject: "Grammar", question: "Select the correct form of emphasis with 'do':", options: ["I liking this movie.", "I do liking this movie.", "I am do like this movie.", "I do like this movie."], correct: 4 },
+
+// Vocabulary
+{ subject: "Vocabulary", question: "What does 'abundant' mean?", options: ["Rare", "Plentiful", "Small", "Empty"], correct: 2 },
+{ subject: "Vocabulary", question: "Synonym of 'happy':", options: ["Sad", "Angry", "Joyful", "Tired"], correct: 3 },
+{ subject: "Vocabulary", question: "Antonym of 'difficult':", options: ["Hard", "Easy", "Complex", "Tough"], correct: 2 },
+{ subject: "Vocabulary", question: "'Benevolent' means:", options: ["Evil", "Lazy", "Angry", "Kind"], correct: 4 },
+{ subject: "Vocabulary", question: "What is a 'mentor'?", options: ["Student", "Teacher/Guide", "Enemy", "Friend"], correct: 2 },
+{ subject: "Vocabulary", question: "What does 'fragile' mean?", options: ["Strong", "Breakable", "Heavy", "Stable"], correct: 2 },
+{ subject: "Vocabulary", question: "Synonym of 'brave':", options: ["Cowardly", "Fearless", "Timid", "Weak"], correct: 2 },
+{ subject: "Vocabulary", question: "Antonym of 'ancient':", options: ["Old", "Modern", "Historic", "Classic"], correct: 2 },
+{ subject: "Vocabulary", question: "'Generous' means:", options: ["Greedy", "Selfish", "Kind and giving", "Mean"], correct: 3 },
+{ subject: "Vocabulary", question: "What does 'obstacle' mean?", options: ["Barrier", "Bridge", "Path", "Road"], correct: 1 },
+{ subject: "Vocabulary", question: "Synonym of 'begin':", options: ["Start", "End", "Pause", "Stop"], correct: 1 },
+{ subject: "Vocabulary", question: "Antonym of 'noisy':", options: ["Crowded", "Loud", "Busy", "Silent"], correct: 4 },
+{ subject: "Vocabulary", question: "'Reliable' means:", options: ["Untrustworthy", "Lazy", "Trustworthy", "Strange"], correct: 3 },
+{ subject: "Vocabulary", question: "What does 'expand' mean?", options: ["Shrink", "Grow", "Hide", "Stop"], correct: 2 },
+{ subject: "Vocabulary", question: "Synonym of 'calm':", options: ["Excited", "Angry", "Relaxed", "Wild"], correct: 3 },
+{ subject: "Vocabulary", question: "Antonym of 'victory':", options: ["Defeat", "Success", "Achievement", "Win"], correct: 1 },
+{ subject: "Vocabulary", question: "'Cautious' means:", options: ["Careless", "Careful", "Quick", "Lazy"], correct: 2 },
+{ subject: "Vocabulary", question: "What does 'miserable' mean?", options: ["Very happy", "Very sad", "Tired", "Excited"], correct: 2 },
+{ subject: "Vocabulary", question: "Synonym of 'tiny':", options: ["Huge", "Big", "Small", "Tall"], correct: 3 },
+{ subject: "Vocabulary", question: "Antonym of 'accept':", options: ["Reject", "Allow", "Receive", "Agree"], correct: 1 },
+{ subject: "Vocabulary", question: "'Essential' means:", options: ["Unnecessary", "Important", "Optional", "Minor"], correct: 2 },
+{ subject: "Vocabulary", question: "What does 'frequent' mean?", options: ["Happens often", "Happens rarely", "Never happens", "Once only"], correct: 1 },
+{ subject: "Vocabulary", question: "Synonym of 'assist':", options: ["Ignore", "Help", "Refuse", "Delay"], correct: 2 },
+{ subject: "Vocabulary", question: "Antonym of 'brilliant':", options: ["Smart", "Stupid", "Bright", "Clever"], correct: 2 },
+{ subject: "Vocabulary", question: "'Optimistic' means:", options: ["Negative", "Angry", "Scared", "Hopeful"], correct: 4 },
+{ subject: "Vocabulary", question: "In British English, 'flat' means what in American English?", options: ["House", "Apartment", "Cottage", "Mansion"], correct: 2 },
+{ subject: "Vocabulary", question: "In American English, 'truck' is called what in British English?", options: ["Car", "Lorry", "Van", "Coach"], correct: 2 },
+{ subject: "Vocabulary", question: "What is the British English word for 'elevator'?", options: ["Escalator", "Stairs", "Lift", "Platform"], correct: 3 },
+{ subject: "Vocabulary", question: "In American English, 'gasoline' is known as what in British English?", options: ["Diesel", "Fuel", "Petrol", "Oil"], correct: 3 },
+{ subject: "Vocabulary", question: "The American word 'soccer' is called what in British English?", options: ["Rugby", "Cricket", "Tennis", "Football"], correct: 4 },
+{ subject: "Vocabulary", question: "What do British people call 'cookies' in American English?", options: ["Cakes", "Pastries", "Biscuits", "Scones"], correct: 3 },
+{ subject: "Vocabulary", question: "In British English, 'holiday' means what in American English?", options: ["Trip", "Weekend", "Vacation", "Break"], correct: 3 },
+{ subject: "Vocabulary", question: "The American term 'apartment' is what in British English?", options: ["Suite", "Condo", "Flat", "Cabin"], correct: 3 },
+{ subject: "Vocabulary", question: "In American English, 'eraser' is known as what in British English?", options: ["Cleaner", "Wiper", "Sponge", "Rubber"], correct: 4 },
+{ subject: "Vocabulary", question: "What is the British English equivalent of 'trash can'?", options: ["Box", "Basket", "Bin", "Container"], correct: 3 },
+{ subject: "Vocabulary", question: "The American 'fries' are called what in British English?", options: ["Crisps", "Chips", "Snacks", "Wedges"], correct: 2 },
+{ subject: "Vocabulary", question: "In British English, 'crisps' means what in American English?", options: ["Fries", "Crackers", "Chips", "Snacks"], correct: 3 },
+{ subject: "Vocabulary", question: "What do Americans call the British 'chemist'?", options: ["Clinic", "Doctor's office", "Pharmacy/Drugstore", "Market"], correct: 3 },
+{ subject: "Vocabulary", question: "In American English, 'pants' means what in British English?", options: ["Underwear", "Shorts", "Jeans", "Trousers"], correct: 4 },
+{ subject: "Vocabulary", question: "What is the British English word for 'sidewalk'?", options: ["Road", "Track", "Pavement", "Pathway"], correct: 3 },
+{ subject: "Vocabulary", question: "The American 'subway' is called what in British English?", options: ["Metro", "Tube", "Underground", "All of the above"], correct: 4 },
+{ subject: "Vocabulary", question: "In British English, 'boot' of a car means what in American English?", options: ["Hood", "Roof", "Trunk", "Door"], correct: 3 },
+{ subject: "Vocabulary", question: "What is the American English version of 'autumn'?", options: ["Harvest", "Winter", "Fall", "Season"], correct: 3 },
+{ subject: "Vocabulary", question: "In American English, 'candy' is known as what in British English?", options: ["Desserts", "Snacks", "Sweets", "Chocolate"], correct: 3 },
+{ subject: "Vocabulary", question: "What do Americans call the British 'postcode'?", options: ["Area code", "ZIP code", "Address code", "Region code"], correct: 2 },
+{ subject: "Vocabulary", question: "Choose the correct synonym of 'meticulous':", options: ["Lazy", "Thorough", "Casual", "Careless"], correct: 2 },
+{ subject: "Vocabulary", question: "Select the correct meaning of 'break the ice':", options: ["Destroy something", "Start a conversation easily", "End a friendship", "Cool down a situation"], correct: 2 },
+{ subject: "Vocabulary", question: "Find the correct collocation:", options: ["Mighty tea", "Big tea", "Strong tea", "Powerful tea"], correct: 3 },
+{ subject: "Vocabulary", question: "Choose the closest meaning of 'alleviate':", options: ["Complicate", "Ease", "Worsen", "Ignore"], correct: 2 },
+{ subject: "Vocabulary", question: "Select the correct word: The meeting was quite ___, lasting only ten minutes.", options: ["tiny", "fast", "brief", "shortly"], correct: 3 },
+{ subject: "Vocabulary", question: "Find the word that means 'to confirm or support a statement':", options: ["Conceal", "Corroborate", "Condemn", "Contradict"], correct: 2 },
+{ subject: "Vocabulary", question: "Choose the correct idiom: 'Hit the nail on the head' means ___", options: ["To make a big mistake", "To work very hard", "To start over", "To be exactly right"], correct: 4 },
+{ subject: "Vocabulary", question: "Select the correct synonym of 'prosperous':", options: ["Empty", "Wealthy", "Weak", "Poor"], correct: 2 },
+{ subject: "Vocabulary", question: "Find the correct usage: He has a strong ___ for classical music.", options: ["sense", "taste", "flavor", "smell"], correct: 2 },
+{ subject: "Vocabulary", question: "Choose the correct antonym of 'scarce':", options: ["Limited", "Abundant", "Insufficient", "Rare"], correct: 2 },
+      // Reading Comprehension
+{ subject: "Reading", question: "Main idea: 'Climate change affects weather patterns globally.' This is about:", options: ["Local weather", "Global warming effects", "Summer heat", "Winter cold"], correct: 2 },
+{ subject: "Reading", question: "'The cat sat on the mat.' What did the cat do?", options: ["Ran", "Slept", "Jumped", "Sat"], correct: 4 },
+{ subject: "Reading", question: "Inference: 'Dark clouds gathered.' What might happen?", options: ["Rain", "Sunshine", "Snow in summer", "Rainbow"], correct: 1 },
+{ subject: "Reading", question: "'She studied hard and passed.' Why did she pass?", options: ["Luck", "Easy test", "Hard work", "Cheating"], correct: 3 },
+{ subject: "Reading", question: "Purpose of 'Once upon a time...':", options: ["End story", "Start story", "Scientific fact", "News report"], correct: 2 },
+{ subject: "Reading", question: "Main idea: 'Too much sugar can cause health problems.' This passage is mainly about:", options: ["Healthy habits", "Sugar and health", "Sweet desserts", "Exercise"], correct: 2 },
+{ subject: "Reading", question: "'He turned off the lights and closed the door.' What did he probably do next?", options: ["Leave the room", "Watch TV", "Turn on the fan", "Open the window"], correct: 1 },
+{ subject: "Reading", question: "Purpose: 'Warning: Wet floor.' means:", options: ["The floor is clean", "The floor is slippery", "The floor is dry", "The floor is safe"], correct: 2 },
+{ subject: "Reading", question: "Inference: 'The teacher smiled after reading the test results.' means:", options: ["Students did well", "Students failed", "The teacher is angry", "The class is over"], correct: 1 },
+{ subject: "Reading", question: "Main idea: 'Dogs are loyal and helpful animals.' The passage is about:", options: ["Wild animals", "Pet care", "Qualities of dogs", "How to train cats"], correct: 3 },
+{ subject: "Reading", question: "'He forgot his umbrella and got wet.' What caused him to get wet?", options: ["Rain", "Wind", "Snow", "Sun"], correct: 1 },
+{ subject: "Reading", question: "'The baby cried because she was hungry.' Why did the baby cry?", options: ["Tired", "Cold", "Hungry", "Happy"], correct: 3 },
+{ subject: "Reading", question: "Purpose: 'Please recycle bottles here.' means:", options: ["Throw bottles anywhere", "Put bottles in the bin", "Reuse bottles at home", "Recycle bottles in this place"], correct: 4 },
+{ subject: "Reading", question: "'The movie was so boring that he fell asleep.' What does this show?", options: ["The movie was exciting", "He was not interested", "He was too happy", "It was a short film"], correct: 2 },
+{ subject: "Reading", question: "Main idea: 'Plants need sunlight to grow.' This passage talks about:", options: ["Animals", "Photosynthesis", "Gardening tools", "Cooking plants"], correct: 2 },
+{ subject: "Reading", question: "'She missed the bus and arrived late to school.' What happened first?", options: ["She arrived late", "She missed the bus", "She ate breakfast", "She took a taxi"], correct: 2 },
+{ subject: "Reading", question: "'After exercising, he drank a lot of water.' Why did he drink water?", options: ["He was thirsty", "He was tired of water", "He wanted to swim", "He felt cold"], correct: 1 },
+{ subject: "Reading", question: "Purpose of 'Do not enter':", options: ["Invitation", "Warning", "Greeting", "Request"], correct: 2 },
+{ subject: "Reading", question: "'The sky turned orange as the sun set.' What time is it?", options: ["Morning", "Noon", "Evening", "Midnight"], correct: 3 },
+{ subject: "Reading", question: "Inference: 'He wore a coat and gloves.' What’s the weather likely like?", options: ["Hot", "Cold", "Rainy", "Sunny"], correct: 2 },
+{ subject: "Reading", question: "Main idea: 'Recycling helps protect the environment.' The passage is about:", options: ["Making plastic", "Throwing trash", "Environmental protection", "Buying new things"], correct: 3 },
+{ subject: "Reading", question: "'She turned on the fan because it was hot.' What’s the reason she used the fan?", options: ["She was cold", "It was noisy", "It was hot", "She liked wind"], correct: 3 },
+{ subject: "Reading", question: "Purpose of 'Thank you for your patience.':", options: ["Apology", "Instruction", "Complaint", "Warning"], correct: 1 },
+{ subject: "Reading", question: "'He wore a helmet before riding the bike.' Why did he wear a helmet?", options: ["To look cool", "For safety", "Because it rained", "Because of fashion"], correct: 2 },
+{ subject: "Reading", question: "Inference: 'She opened the umbrella.' What might be happening?", options: ["It’s raining", "It’s sunny", "It’s snowing", "It’s windy"], correct: 1 },
+{ subject: "Reading", question: "'He set an alarm before sleeping.' Why did he do that?", options: ["To wake up on time", "To watch TV", "To keep quiet", "To play music"], correct: 1 },
+{ subject: "Reading", question: "Main idea: 'People should save water to protect nature.' The passage is about:", options: ["Water games", "Saving water", "Drinking water", "Swimming pools"], correct: 2 },
+{ subject: "Reading", question: "'She brought an umbrella even though the sky was clear.' What does this show?", options: ["She loves umbrellas", "She expects rain", "She is afraid of clouds", "She forgot it"], correct: 2 },
+{ subject: "Reading", question: "Purpose: 'No smoking area' means:", options: ["You can smoke here", "You can’t smoke here", "You must buy cigarettes", "You can smoke outside only"], correct: 2 },
+{ subject: "Reading", question: "'He opened the window to get some fresh air.' Why did he open it?", options: ["It was noisy", "It was hot", "He wanted air", "He saw birds"], correct: 3 },
+{ subject: "Reading", question: "Inference: 'The streets were full of lights and people were singing.' What’s happening?", options: ["A party or festival", "A quiet night", "A power cut", "A school day"], correct: 1 },
+{ subject: "Reading", question: "Main idea: 'Eating fruits gives you vitamins and energy.' This passage talks about:", options: ["Fruits and health", "Cooking fruit", "Fruits are expensive", "How to grow fruit"], correct: 1 },
+{ subject: "Reading", question: "'He apologized to her for breaking the vase.' What did he do?", options: ["Fixed the vase", "Broke the vase", "Cleaned the room", "Bought a vase"], correct: 2 },
+{ subject: "Reading", question: "Purpose: 'Handle with care.' means:", options: ["Throw it quickly", "Be gentle with it", "It is safe to drop", "Open immediately"], correct: 2 },
+{ subject: "Reading", question: "'The boy wore a raincoat and boots.' What can you guess?", options: ["It’s raining", "It’s sunny", "It’s bedtime", "It’s summer"], correct: 1 },
+{ subject: "Reading", question: "Main idea: 'Reading books helps us learn and imagine.' This sentence is about:", options: ["Movies", "Reading benefits", "Writing stories", "School rules"], correct: 2 },
+{ subject: "Reading", question: "'She smiled when she saw her test score.' What can we infer?", options: ["She failed", "She passed", "She was tired", "She was angry"], correct: 2 },
+{ subject: "Reading", question: "'He looked both ways before crossing the street.' Why did he do that?", options: ["He was scared", "He was careful", "He was waiting for a bus", "He was playing"], correct: 2 },
+{ subject: "Reading", question: "Purpose: 'Push to open.' means:", options: ["Pull the door", "Push the door", "Lock the door", "Knock first"], correct: 2 },
+{ subject: "Reading", question: "Inference: 'She turned off her phone before the movie started.' Why?", options: ["To save battery", "To be polite in the cinema", "Because it was broken", "To play games"], correct: 2 },
+{ subject: "Reading", question: "Main idea: 'Recycling paper saves trees.' This passage talks about:", options: ["Cutting trees", "Recycling benefits", "Planting flowers", "Making books"], correct: 2 },
+{ subject: "Reading", question: "'He brought a map to find his way.' Why did he bring it?", options: ["He was lost", "He wanted to draw", "He liked maps", "He wanted to play"], correct: 1 },
+{ subject: "Reading", question: "'They turned off the lights to save energy.' What was their goal?", options: ["Save energy", "Sleep early", "Watch stars", "Make it dark"], correct: 1 },
+{ subject: "Reading", question: "Purpose: 'Keep out!' means:", options: ["Enter quickly", "Do not enter", "Knock first", "Stay nearby"], correct: 2 },
+{ subject: "Reading", question: "'He put on a jacket because it was cold outside.' What can we infer?", options: ["It’s hot", "It’s cold", "It’s raining", "It’s windy"], correct: 2 },
+{ subject: "Reading", question: "Passage: 'The company decided to implement a new remote work policy to improve employee satisfaction and reduce office costs.' What is the main purpose of the new policy?", options: ["To increase salaries", "To improve satisfaction and cut costs", "To expand the office", "To hire more employees"], correct: 2 },
+{ subject: "Reading", question: "Passage: 'Many scientists believe that climate change is accelerating due to human activities such as deforestation and the burning of fossil fuels.' What do scientists believe causes climate change?", options: ["Natural events", "Volcanic eruptions", "Human activities", "Ocean currents"], correct: 3 },
+{ subject: "Reading", question: "Passage: 'The restaurant is famous for its friendly staff and affordable prices, making it a popular choice among students.' Why do students like the restaurant?", options: ["It is expensive", "It has friendly staff and good prices", "It is far from campus", "It serves only breakfast"], correct: 2 },
+{ subject: "Reading", question: "Passage: 'After years of research, the team finally discovered a vaccine that could prevent the disease entirely.' What was the outcome of the research?", options: ["They failed to find a cure", "They created a vaccine", "They stopped researching", "They changed the topic"], correct: 2 },
+{ subject: "Reading", question: "Passage: 'To apply for the internship, applicants must submit a résumé and a cover letter by June 15.' What is required to apply?", options: ["A résumé and a cover letter", "An ID card", "A phone interview", "Only a résumé"], correct: 1 },
+{ subject: "Reading", question: "Passage: 'Though the book was long and complex, it offered valuable insights into human behavior.' What is the author’s opinion of the book?", options: ["It was too short", "It was boring", "It was difficult but useful", "It was simple and easy"], correct: 3 },
+{ subject: "Reading", question: "Passage: 'Despite the heavy rain, the match continued until the final whistle.' What can we infer?", options: ["The match was canceled", "The players stopped playing", "The match went on despite bad weather", "The weather was sunny"], correct: 3 },
+{ subject: "Reading", question: "Passage: 'The conference, which focuses on renewable energy, attracts experts from around the world every year.' What is the conference about?", options: ["Technology", "Medicine", "Renewable energy", "Tourism"], correct: 3 },
+{ subject: "Reading", question: "Passage: 'John was promoted to manager because of his strong leadership skills and consistent performance.' Why was John promoted?", options: ["Because he was new", "Because of leadership and performance", "Because of luck", "Because he requested it"], correct: 2 },
+{ subject: "Reading", question: "Passage: 'The museum offers free entry on the first Sunday of every month to encourage more visitors.' Why does the museum offer free entry?", options: ["To attract more visitors", "To celebrate holidays", "Because it’s closing", "To save money"], correct: 1 },
+    ];
+
+    function setupRoundCards() {
+      roundCards = [];
+      const shuffledSubjects = shuffleArray([...subjectCards]).slice(0, 3);
+      shuffledSubjects.forEach(subj => {
+        roundCards.push({ type: "subject", text: subj.text, subject: subj.subject });
+      });
+      const func = functionCards[Math.floor(Math.random() * functionCards.length)];
+      roundCards.push({ type: "function", text: func.text, function: func });
+      roundCards = shuffleArray(roundCards);
+    }
+
+    function shuffleArray(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+      return array;
+    }
+
+function startGame() {
+  const overlay = document.getElementById('countdown-overlay');
+  overlay.style.display = 'flex';
+  let countdown = 3;
+
+  overlay.textContent = countdown;
+  overlay.style.animation = 'none';
+  void overlay.offsetWidth;
+  overlay.style.animation = 'popFade 1s ease-in-out';
+  const interval = setInterval(() => {
+    countdown--;
+    if (countdown > 0) {
+      overlay.textContent = countdown;
+    } else if (countdown === 0) {
+      overlay.textContent = 'START!';
+    } else {
+      clearInterval(interval);
+      overlay.style.display = 'none';
+
+      document.getElementById('main-screen').style.display = 'none';
+      document.getElementById('game-area').style.display = 'block';
+      questionNumber = 0;
+      score = 0;
+      timeLeft = 60;
+      consecutiveCorrect = 0;
+      hasSync = false;
+      protectionCount = 0;
+      protectionActive = false;
+      updateGameState();
+      startTimer();
+      resetRound();
+    }
+  }, 1000);
+}
+
+
+    function startTimer() {
+  clearInterval(timerInterval);
+  let lastTime = Date.now();
+  timerInterval = setInterval(() => {
+    const now = Date.now();
+    const delta = (now - lastTime) / 1000;
+    lastTime = now;
+
+    timeLeft -= delta;
+    if (timeLeft <= 0) {
+      timeLeft = 0;
+      clearInterval(timerInterval);
+      endGame();
+    }
+    updateTimeBar();
+  }, 100);
+}
+
+    function updateTimeBar() {
+      const timeBar = document.getElementById('time-bar');
+      const percentage = (timeLeft / 60) * 100;
+      timeBar.style.width = percentage + '%';
+      timeBar.textContent = Math.ceil(timeLeft) + 's';
+      
+      if (timeLeft <= 15) {
+        timeBar.classList.add('danger');
+        timeBar.classList.remove('warning');
+      } else if (timeLeft <= 30) {
+        timeBar.classList.add('warning');
+        timeBar.classList.remove('danger');
+      } else {
+        timeBar.classList.remove('warning', 'danger');
+      }
+    }
+
+    function addTime(seconds) {
+      timeLeft += seconds;
+      if (timeLeft > 60) timeLeft = 60;
+      updateTimeBar();
+    }
+
+    function showMessage(text, type = "") {
+      const msgBox = document.getElementById('message-box');
+      msgBox.textContent = text;
+      msgBox.className = 'message-box ' + type;
+    }
+
+    function flipCard(cardNumber) {
+      if (isCardFlipped) return;
+      isCardFlipped = true;
+      
+      const cards = document.querySelectorAll('.card');
+      cards.forEach(c => c.classList.add('disabled'));
+
+      if (roundCards.length === 0) setupRoundCards();
+      
+      const cardData = roundCards[cardNumber - 1];
+      currentCard = { number: cardNumber, ...cardData };
+      const cardElement = cards[cardNumber - 1];
+      const backEl = cardElement.querySelector('.card-back');
+
+if (cardData.type === "function") {
+  let imgName = "";
+  switch (cardData.text) {
+    case "Jackpot": imgName = "JackpotE"; break;
+    case "Time Buffing": imgName = "TimeBuff"; break;
+    case "Protection": imgName = "ProtectionE"; break;
+    case "Sync": imgName = "SyncE"; break;
+  }
+  backEl.innerHTML = `<img src="../Image/${imgName}.png" alt="${cardData.text}">`;
+} else {
+  backEl.innerHTML = `<img src="../Image/${cardData.subject}.png" alt="${cardData.subject}">`;
+}
+      setTimeout(() => {
+        cardElement.classList.add('flipped');
+      }, 50);
+
+      setTimeout(() => {
+        processFlippedCard(cardElement, currentCard);
+      }, 900);
+    }
+
+    function processFlippedCard(cardElement, cardData) {
+      const cards = document.querySelectorAll('.card');
+
+      if (cardData.type === "function") {
+        if (cardData.function) {
+          try {
+            cardData.function.effect();
+          } catch (e) { console.error(e); }
+        }
+        roundCards = [];
+        resetRound();
+        cards.forEach(c => {
+          if (!c.classList.contains('flipped')) c.classList.remove('disabled');
+        });
+        isCardFlipped = false;
+      } else if (cardData.type === "subject") {
+        showQuestion(cardData.subject);
+        isCardFlipped = false;
+      }
+      updateGameState();
+    }
+
+    function showQuestion(subject) {
+      let filtered = questions.filter(q => q.subject === subject);
+      if (!filtered.length) filtered = questions;
+      filtered = shuffleArray([...filtered]);
+      const q = filtered[0];
+      
+      if (!q) {
+        endGame();
+        return;
+      }
+      
+      document.getElementById('question-area').style.display = 'block';
+      document.getElementById('question-text').textContent = q.question;
+      const options = document.querySelectorAll('#options button');
+      options.forEach((btn, i) => { btn.textContent = q.options[i]; });
+      currentCard.question = q;
+      showMessage("Answer the question!", "");
+    }
+
+    function checkAnswer(ansIndex) {
+      const question = currentCard && currentCard.question;
+      const cards = document.querySelectorAll('.card');
+
+      if (!question) return;
+
+      if (ansIndex === question.correct) {
+        let points = 10;
+        if (hasSync) {
+          consecutiveCorrect++;
+          points += consecutiveCorrect * 5;
+        }
+        score += points;
+        
+        let timeBonus;
+        if (questionNumber >= 451) timeBonus = 1;
+        else if (questionNumber >= 301) timeBonus = 2;
+        else if (questionNumber >= 201) timeBonus = 3;
+        else if (questionNumber >= 101) timeBonus = 4;
+        else if (questionNumber >= 51) timeBonus = 5;
+        else timeBonus = 6;
+        
+        addTime(timeBonus);
+        showMessage(`✅ Correct! +${points} points, +${timeBonus}s`, "success");
+        questionNumber++;
+      } else {
+        consecutiveCorrect = 0;
+        
+        if (protectionCount > 0) {
+          protectionCount--;
+          updatePowerCards();
+          addTime(8);
+          showMessage("🛡️ Protected! No time penalty! You got extra times instead!", "success");
+        } else {
+          timeLeft -= 5;
+          if (timeLeft < 0) timeLeft = 0;
+          showMessage("❌ Wrong! -5 seconds", "error");
+        }
+      }
+      
+      roundCards = [];
+      resetRound();
+      cards.forEach(c => c.classList.remove('disabled'));
+      isCardFlipped = false;
+      updateGameState();
+      updateTimeBar();
+    }
+
+function resetRound() {
+  document.getElementById('question-area').style.display = 'none';
+  
+  const cards = document.querySelectorAll('.card');
+  cards.forEach(card => {
+    card.classList.remove('flipped');
+    card.classList.remove('disabled');
+    const front = card.querySelector('.card-front');
+    const back = card.querySelector('.card-back');
+    
+    front.innerHTML = '<img src="../Image/CardBackE.png" alt="Card Back">';
+    back.innerHTML = '';
+  });
+
+  roundCards = [];
+  updateGameState();
+  isCardFlipped = false;
+}
+
+    function updateGameState() {
+      document.getElementById('question-number').textContent = questionNumber;
+      document.getElementById('score').textContent = score;
+      document.getElementById('high-score-english').textContent = highScoreE;
+      document.getElementById('highest-questions').textContent = highestQuestions;
+    }
+
+    function updatePowerCards() {
+      document.getElementById('protection-count').textContent = protectionCount;
+    }
+
+    function endGame() {
+      clearInterval(timerInterval);
+      highScoreE = Math.max(highScoreE, score);
+      highestQuestions = Math.max(highestQuestions, questionNumber);
+      localStorage.setItem('highScoreE', highScoreE);
+      localStorage.setItem('highestQuestions', highestQuestions);
+      
+      document.getElementById('final-score').textContent = score;
+      document.getElementById('final-questions').textContent = questionNumber;
+      document.getElementById('gameOverModal').classList.add('show');
+    }
+
+    function restartGame() {
+      document.getElementById('gameOverModal').classList.remove('show');
+      document.getElementById('main-screen').style.display = 'block';
+      document.getElementById('game-area').style.display = 'none';
+      updateGameState();
+      showMessage("Flip a card to begin!");
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (document.getElementById('question-area').style.display === 'block') {
+        if (e.key.toLowerCase() === 'a') checkAnswer(1);
+        if (e.key.toLowerCase() === 'b') checkAnswer(2);
+        if (e.key.toLowerCase() === 'c') checkAnswer(3);
+        if (e.key.toLowerCase() === 'd') checkAnswer(4);
+      }
+    });
+
+    updateGameState();
+  </script>
+</body>
+</html>

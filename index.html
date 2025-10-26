@@ -77,6 +77,16 @@
       background: #FFECA1; border-radius: 8px;
     }
     h1 { margin-bottom: 20px; color: #333; }
+    .stats-bar {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      background: #fcffe9;
+      padding: 8px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      font-size: 18px;
+    }
     .game-container {
       text-align: center;
       max-width: 1500px;
@@ -211,11 +221,19 @@
   <div class="game-container" id="main-screen">
     <p style="font-size: 24px"><strong>Chào mừng bạn đến với Good-way Edition: Fairy Draw (Phiên bản gốc)!</strong><br>-Nơi hội tụ tri thức vô hạn!-</p>
     <p>Hãy dùng máy tính, máy tính bảng hoặc laptop trên website để có trải nghiệm tốt nhất!</p>
-    <div class="score">Điểm cao nhất: <b><span id="high-score">0</span></b><br>Round cao nhất: <b><span id="highest-round">0</span></b></div>
+    <div class="stats-bar">
+      <div>Điểm cao nhất: <b><span id="high-score">0</span></b></div>
+      <div>Round cao nhất: <b><span id="highest-round">0</span></b></div>
+    </div>
     <p style="font-size: 12px">Nhấn Ctrl+F5 để lấy lại xếp hạng.</p>
     <button class="start"; onclick="startGame()"; style="font-size: 24px">Bắt đầu chơi</button>
     <br>
-    <a href="Variants/it.html"><b>Phiên bản Công Nghệ Thông Tin (Mới!)</b></a>
+    <table style="background-color: transparent;">
+      <tr>
+          <td style="width: 20px;"><a href="Variants/it.html"><b>Phiên bản Công Nghệ Thông Tin</b></a></td>
+          <td style="width: 20px;"><a href="Variants/matrix.html"><b>Phiên bản Tiếng Anh</b></a></td>
+      </tr>
+    </table>
     <div class="instructions" style="margin-top:15px;">
       <br>
       <h3 style="font-size: 20px; color:#ff0000">----------- Hướng dẫn chơi -----------</h3>
@@ -225,18 +243,27 @@
         <li>Cứ sau 5 round, bạn nhận được Bonus Round với 4 lá chức năng nhưng trong round đấy chỉ được phép bốc 1 lần.</li>
         <li>Trả lời câu hỏi trắc nghiệm (4 đáp án) trong 20 giây. Trả lời đúng câu hỏi sẽ được 10 điểm mỗi câu và có quyền vào round tiếp theo. Càng về sau, thời gian trả lời sẽ giảm đi.</li>
         <li>Mỗi người chơi có 3 cơ hội. Trả lời sai hoặc hết giờ sẽ mất 1 cơ hội và không đến round tiếp theo.</li>
+        <li>Nội dung lá chức năng sẽ được đề cập ở phần dưới!</li>
       </ul>
     <div class="ticker">
      <div class="ticker__track">
       <div class="ticker__list">
         <span class="ticker__item">Dự án game thuộc về Trần Đặng Bình Minh (MinhCampbell) - Trưởng bộ phận BMSTORY Entertainment.</span>
-        <span class="ticker__item">Phiên bản cập nhật Beta v1.0.2 (Ngày 22/9/2025): Sửa lỗi, nâng cấp tính năng game, Xếp hạng.</span>
-        <span class="ticker__item">Thông báo cập nhật và bảo trì dự kiến vào ngày 27/10/2025: Thêm thẻ chức năng, Thêm bộ môn Thiên văn học và Phiên bản mới.</span>
+        <span class="ticker__item">Phiên bản cập nhật Beta v1.0.1 (Ngày 13/9/2025): Sửa lỗi, nâng cấp tính năng game, Xếp hạng.</span>
+        <span class="ticker__item">Thông báo cập nhật và bảo trì dự kiến vào tháng 10/2025: Thêm thẻ chức năng, bộ môn mới.</span>
         <span class="ticker__item">Thông báo gửi câu hỏi cụ thể ở phần dưới của trang web này. Đọc kỹ nội dung trước khi gửi về ban tổ chức.</span>
         <span class="ticker__item">Cảm ơn các bạn đã cùng chơi và đồng hành với chúng tôi!</span>
       </div>
     </div>
     </div>
+    <h3 style="font-size: 20px; color:#ff0000">----------- Nội dung cập nhật (Ngày 27/10/2025) -----------</h3>
+      <ul style="text-align: left; line-height: 1.8;">
+        <li>Thêm lá chức năng mới: Deal It. Chỉnh sửa chức năng của lá Sync. (Nội dung thay đổi ở phần dưới)</li>
+        <li>Thêm bộ câu hỏi ngôn ngữ lập trình mới: Pascal.</li>
+        <li>Cập nhật giao diện game. Chỉnh sửa cột mốc.</li>
+        <li>Video hướng dẫn chơi sẽ được cập nhật trong vòng 4 ngày tới.</li>
+        <li>Sự kiện Ngày Nhà Giáo Việt Nam 20/11/2025: Coming Soon!</li>
+      </ul>
     <br>
     <br>
       <table>
@@ -253,7 +280,7 @@
       </tr>
       <tr>
         <td><img src="Image/AHA.png" style="width: 150px; vertical-align: middle;"></td>
-        <td><b>A-HA!</b> - Nhân 5 lần (x5) điểm nhận được khi trả lời đúng câu hỏi môn sở trường (Sau khi bốc trúng lá A-HA! thì sẽ có lựa chọn môn sở trường).<br>Lưu ý: Chỉ được chọn 1 môn duy nhất, có thể thay đổi khi bốc lá A-HA! lần thứ 2.</td>
+        <td><b>A-HA!</b> - Cộng thêm 50 điểm (Tổng: 60) khi trả lời đúng câu hỏi môn sở trường (Sau khi bốc trúng lá A-HA! thì sẽ có lựa chọn môn sở trường).<br>Lưu ý: Chỉ được chọn 1 môn duy nhất, có thể thay đổi khi bốc lá A-HA! lần thứ 2.</td>
       </tr>
       <tr>
         <td><img src="Image/Boost.png" style="width: 150px; vertical-align: middle;"></td>
@@ -265,15 +292,19 @@
       </tr>
       <tr>
         <td><img src="Image/Sync.png" style="width: 150px; vertical-align: middle;"></td>
-        <td><b>Sync</b> - Cộng thêm 5-10 điểm khi trả lời đúng và cộng dồn cho các câu hỏi được trả lời chính xác liên tiếp sau đó.</td>
+        <td><b>Sync</b> - Cộng thêm 5-10 điểm khi trả lời đúng và cộng dồn cho các câu hỏi được trả lời chính xác liên tiếp sau đó.<br>Lưu ý: Điểm cộng có thể cộng dồn khi bốc nhiều lá Sync cùng lúc!</td>
       </tr>
       <tr>
         <td><img src="Image/STOP.png" style="width: 150px; vertical-align: middle;"></td>
         <td><b>STOP</b> - Bỏ hẹn giờ để trả lời câu hỏi kế tiếp (Có thể giữ nhiều lá cùng lúc)<br>Lưu ý: Chỉ được dừng 1 lần/câu hỏi duy nhất và sẽ mất đi sau khi trả lời xong.</td>
       </tr>
+      <tr>
+        <td><img src="../Image/DealIt.png" style="width: 150px; vertical-align: middle;"></td>
+        <td><b>Deal It!</b> - Đặt cược câu hỏi khi đang trả lời nếu chắc chắn (Có thể giữ nhiều lá cùng lúc)<br>Kết quả: Nếu trả lời đúng, thưởng thêm [25*số round] điểm. Nếu trả lời sai, trừ nửa số điểm hiện tại. Protection sẽ giúp không bị trừ điểm!</td>
+      </tr>
     </table>
     </div>
-  <div>
+    <div>
       <h2>Video hướng dẫn (Cập nhật 28/9/2025)</h2>
     <iframe width="560" height="315" src="https://www.youtube.com/embed/idRN5w8NWfI?si=m80q9CMKQAtfqsEZ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
   </div>
@@ -289,32 +320,48 @@
       <tr>
         <td style="font-size: 24px; color:#32CD32"><b>C</b></td>
         <td><b>25-40</b>: Không tệ</td>
-        <td><b>4000-8999</b>: Cũng không may mắn lắm</td>
+        <td><b>5000-19999</b>: Cũng không may mắn lắm</td>
       </tr>
       <tr>
         <td style="font-size: 24px; color:#00bfff"><b>B</b></td>
         <td><b>41-80</b>: Khá lắm</td>
-        <td><b>9000-24999</b>: Có niềm tin</td>
+        <td><b>20000-79999</b>: Có niềm tin</td>
       </tr>
       <tr>
         <td style="font-size: 24px; color:#800080"><b>A</b></td>
         <td><b>81-179</b>: Quá giỏi</td>
-        <td><b>25000-69999</b>: Ông hoàng trúng tủ</td>
+        <td><b>80000-319999</b>: Ông hoàng trúng tủ</td>
       </tr>
       <tr>
         <td style="font-size: 24px; color:#ffa500"><b>S</b></td>
         <td><b>181-300</b>: Xuất sắc</td>
-        <td><b>70000-199999</b>: Jackpot.exe</td>
+        <td><b>320000-1279999</b>: Jackpot.exe</td>
       </tr>
       <tr>
         <td style="font-size: 24px; color:#ff781f"><b>SS</b></td>
         <td><b>301-450</b>: Ánh sáng tri thức</td>
-        <td><b>200000-599999</b>: Sổ xố 365 ngày</td>
+        <td><b>1280000-5119999</b>: Sổ xố 365 ngày</td>
       </tr>
       <tr>
         <td style="font-size: 24px; color:#ff67fa"><b>Peak SS</b></td>
         <td><b>451 trở lên</b>: Ngôi sao tri thức</td>
-        <td><b>600000 trở lên</b>: Trùm bài</td>
+        <td><b>5120000 trở lên</b>: Trùm bài</td>
+      </tr>
+    </table>
+    <br>
+    <table>
+      <tr>
+        <th colspan="8" style="font-size: 20px; background: #7b00ff;"><b>Danh sách các môn học</b></th>
+      </tr>
+      <tr>
+        <td><img src="../Image/Math.png" style="width: 125px; vertical-align: middle;"></td>
+        <td><img src="../Image/History.png" style="width: 125px; vertical-align: middle;"></td>
+        <td><img src="../Image/Geography.png" style="width: 125px; vertical-align: middle;"></td>
+        <td><img src="../Image/EconomicsLaw.png" style="width: 125px; vertical-align: middle;"></td>
+        <td><img src="../Image/Physics.png" style="width: 125px; vertical-align: middle;"></td>
+        <td><img src="../Image/Chemistry.png" style="width: 125px; vertical-align: middle;"></td>
+        <td><img src="../Image/Biology.png" style="width: 125px; vertical-align: middle;"></td>
+        <td><img src="../Image/Astronomy.png" style="width: 125px; vertical-align: middle;"></td>
       </tr>
     </table>
 <div style="margin-top: 15px;">
@@ -347,7 +394,7 @@
   </div>
 </div>
 <br><br>
- <a href="https://docs.google.com/forms/d/e/1FAIpQLSdJAufqQidTHU5X3S622OqKoNmTYeLuB2TJNwr7osqde08SRw/viewform?usp=header" target="_blank"><button class="start"><b>Gửi thêm câu hỏi cho nhà phát hành</b></button></a>
+  <a href="https://docs.google.com/forms/d/e/1FAIpQLSdJAufqQidTHU5X3S622OqKoNmTYeLuB2TJNwr7osqde08SRw/viewform?usp=header" target="_blank"><button class="start"><b>Gửi thêm câu hỏi cho nhà phát hành</b></button></a>
 </div>
 
 
@@ -359,7 +406,7 @@
         <td>Cơ hội còn lại: <b><span id="lives">3</span></b></td>
       </tr>
       <tr>
-        <td colspan="3">Lá chức năng tích lỹ: Protection x <b id="protection-count">0</b> | STOP x <b id="stop-count">0</b></div></td>
+        <td colspan="3">Lá chức năng tích lỹ: Protection x <b id="protection-count">0</b> | STOP x <b id="stop-count">0</b> | Deal It x <b id="deal-count">0</b></div></td>
       </tr>
     </table>
 
@@ -378,6 +425,7 @@
         <button onclick="checkAnswer(3)">C</button>
         <button onclick="checkAnswer(4)">D</button>
       </div>
+      <button id="deal-btn" onclick="useDealIt()" style="display:none; background:#ff9800; color:white;">Dùng Deal It!</button>
       <div class="timer">Thời gian: <b><span id="timer">20</span></b> giây</div>
     </div>
 
@@ -391,6 +439,7 @@
         <option value="Vật lý">Vật lý</option>
         <option value="Hoá học">Hoá học</option>
         <option value="Sinh học">Sinh học</option>
+        <option value="Thiên văn học">Thiên văn học</option>
       </select>
       <button id="confirm-aha">Xác nhận</button>
     </div>
@@ -443,15 +492,20 @@
     let protectionCount = 0;
     let stopCount = 0;
     let isStopUsed = false;
+    let dealCount = 0;
+    let isDealActive = false;
+    let syncBonusLevel = 1;
 
     // --- Data ---
 const functionCards = [
   { name: "Jackpot", image: "Image/Jackpot.png", text: "Jackpot", effect: () => { score *= 2; showPopup("Jackpot! Điểm của bạn được nhân đôi!"); } },
-  { name: "A-HA", image: "Image/AHA.png", text: "A-HA", effect: () => { hasAHA = true; choosingAHA = true; document.getElementById('aha-selection').style.display = 'block'; showPopup("A-HA! Chọn môn sở trường để x5 điểm khi trả lời đúng!"); } },
+  { name: "A-HA", image: "Image/AHA.png", text: "A-HA", effect: () => { hasAHA = true; choosingAHA = true; document.getElementById('aha-selection').style.display = 'block'; showPopup("A-HA! Chọn môn sở trường để thêm điểm khi trả lời đúng!"); } },
   { name: "Boost", image: "Image/Boost.png", text: "Boost", effect: () => { score += 50; showPopup("Boost! Cộng 50 điểm và chuyển đến round tiếp theo!"); } },
-  { name: "Protection", image: "Image/Protection.png", text: "Protection", effect: () => { protectionCount++; updatePowerCards(); showPopup("Bạn nhận được 1 lá Protection! Bạn sẽ không bị mất cơ hội khi trả lời sai! (Còn: " + protectionCount + ")");} },
-  { name: "Sync", image: "Image/Sync.png", text: "Sync", effect: () => { hasSync = true; showPopup("Sync! Thêm điểm khi trả lời đúng liên tiếp!"); } },
-  { name: "STOP", image: "Image/STOP.png", text: "STOP", effect: () => { stopCount++; updatePowerCards(); showPopup("Bạn nhận được 1 lá STOP! Bỏ hẹn giờ trả lời câu hỏi! (Số lượng còn lại: " + stopCount + ")");} }
+  { name: "Protection", image: "Image/Protection.png", text: "Protection", effect: () => { protectionCount++; updatePowerCards(); showPopup("Bạn nhận được 1 lá Protection! Bạn sẽ không bị mất cơ hội khi trả lời sai! (Số lá được giữ trong thanh trạng thái)");} },
+  { name: "Sync", image: "Image/Sync.png", text: "Sync", effect: () => { hasSync = true; if (typeof syncBonusLevel === "undefined") syncBonusLevel = 1; else syncBonusLevel += 1; showPopup("Sync! Thêm điểm khi trả lời đúng liên tiếp!"); } },
+  { name: "STOP", image: "Image/STOP.png", text: "STOP", effect: () => { stopCount++; updatePowerCards(); showPopup("Bạn nhận được 1 lá STOP! Bỏ hẹn giờ trả lời câu hỏi kế tiếp! (Số lá được giữ trong thanh trạng thái)");} },
+  { name: "Deal It", image: "Image/DealIt.png", text: "Deal It", effect: () => { dealCount++; updatePowerCards(); showPopup("Bạn nhận được 1 lá Deal It! Bạn có thể đặt cược khi trả lời câu hỏi! (Số lá được giữ trong thanh trạng thái)"); }, 
+}
 ];
 
     const subjectCards = [
@@ -461,7 +515,8 @@ const functionCards = [
       { subject: "GD Kinh tế - Pháp Luật", image: "Image/EconomicsLaw.png", text: "GD Kinh tế - Pháp Luật" },
       { subject: "Vật lý", image: "Image/Physics.png", text: "Vật lý" },
       { subject: "Hoá học", image: "Image/Chemistry.png", text: "Hoá học" },
-      { subject: "Sinh học", image: "Image/Biology.png", text: "Sinh học" }
+      { subject: "Sinh học", image: "Image/Biology.png", text: "Sinh học" },
+      { subject: "Thiên văn học", image: "Image/Astronomy.png", text: "Thiên văn học" }
     ];
 
     const questions = [
@@ -860,7 +915,7 @@ const functionCards = [
 { subject: "GD Kinh tế - Pháp Luật", question: "Trong pháp luật Việt Nam, quyền sở hữu trí tuệ bao gồm quyền nào?", options: ["Quyền tác giả và quyền sở hữu công nghiệp", "Quyền sử dụng đất", "Quyền sở hữu tài sản", "Quyền thừa kế"], correct: 1 },
 { subject: "GD Kinh tế - Pháp Luật", question: "Khi công dân vi phạm pháp luật giao thông, sẽ bị xử lý bằng hình thức nào?", options: ["Trách nhiệm hình sự", "Trách nhiệm hành chính", "Trách nhiệm dân sự", "Trách nhiệm kỷ luật"], correct: 2 },
 { subject: "GD Kinh tế - Pháp Luật", question: "Quyền bất khả xâm phạm về thân thể của công dân nghĩa là gì?", options: ["Không ai được bắt, giam, giữ trái pháp luật", "Không ai được xâm phạm danh dự", "Không ai được cấm học tập", "Không ai được chiếm đoạt tài sản"], correct: 1 },
-{ subject: "GD Kinh tế - Pháp Luật", question: "Trong nền kinh tế nhiều thành phần, khu vực nào giữ vai trò chủ đạo?", options: ["Kinh tế tư nhân", "Kinh tế nhà nước", "Kinh tế tập thể", "Kinh tế hỗn hợp"], correct: 2 },
+{ subject: "GD Kinh tế - Pháp Luật", question: "Trong nền kinh tế nhiều thành phần, khu vực nào giữ vai trò chủ đạo?", options: ["Kinh tế tư nhân", "Kinh tế hỗn hợp", "Kinh tế tập thể", "Kinh tế nhà nước"], correct: 4 },
 { subject: "GD Kinh tế - Pháp Luật", question: "Theo pháp luật Việt Nam, quyền trẻ em KHÔNG bao gồm quyền nào?", options: ["Quyền được bảo vệ, chăm sóc, giáo dục", "Quyền vui chơi, giải trí", "Quyền kết hôn trước 16 tuổi", "Quyền phát triển toàn diện"], correct: 3 },
 { subject: "GD Kinh tế - Pháp Luật", question: "Cơ quan nào là cơ quan hành chính Nhà nước cao nhất?", options: ["Quốc hội", "Chính phủ", "Tòa án", "Viện kiểm sát"], correct: 2 },
 { subject: "GD Kinh tế - Pháp Luật", question: "Kinh tế tư nhân ở Việt Nam có vai trò gì?", options: ["Không quan trọng", "Là động lực quan trọng của nền kinh tế", "Chỉ hỗ trợ Nhà nước", "Bị hạn chế phát triển"], correct: 2 },
@@ -1131,6 +1186,36 @@ const functionCards = [
 { subject: "Sinh học", question: "Loài nào là sinh vật tự dưỡng?", options: ["Cây xanh", "Người", "Hổ", "Nấm"], correct: 1 },
 { subject: "Sinh học", question: "Ở người, tuyến yên nằm ở đâu?", options: ["Não", "Cổ", "Ngực", "Bụng"], correct: 1 },
 
+{ subject: "Thiên văn học", question: "Hành tinh nào gần Mặt Trời nhất?", options: ["Sao Kim", "Trái Đất", "Sao Thủy", "Sao Hỏa"], correct: 3 },
+{ subject: "Thiên văn học", question: "Trái Đất quay quanh Mặt Trời theo quỹ đạo gì?", options: ["Hình tròn", "Elip", "Hình vuông", "Không xác định"], correct: 2 },
+{ subject: "Thiên văn học", question: "Sao nào được gọi là ngôi sao sáng nhất trên bầu trời đêm?", options: ["Sirius", "Polaris", "Betelgeuse", "Vega"], correct: 1 },
+{ subject: "Thiên văn học", question: "Hiện tượng nhật thực xảy ra khi?", options: ["Trái Đất ở giữa Mặt Trăng và Mặt Trời", "Mặt Trăng ở giữa Trái Đất và Mặt Trời", "Mặt Trời ở giữa Trái Đất và Mặt Trăng", "Cả ba thẳng hàng"], correct: 2 },
+{ subject: "Thiên văn học", question: "Thiên hà chứa Hệ Mặt Trời của chúng ta tên là gì?", options: ["Andromeda", "Triangulum", "Sombrero", "Milky Way"], correct: 4 },
+{ subject: "Thiên văn học", question: "Một năm ánh sáng là gì?", options: ["Thời gian Mặt Trời phát sáng", "Quãng đường ánh sáng đi trong 1 năm", "Khoảng cách từ Trái Đất đến Mặt Trăng", "Khoảng cách từ Trái Đất đến Mặt Trời"], correct: 2 },
+{ subject: "Thiên văn học", question: "Sao Hỏa có màu gì đặc trưng?", options: ["Xanh", "Đỏ", "Vàng", "Trắng"], correct: 2 },
+{ subject: "Thiên văn học", question: "Thiết bị nào dùng để quan sát các vật thể xa trong vũ trụ?", options: ["Kính hiển vi", "Kính lúp", "Ống nhòm", "Kính thiên văn"], correct: 4 },
+{ subject: "Thiên văn học", question: "Tâm của Hệ Mặt Trời là gì?", options: ["Trái Đất", "Sao Mộc", "Mặt Trời", "Sao Thổ"], correct: 3 },
+{ subject: "Thiên văn học", question: "Từ 'NASA' viết tắt của cụm nào?", options: ["National Aeronautics and Space Administration", "New American Space Agency", "National Air and Space Association", "None of the above"], correct: 1 },
+{ subject: "Thiên văn học", question: "Hành tinh nào lớn nhất trong Hệ Mặt Trời?", options: ["Trái Đất", "Sao Hải Vương", "Sao Mộc", "Sao Thổ"], correct: 3 },
+{ subject: "Thiên văn học", question: "Hành tinh nào có hệ thống vành đai nổi bật nhất?", options: ["Sao Hải Vương", "Sao Thiên Vương", "Sao Mộc", "Sao Thổ"], correct: 4 },
+{ subject: "Thiên văn học", question: "Sao chổi có đặc điểm gì nổi bật?", options: ["Có đuôi sáng", "Phát sáng như Mặt Trời", "Không quay quanh Mặt Trời", "Có vành đai"], correct: 1 },
+{ subject: "Thiên văn học", question: "Mặt Trăng quay quanh Trái Đất trong khoảng bao nhiêu ngày?", options: ["30 ngày", "27,3 ngày", "14 ngày", "7 ngày"], correct: 2 },
+{ subject: "Thiên văn học", question: "Hiện tượng nào xảy ra khi Trái Đất ở giữa Mặt Trăng và Mặt Trời?", options: ["Cực quang", "Nhật thực", "Nguyệt thực", "Sao băng"], correct: 3 },
+{ subject: "Thiên văn học", question: "Sao băng thực chất là gì?", options: ["Mảnh thiên thạch cháy khi vào khí quyển Trái Đất", "Sao mới sinh ra", "Ngôi sao nhỏ", "Vệ tinh nhân tạo"], correct: 1 },
+{ subject: "Thiên văn học", question: "Sao nào gần Trái Đất nhất (ngoài Mặt Trời)?", options: ["Sirius", "Vega", "Polaris", "Proxima Centauri"], correct: 4 },
+{ subject: "Thiên văn học", question: "Hành tinh nào có ngày dài hơn một năm?", options: ["Sao Thổ", "Sao Hỏa", "Sao Kim", "Sao Thủy"], correct: 3 },
+{ subject: "Thiên văn học", question: "Tên vệ tinh tự nhiên duy nhất của Trái Đất là gì?", options: ["Europa", "Io", "Luna", "Titan"], correct: 3 },
+{ subject: "Thiên văn học", question: "Ai là người đầu tiên đặt chân lên Mặt Trăng?", options: ["Alan Shepard", "Buzz Aldrin", "Neil Armstrong", "Yuri Gagarin"], correct: 3 },
+{ subject: "Thiên văn học", question: "Hố đen hình thành từ hiện tượng gì?", options: ["Sự giãn nở của vũ trụ", "Va chạm thiên hà", "Sao mới sinh", "Vụ nổ sao siêu tân tinh"], correct: 4 },
+{ subject: "Thiên văn học", question: "Tên của kính viễn vọng không gian nổi tiếng do NASA phóng vào quỹ đạo là?", options: ["Kepler", "Hubble", "James Webb", "Spitzer"], correct: 2 },
+{ subject: "Thiên văn học", question: "Vũ trụ được hình thành từ sự kiện nào theo lý thuyết phổ biến nhất?", options: ["Big Bang", "Big Crunch", "Dark Expansion", "Cosmic Ripple"], correct: 1 },
+{ subject: "Thiên văn học", question: "Vật chất tối (dark matter) có đặc điểm nào sau đây?", options: ["Phát sáng mạnh", "Không phát xạ ánh sáng nhưng có khối lượng", "Là năng lượng thuần túy", "Chỉ tồn tại trong hố đen"], correct: 2 },
+{ subject: "Thiên văn học", question: "Sao neutron là gì?", options: ["Sao đang hình thành", "Tàn dư của sao khối lượng lớn sau khi nổ siêu tân tinh", "Một loại hành tinh nhỏ", "Vệ tinh tự nhiên của sao khổng lồ"], correct: 2 },
+{ subject: "Thiên văn học", question: "Thiên hà Andromeda còn được gọi là gì?", options: ["M31", "M33", "M51", "M101"], correct: 1 },
+{ subject: "Thiên văn học", question: "Sự giãn nở của vũ trụ được phát hiện qua hiện tượng nào?", options: ["Hiệu ứng Doppler đỏ", "Hiệu ứng Doppler xanh", "Bức xạ tia X", "Sóng hấp dẫn"], correct: 1 },
+{ subject: "Thiên văn học", question: "Khoảng cách trung bình giữa Trái Đất và Mặt Trời khoảng bao nhiêu?", options: ["150.000 km", "15 triệu km", "150 triệu km", "1,5 tỷ km"], correct: 3 },
+{ subject: "Thiên văn học", question: "Tên của kính viễn vọng hồng ngoại kế nhiệm Hubble là?", options: ["Chandra", "Spitzer", "Kepler", "James Webb"], correct: 4 },
+{ subject: "Thiên văn học", question: "Sóng hấp dẫn được phát hiện trực tiếp lần đầu tiên vào năm nào?", options: ["1999", "2008", "2015", "2020"], correct: 3 },
 ];
 
 function setupRoundCards() {
@@ -1153,6 +1238,7 @@ function shuffleArray(array) {
 }
 
 function showQuestion(subject) {
+  document.getElementById("deal-btn").style.display = (dealCount > 0 ? "inline-block" : "none");
   clearInterval(timerInterval);
   console.log("Show question for", subject);
   let filtered = questions.filter(q => q.subject === subject);
@@ -1310,6 +1396,16 @@ function processFlippedCard(cardElement, cardData) {
   updateGameState();
 }
 
+function useDealIt() {
+  if (dealCount > 0) {
+    dealCount--;
+    isDealActive = true;
+    updatePowerCards();
+    document.getElementById("deal-btn").style.display = "none";
+    showPopup("Bạn đã dùng lá Deal It! Câu trả lời kế tiếp sẽ được nhân đôi điểm!");
+  }
+}
+
 function startTimer() {
   let timeLeft;
   if (round >= 151) {
@@ -1336,7 +1432,7 @@ function startTimer() {
 
 function showPopup(message) {
   const messageModal = document.getElementById("messageModal");
-  document.getElementById("popupMessage").textContent = message;
+  document.getElementById("popupMessage").innerHTML = message;
   messageModal.style.zIndex = "3000";
   messageModal.classList.add("show");
 }
@@ -1365,19 +1461,26 @@ function checkAnswer(ansIndex) {
   if (ansIndex === question.correct) {
     let points = 10;
 const isAHA = hasAHA && question.subject === favoriteSubject;
-if (isAHA) points *= 5;
+if (isAHA) points *= 6;
 console.log("A-HA x5 point");
 if (hasSync) {
   consecutiveCorrect++;
-  points += consecutiveCorrect * 5;
+  points += consecutiveCorrect * syncBonusLevel * 5;
 } else {
   consecutiveCorrect = 0;
 }
 score += points;
+    if (isDealActive) {
+    let dealPoints = 25 * round;
+    score += dealPoints;
+    showPopup(`✅ Đúng! Bạn được ${points} điểm!<br>(Đặt cược thành công!) Bạn đã được thưởng thêm ${dealPoints} điểm!`);
+    isDealActive = false;
+  } else {
     showPopup(`✅ Đúng! Bạn được ${points} điểm!`);
-    consecutiveCorrect++;
+  }
+    roundCards = [];
+    resetRound();
     round++;
-    roundCards = []; // Reset roundCards
     if (round % 5 === 0) {
       document.getElementById('bonusModal').classList.add('show');
     } else {
@@ -1386,6 +1489,7 @@ score += points;
   } else {
     if (protectionCount > 0) {
       protectionCount--;
+      isDealActive = false;  
       updatePowerCards();
       showPopup("🛡️ Protection đã cứu bạn không bị mất cơ hội! (Còn: " + protectionCount + ")");
       showQuestion(question.subject);
@@ -1404,12 +1508,30 @@ function loseLife(reason = "wrong") {
   updateGameState();
 
   if (lives <= 0) {
+    if (isDealActive) {
+        score = Math.floor(score / 2);
+        isDealActive = false;
+      }
     endGame();
   } else {
     if (reason === "timeout") {
-      showPopup(`⏰ Hết giờ! Bạn còn ${lives} cơ hội.`);
+      if (isDealActive) {
+        score = Math.floor(score / 2);
+        showPopup(`⏰ Hết giờ! Bạn còn ${lives} cơ hội.<br>(Đặt cược thất bại!) Bạn bị trừ nửa số điểm hiện tại!`);
+        isDealActive = false;
+      }
+      else {
+        showPopup(`⏰ Hết giờ! Bạn còn ${lives} cơ hội`);
+      }
     } else {
-      showPopup(`❌ Trả lời sai! Bạn còn ${lives} cơ hội.`);
+      if (isDealActive) {
+        score = Math.floor(score / 2);
+        showPopup(`❌ Trả lời sai! Bạn còn ${lives} cơ hội.<br>(Đặt cược thất bại!) Bạn bị trừ nửa số điểm hiện tại!`);
+        isDealActive = false;  
+      }
+      else {
+        showPopup(`❌ Trả lời sai! Bạn còn ${lives} cơ hội.`);
+    }
     }
     resetRound();
   }
@@ -1482,28 +1604,11 @@ function resetRound() {
 function updatePowerCards() {
   document.getElementById('protection-count').textContent = protectionCount;
   document.getElementById('stop-count').textContent = stopCount;
+  document.getElementById("deal-count").innerText = dealCount;
 }
 
 function restartGame() {
-  console.log("Restarting game");
-  round = 1;
-  lives = 3;
-  score = 0;
-  consecutiveCorrect = 0;
-  hasAHA = false;
-  hasSync = false;
-  hasGoodRedraw = false;
-  protectionCount = 0;
-  stopCount = 0;
-  let isStopUsed = false;
-  inBonusRound = false;
-  favoriteSubject = null;
-  document.getElementById('aha-selection').style.display = 'none';
-  document.getElementById('gameOverModal').classList.remove('show');
-  document.getElementById('main-screen').style.display = 'block';
-  document.getElementById('game-area').style.display = 'none';
-  resetRound();
-  updateGameState();
+  location.reload(true);
 }
 
 document.querySelectorAll('.card-front img').forEach(img => {
@@ -1523,17 +1628,17 @@ document.addEventListener('keydown', (e) => {
 });
 
 function getScoreRank(highScore) {
-  if (highScore >= 600000) {
+  if (highScore >= 5120000) {
     return { text: 'Peak SS (Trùm Bài)', color: '#ff67fa' };
-  } else if (highScore >= 200000) {
+  } else if (highScore >= 1280000) {
     return { text: 'SS (Sổ xố 365 ngày)', color: '#ff781f' };
-  } else if (highScore >= 70000) {
+  } else if (highScore >= 320000) {
     return { text: 'S (Jackpot.exe)', color: '#ffa500' };
-  } else if (highScore >= 25000) {
+  } else if (highScore >= 80000) {
     return { text: 'A (Ông hoàng trúng tủ)', color: '#800080' };
-  } else if (highScore >= 9000) {
+  } else if (highScore >= 20000) {
     return { text: 'B (Có niềm tin)', color: '#00bfff' };
-  } else if (highScore >= 4000) {
+  } else if (highScore >= 5000) {
     return { text: 'C (Cũng không may mắn lắm)', color: '#32CD32' };
   } else {
     return { text: 'Chưa xếp hạng', color: '#000000' };
@@ -1558,6 +1663,7 @@ function getRoundRank(highestRound) {
   }
 }
 
+
 const starMessengerReactions = {
   "B": "Cũng khá nhỉ! Bạn có tiềm năng lớn đấy. Tôi đang mong chờ những thành tựu tiếp theo của bạn.",
   "A": "Quá giỏi! Bạn mang lại rất nhiều hi vọng! Tôi chưa bao giờ thấy ai làm được như vậy.",
@@ -1573,15 +1679,15 @@ function showStarMessengerReaction() {
   const roundRank = getRoundRank(finalRound);
   
   let highestRankText;
-  if (finalScore >= 600000 && finalRound >= 451) {
+  if (finalScore >= 5120000 && finalRound >= 451) {
       highestRankText = "Peak SS";
-  } else if (finalScore >= 200000 && finalRound >= 301) {
+  } else if (finalScore >= 1280000 && finalRound >= 301) {
       highestRankText = "SS";
-  } else if (finalScore >= 70000 && finalRound >= 181) {
+  } else if (finalScore >= 320000 && finalRound >= 181) {
       highestRankText = "S";
-  } else if (finalScore >= 25000 && finalRound >= 81) {
+  } else if (finalScore >= 80000 && finalRound >= 81) {
       highestRankText = "A";
-  } else if (finalScore >= 9000 && finalRound >= 41) {
+  } else if (finalScore >= 20000 && finalRound >= 41) {
       highestRankText = "B";
   } else {
       highestRankText = "C";
@@ -1613,10 +1719,3 @@ if (highestRound >= 451 || highScore >= 600000) {
   </script>
 </body>
 </html>
-
-
-
-
-
-
-

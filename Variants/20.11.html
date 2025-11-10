@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Good-way Edition: Fairy Draw (Infinite Challenge)</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: url("../Image/20112025background.png") no-repeat center center fixed;
+      margin: 0;
+      padding: 0;
+      text-align: center;
+      user-select: none;
+      overflow-x: hidden;
+      overflow-y: scroll;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+    body::-webkit-scrollbar { display: none; }
+
+    nav {
+      display: flex;
+      align-items: center;
+      background-color: #fff8;
+      backdrop-filter: blur(6px);
+      padding: 10px 30px;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 1100;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+    .logo { display: flex; align-items: center; gap: 10px; }
+    .logo img { width: 150px; vertical-align: middle; }
+    .menu { display: flex; gap: 30px; list-style: none; margin-left: 40px; }
+    .menu li a {
+      text-decoration: none; color: black; font-size: 18px; padding: 6px 12px;
+    }
+
+    h1 { margin-bottom: 20px; color: #333; }
+    .stats-bar {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      background: #e7c9ffcc;
+      padding: 8px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      font-size: 18px;
+    }
+    .game-container {
+      text-align: center;
+      max-width: 1500px;
+      margin: 20px auto;
+      background: #f4e7ffcc;
+      border-radius: 10px;
+      padding: 20px;
+    }
+
+    .question-area { display: none; margin: 20px 0; background: #fff; padding: 15px; border-radius: 10px; }
+    .timer, .score { font-size: 18px; color: #333; margin: 10px 0; text-align: center; }
+    button {
+      padding: 10px 20px; margin: 5px; font-size: 16px; border-radius: 10px;
+      border: none; background: #b895ff; cursor: pointer; transition: 0.2s ease;
+    }
+    button:hover { background: #c062ff; box-shadow: 0 0 5px rgba(0,0,0,0.3); }
+    .buff {
+      padding: 10px 20px; margin: 5px; font-size: 16px; border-radius: 10px;
+      border: none; background: #ffd900; cursor: pointer; transition: 0.2s ease;
+    }
+    .buff:hover { background: #e1c000; box-shadow: 0 0 5px rgba(0,0,0,0.3); }
+    .start {
+      padding: 10px 20px; margin: 5px; font-size: 20px; border-radius: 10px;
+      border: none; background: #e598ff; cursor: pointer; transition: 0.2s ease;
+      border: 4px solid #c32cff;
+    }
+    .start:hover { background: #a200e3; box-shadow: 0 0 5px rgba(0,0,0,0.3); }
+
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.5);
+      justify-content: center;
+      align-items: center;
+      z-index: 2000;
+    }
+    .modal-content {
+      background: #fff; padding: 20px; border-radius: 10px; text-align: center;
+      max-width: 700px; width: 90%; box-shadow: 0 0 10px rgba(0,0,0,0.3);
+    }
+    .modal-content button { background: #8b00be; color: white; }
+    .modal-content button:hover { background: #4f006c; }
+    .show { display: flex !important; }
+    footer { background: #222; color: white; text-align: center; padding: 30px; margin-top: 40px; }
+
+    .time-bar-container {
+        width: 60%;
+        height: 30px;
+        background: #ffffff;
+        border-radius: 20px;
+        overflow: hidden;
+        position: relative;
+        margin: 10px auto;
+    }
+
+    .time-bar {
+        height: 100%;
+        background: linear-gradient(90deg, #4CAF50, #8BC34A);
+        transition: width 0.1s linear;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: bold;
+        font-size: 18px;
+    }
+
+.time-bar.warning {
+        background: linear-gradient(90deg, #FF9800, #FFC107);
+    }
+
+    .time-bar.danger {
+        background: linear-gradient(90deg, #F44336, #E91E63);
+    }
+
+.alert-line {
+        width: 60%;
+        height: 30px;
+        background: linear-gradient(to right, #00ff80, #00d9ff);
+        border-radius: 3px;
+        margin: 10px auto;
+        animation: pulseGlow 2s infinite alternate;
+    }
+    @keyframes pulseGlow {
+        from { filter: brightness(1); }
+        to { filter: brightness(1.7); }
+    }
+    #alertText {
+        position: relative;
+        top: 0px;
+        text-align: center;
+        font-weight: bold;
+        color: #000000;
+        font-size: 20px;
+    }
+    .divider {
+      height: 6px;
+      background: linear-gradient(to right, #ffb700, #ff3f3f);
+      border-radius: 3px;
+      margin: 15px auto;
+      width: 80%;
+    }
+    #topicSelect { display: none; margin-top: 20px; }
+    .topicBtn {
+      padding: 12px 25px;
+      font-size: 18px;
+      background: #d689ff;
+      border-radius: 10px;
+      border: 3px solid #9600b0;
+      cursor: pointer;
+      margin: 10px;
+    }
+    .topicBtn:hover { background: #c965ff; }
+    #countdown {
+      font-size: 60px;
+      color: #b300ff;
+      font-weight: bold;
+      margin: 30px 0;
+    }
+    .guide-box {
+        background: #efdbff;
+        border: 3px dashed #9e0dff;
+        padding: 20px;
+        border-radius: 15px;
+        margin: 20px auto;
+        max-width: 900px;
+        text-align: left;
+    }
+    .guide-box h2 {
+        color: #4e008a;
+        margin-bottom: 10px;
+    }
+    .guide-box ul {
+        list-style-type: "✨ ";
+        font-size: 17px;
+        line-height: 1.6;
+        margin-left: 25px;
+    }
+  </style>
+</head>
+<body oncontextmenu="return false;">
+  <link rel="icon" type="image/png" href="Image/GWE.png">
+  <nav>
+    <div class="logo">
+      <img src="../Image/BMSTORY.png" alt="Logo"><p style="color:#fb00ff">HTML Games</p>
+    </div>
+    <ul class="menu">
+      <li>Đây là hệ thống game được lập trình bằng HTML, CSS và JavaScript. Được thành lập bởi BMSTORY Entertainment và UNETI ITC LAB.</li>
+    </ul>
+  </nav>
+<h1>Minigame: Tri ân người lái đò</h1>
+<div class="game-container" id="main-screen">
+    <p>Hãy dùng máy tính, máy tính bảng hoặc laptop trên website để có trải nghiệm tốt nhất!<br>Thời gian sự kiện: 10/11/2025 - 21/11/2025</p>
+<div class="stats-bar">
+  <div class="score"><b>🏆 Điểm: <span id="score">0</span></b></div>
+  <div class="time-bar-container" id="timeContainer" style="display:none;">
+    <div class="time-bar" id="timeBar">90s</div>
+  </div>
+</div>
+  <div class="alert-line" id="alertLine" style="display:none;">
+  <div id="alertText"></div></div>
+  <div id="countdown"></div>
+  <div id="topicSelect"></div>
+
+  <div class="question-area" id="questionArea">
+    <p id="question"></p>
+    <div id="options"></div>  
+    <div class="divider"></div>
+    <div class="powerups">
+      <button class="buff" id="timeBuff">Time Buffing +10s</button>
+      <button class="buff" id="boost">Boost (Gợi ý)</button>
+      <button class="buff" id="dealIt">Deal It (x3 hoặc -½)</button>
+    </div>
+  </div>
+</div>
+  <button class="start" id="startBtn">Bắt đầu!</button>
+</div>
+<div class="guide-box">
+  <h2>📜 Hướng dẫn chơi</h2>
+  <ul>
+    <li>Trò chơi gồm nhiều chủ đề ẩn danh: Nhận thức, Lịch sử, Danh nhân, Âm nhạc.</li>
+    <li>Trả lời đúng: +10 điểm ⏩ Trả lời sai: -2 giây thời gian.</li>
+    <li>Dùng các Buff khẩn cấp:
+      <ul>
+        <li><b>Time Buff:</b> +10s</li>
+        <li><b>Boost:</b> Gợi ý đáp án đúng</li>
+        <li><b>Deal It:</b> Câu hỏi kế được x3 điểm, sai bị -½ điểm</li>
+      </ul>
+    </li>
+    <li>Khi hết giờ, tổng điểm sẽ hiển thị. Hãy thử xem ai đạt cao nhất!</li>
+  </ul>
+</div>
+<div style="
+  background: linear-gradient(135deg, #ffe6ff, #e2b3ff);
+  border: 3px solid #b300ff;
+  border-radius: 15px;
+  padding: 20px;
+  max-width: 900px;
+  margin: 30px auto;
+  font-size: 18px;
+  color: #4e0072;
+  box-shadow: 0 0 10px rgba(179,0,255,0.3);
+">
+  <h2 style="color:#b300ff;">💖 Thông điệp từ đội ngũ phát triển</h2>
+  <p>
+    Nhân dịp <b>20/11 – Ngày Nhà giáo Việt Nam</b>, minigame này được tạo ra như một món quà nhỏ 
+    để tri ân những “người lái đò” tận tụy trên hành trình gieo tri thức.  
+    <br><br>
+    Mỗi câu hỏi, mỗi chủ đề là một lời cảm ơn chân thành gửi đến các thầy cô – những người đã 
+    thắp sáng ước mơ, chắp cánh tương lai cho bao thế hệ học sinh (và cả sinh viên...).  
+    <br><br>
+    <i>“Dẫu thời gian có phai mờ, lòng biết ơn vẫn còn mãi.”</i> 🌸  
+    <br><br>
+    — <b>Trần Đặng Bình Minh (BMSTORY Entertainment)</b> 💫
+  </p>
+</div>
+          <p><a href="../index.html"><b>Quay lại phiên bản gốc của Good-way Edition: Fairy Draw</b></a></p>
+<div class="modal" id="resultModal">
+  <div class="modal-content">
+    <h2>Hết giờ!</h2>
+    <p id="finalScore"></p>
+    <p>Cảm ơn bạn đã tham gia và hoà nhập vào không khí ngày tháng tuyệt vời của người giữ lửa!</p>
+    <button onclick="closeModal()">Chơi lại</button>
+  </div>
+</div>
+<script>
+
+const questionSets = {
+  nhanThuc: [
+    { q: "Ngày Nhà giáo Việt Nam là ngày nào?", options: ["20/10","20/11","26/3","5/9"], answer: 1 },
+    { q: "Ai là người được ví như 'người lái đò'?", options: ["Thầy cô giáo","Bác sĩ","Cảnh sát","Học sinh"], answer: 0 },
+    { q: "Thầy cô thường dạy chúng ta điều gì?", options: ["Kiến thức và đạo đức","Cách nấu ăn","Cách chơi thể thao","Cách mua sắm"], answer: 0 },
+    { q: "Từ nào gắn liền với nghề giáo?", options: ["Phấn trắng","Búa tạ","Dao kéo","Cần câu"], answer: 0 },
+    { q: "Câu tục ngữ nào nói về công ơn thầy cô?", options: ["Không thầy đố mày làm nên","Ăn quả nhớ kẻ trồng cây","Có công mài sắt có ngày nên kim","Một cây làm chẳng nên non"], answer: 0 },
+    { q: "Câu tục ngữ nào thể hiện lòng biết ơn người dạy dỗ?", options: ["Tôn sư trọng đạo","Ăn quả nhớ kẻ trồng cây","Có công mài sắt có ngày nên kim","Thất bại là mẹ thành công"], answer: 0 },
+    { q: "Câu nói nào của Chủ tịch Hồ Chí Minh liên quan đến nghề dạy học?", options: ["Vì lợi ích mười năm trồng cây, vì lợi ích trăm năm trồng người","Không có gì quý hơn độc lập tự do","Học, học nữa, học mãi","Thi đua là yêu nước"], answer: 0 },
+    { q: "Ngày Nhà giáo Việt Nam là dịp để làm gì?", options: ["Tôn vinh thầy cô và nghề dạy học", "Nghỉ học dài ngày", "Thi học kỳ", "Lễ hội ẩm thực"], answer: 0 },
+    { q: "Hoạt động nào thể hiện lòng biết ơn thầy cô?", options: ["Tặng hoa, viết thiệp, biểu diễn văn nghệ", "Nghịch phá lớp học", "Vẽ bậy lên bảng", "Bỏ học đi chơi"], answer: 0 },
+    { q: "Trong ngày 20/11, học sinh thường gửi điều gì đến thầy cô?", options: ["Lời chúc và tri ân", "Hóa đơn", "Bài kiểm tra", "Tin nhắn nhắc học bài"], answer: 0 },
+    { q: "Biểu tượng quen thuộc trong ngày 20/11 là gì?", options: ["Hoa hồng và phấn trắng", "Quả bóng và còi", "Búa và đe", "Đèn giao thông"], answer: 0 },
+    { q: "Cụm từ 'Tôn sư trọng đạo' mang ý nghĩa gì?", options: ["Kính trọng thầy và coi trọng đạo học", "Nghe lời bạn bè", "Lễ phép với cha mẹ", "Học thuộc bài nhanh"], answer: 0 },
+    { q: "Thầy cô có vai trò gì trong cuộc đời mỗi người?", options: ["Dẫn dắt, truyền đạt tri thức và nhân cách", "Giúp ta kiếm tiền", "Chấm điểm thôi", "Giám sát giờ ra chơi"], answer: 0 },
+    { q: "Cụm từ 'Tôn sư trọng đạo' phản ánh giá trị nào trong văn hoá Việt?", options: ["Truyền thống hiếu học và biết ơn thầy cô", "Tinh thần đoàn kết", "Lòng yêu nước", "Ý chí vượt khó"], answer: 0 },
+    { q: "Trong xã hội hiện đại, ý nghĩa lớn nhất của Ngày Nhà giáo Việt Nam là gì?", options: ["Gìn giữ và phát huy truyền thống tôn sư trọng đạo", "Chỉ là ngày nghỉ học", "Ngày tổng kết học kỳ", "Ngày tặng quà lấy điểm tốt"], answer: 0 },
+    { q: "Theo bạn, hành động nào thiết thực nhất để tri ân thầy cô?", options: ["Cố gắng học tốt và sống tốt", "Tặng quà đắt tiền", "Làm video TikTok", "Chụp ảnh check-in"], answer: 0 },
+    { q: "Từ 'nhà giáo' bao hàm ý nghĩa gì sâu xa?", options: ["Người dạy kiến thức và hướng dẫn nhân cách", "Người làm công việc văn phòng", "Người viết sách", "Người truyền thông"], answer: 0 },
+    { q: "Câu nói nào thể hiện lòng biết ơn thầy cô?", options: ["Dù khó khăn đến đâu cũng phải học", "Học để làm giàu", "Thầy cô là người bạn tốt", "Học để trở thành người nổi tiếng"], answer: 0 },
+    { q: "Ngày Nhà giáo Việt Nam giúp chúng ta nhận thức điều gì quan trọng?", options: ["Giá trị của tri thức và công lao của thầy cô", "Cách chơi thể thao", "Cách nấu ăn ngon", "Cách mua sắm thông minh"], answer: 0 },
+    { q: "Câu nói 'Không có học trò dốt, chỉ có thầy dạy chưa tốt' thể hiện điều gì?", options: ["Trách nhiệm cao của người dạy", "Phê bình học sinh", "Tư tưởng cá nhân chủ nghĩa", "Tinh thần cạnh tranh"], answer: 0 },
+  ],
+
+  lichSu: [
+    { q: "Ngày 20/11 đầu tiên được tổ chức vào năm nào?", options: ["1958","1982","1975","2000"], answer: 1 },
+    { q: "Tổ chức nào khởi xướng Ngày Nhà giáo Việt Nam?", options: ["Công đoàn giáo dục Việt Nam","Liên hợp quốc","Bộ Giáo dục và Đào tạo","UNESCO"], answer: 0 },
+    { q: "Ngày Nhà giáo Việt Nam bắt nguồn từ sự kiện nào?", options: ["Hội nghị các nhà giáo toàn Đông Dương tại Ba Lan năm 1957","Thành lập Bộ Giáo dục Việt Nam","Ngày khai giảng đầu tiên","Quốc tế thiếu nhi 1/6"], answer: 0 },
+    { q: "Ngày Nhà giáo Việt Nam được công nhận chính thức vào năm nào?", options: ["1982","1975","1958","1990"], answer: 0 },
+    { q: "Ngày Quốc tế Nhà giáo (World Teachers’ Day) được UNESCO chọn vào ngày nào?", options: ["5/10","20/11","15/5","10/9"], answer: 0 },
+    { q: "Mục đích chính của Ngày Nhà giáo Việt Nam là gì?", options: ["Tôn vinh và tri ân thầy cô giáo","Kỷ niệm ngày thành lập trường","Tổ chức thi đua học tập","Phát động phong trào thể thao"], answer: 0 },
+    { q: "Phong trào nào thường diễn ra trong dịp 20/11?", options: ["Thi đua dạy tốt học tốt","Nghỉ học dài ngày","Thi đấu thể thao","Hội chợ ẩm thực"], answer: 0 },
+    { q: "Ngày Nhà giáo Việt Nam cũng nhằm mục đích gì?", options: ["Nâng cao vai trò của nhà giáo trong xã hội","Tăng lương cho giáo viên","Xây dựng trường học mới","Phát triển công nghệ giáo dục"], answer: 0 },
+    { q: "Ai là người có công lớn trong việc thành lập Ngày Nhà giáo Việt Nam?", options: ["Công đoàn giáo dục Việt Nam","Bộ trưởng Bộ Giáo dục","Chủ tịch nước","Thủ tướng Chính phủ"], answer: 0 },
+    { q: "Ai là Bộ trưởng đầu tiên của Bộ Giáo dục Việt Nam?", options: ["Tạ Quang Bửu", "Nguyễn Văn Huyên", "Phạm Văn Đồng", "Trần Đại Nghĩa"], answer: 1 },
+    { q: "Từ năm 1982, ngày 20/11 được tổ chức định kỳ vào ngày nào hàng năm?", options: ["20/11", "5/9", "15/10", "1/6"], answer: 0 },
+    { q: "Sau năm 1982, hoạt động nào được tổ chức rộng rãi trong các trường học?", options: ["Lễ tri ân và văn nghệ chào mừng 20/11", "Hội thi thể thao mùa xuân", "Ngày hội sách quốc gia", "Hội diễn ca múa nhạc thiếu nhi"], answer: 0 },
+    { q: "Tên tiếng Anh của Ngày Nhà giáo Việt Nam là gì?", options: ["Vietnamese Teachers' Day", "International Education Day", "School Day Vietnam", "Study Appreciation Day"], answer: 0 },
+    { q: "Tại sao ngày 20/11 được chọn làm Ngày Nhà giáo Việt Nam thay vì ngày khác?", options: ["Gắn liền với sự kiện Hiến chương các Nhà giáo 1957", "Trùng với ngày khai giảng", "Là ngày nghỉ thuận tiện", "Là ngày mùa thu đẹp"], answer: 0 },
+    { q: "Sự kiện nào đánh dấu lần đầu tiên Việt Nam tham gia kỷ niệm Ngày Quốc tế Hiến chương các Nhà giáo?", options: ["Năm 1958, theo đề nghị của Công đoàn Giáo dục Việt Nam", "Năm 1982, sau khi thống nhất đất nước", "Năm 1965, theo UNESCO", "Năm 1976, tại Ba Lan"], answer: 0 },
+    { q: "Trước 1975, miền Nam Việt Nam có kỷ niệm ngày dành cho thầy cô không?", options: ["Có, nhưng chưa thống nhất toàn quốc", "Không hề có", "Chỉ trong các trường tư", "Có, trùng ngày 5/9"], answer: 0 },
+    { q: "Năm 2022, ngành Giáo dục Việt Nam kỷ niệm bao nhiêu năm Ngày Nhà giáo Việt Nam?", options: ["40 năm", "50 năm", "45 năm", "30 năm"], answer: 0 },
+  ],
+
+  danhNhan: [
+    { q: "Ai là người được xem là nhà giáo đầu tiên trong lịch sử Việt Nam?", options: ["Khổng Tử","Chu Văn An","Nguyễn Trãi","Nguyễn Bỉnh Khiêm"], answer: 1 },
+    { q: "Tên đầy đủ của danh nhân Chu Văn An là gì?", options: ["Chu Văn An (tên thật là Chu An)","Chu Văn An (tên thật là Chu Văn An)","Chu Văn Chiêu An","Chu Văn Hiền"], answer: 0 },
+    { q: "Ai là Nhà giáo Nhân dân đầu tiên được phong trong lĩnh vực Toán học?", options: ["GS Hoàng Tụy","GS Ngô Bảo Châu","GS Lê Văn Thiêm","GS Tạ Quang Bửu"], answer: 2 },
+    { q: "Nhà giáo Nhân dân Nguyễn Lân nổi tiếng với công trình nào?", options: ["Từ điển Tiếng Việt","Giáo trình Toán học","Giáo trình Lý luận văn học","Sách giáo khoa Sinh học"], answer: 0 },
+    { q: "Nhà giáo Nhân dân Nguyễn Ngọc Ký được biết đến với điều gì?", options: ["Viết bằng chân và trở thành thầy giáo dạy Văn","Sáng tác nhiều bài hát thiếu nhi","Là hiệu trưởng trẻ nhất nước","Là người sáng lập phong trào dạy giỏi"], answer: 0 },
+    { q: "Ai là tấm gương sáng về lòng yêu nghề và tận tụy với học trò?", options: ["Chu Văn An", "Trần Hưng Đạo", "Nguyễn Du", "Lý Thường Kiệt"], answer: 0 },
+    { q: "Danh nhân nào từng được phong là 'Vạn thế sư biểu'?", options: ["Khổng Tử", "Nguyễn Trãi", "Nguyễn Bỉnh Khiêm", "Lê Quý Đôn"], answer: 0 },
+    { q: "Nhà giáo nào được xem là người đặt nền móng cho nền giáo dục hiện đại Việt Nam?", options: ["GS Lê Văn Thiêm", "GS Nguyễn Lân", "GS Hoàng Tụy", "GS Tạ Quang Bửu"], answer: 3 },
+    { q: "Ai là người sáng lập Trường Quốc học Huế?", options: ["Nguyễn Đình Chiểu", "Phan Bội Châu", "Nguyễn Văn Tố", "Nguyễn Thúc Hào"], answer: 2 },
+    { q: "Nhà giáo Nhân dân nào được biết đến với công trình nghiên cứu về ngôn ngữ học?", options: ["GS Nguyễn Lân", "GS Hoàng Tụy", "GS Lê Văn Thiêm", "GS Tạ Quang Bửu"], answer: 0 },
+    { q: "Ai từng dâng sớ chém gian thần, biểu tượng cho khí tiết nhà giáo?", options: ["Chu Văn An", "Nguyễn Trãi", "Nguyễn Du", "Ngô Sĩ Liên"], answer: 0 },
+    { q: "Nhà giáo nào từng là người sáng lập Trường Đại học Quốc gia Việt Nam?", options: ["GS Tạ Quang Bửu", "GS Lê Văn Thiêm", "GS Nguyễn Văn Huyên", "GS Trần Đại Nghĩa"], answer: 2 },
+    { q: "Người thầy được mệnh danh là 'Người gieo hạt Toán học Việt Nam' là ai?", options: ["GS Lê Văn Thiêm", "GS Hoàng Tụy", "GS Ngô Bảo Châu", "GS Nguyễn Cảnh Toàn"], answer: 0 },
+    { q: "Danh hiệu 'Nhà giáo Nhân dân' được Nhà nước phong tặng lần đầu vào năm nào?", options: ["1988", "1981", "1990", "1985"], answer: 1 },
+    { q: "Chu Văn An được xem là biểu tượng cho phẩm chất nào của người thầy Việt Nam?", options: ["Chính trực, tận tụy, kiên định đạo đức nghề", "Giàu có và danh vọng", "Giỏi võ nghệ", "Cởi mở và hiện đại"], answer: 0 },
+    { q: "Danh nhân nào từng làm quan nhưng xin từ chức để dạy học?", options: ["Chu Văn An", "Nguyễn Du", "Ngô Thì Nhậm", "Nguyễn Bỉnh Khiêm"], answer: 3 },
+    { q: "GS Hoàng Tụy được thế giới biết đến với lĩnh vực nào?", options: ["Toán học – Tối ưu toàn cục", "Văn học – Thi ca", "Vật lý lượng tử", "Giáo dục mầm non"], answer: 0 },
+    { q: "Ai là người sáng lập Trường Đại học Sư phạm Hà Nội?", options: ["GS Tạ Quang Bửu", "GS Lê Văn Thiêm", "GS Nguyễn Văn Huyên", "GS Trần Đại Nghĩa"], answer: 0 },
+    { q: "Nhà giáo Nhân dân Nguyễn Lân có đóng góp lớn trong lĩnh vực nào?", options: ["Ngôn ngữ học và từ điển học", "Toán học", "Vật lý", "Hóa học"], answer: 0 },
+    { q: "Danh nhân Chu Văn An sống vào thời kỳ nào?", options: ["Trần (thế kỷ 13-14)", "Lý (thế kỷ 11-12)", "Nguyễn (thế kỷ 19)", "Trịnh (thế kỷ 16-17)"], answer: 0 },
+  ],
+
+  amNhac: [
+    { q: "Bài hát nào thường hát trong dịp 20/11?", options: ["Bụi phấn","Cây và gió","Như có Bác Hồ","Một con vịt"], answer: 0 },
+    { q: "Ai là người sáng tác bài hát 'Bụi phấn'?", options: ["Vũ Hoàng","Trịnh Công Sơn","Phạm Tuyên","Nguyễn Văn Chung"], answer: 0 },
+    { q: "Bài hát 'Người thầy' do ai sáng tác?", options: ["Nguyễn Nhất Huy","Trịnh Công Sơn","Phú Quang","Vũ Cát Tường"], answer: 0 },
+    { q: "Bài hát 'Người thầy' được ca sĩ nào thể hiện nổi tiếng nhất?", options: ["Cẩm Ly","Cao Minh","Mỹ Tâm","Đan Trường"], answer: 1 },
+    { q: "Ca khúc 'Mong ước kỷ niệm xưa' có câu mở đầu là gì?", options: ["Thời gian trôi qua thật mau...","Khi thầy viết bảng, bụi phấn rơi rơi...","Người thầy vẫn lặng lẽ đi về sớm trưa...","Trường em nằm giữa ngàn xanh..."], answer: 0 },
+    { q: "Bài hát 'Thầy cô cho em mùa xuân' do ai sáng tác?", options: ["Nguyễn Ngọc Thiện","Phạm Tuyên","Trần Ngọc","Hoàng Vân"], answer: 2 },
+    { q: "Bài hát nào có câu 'Khi thầy viết bảng, bụi phấn rơi rơi'?", options: ["Bụi phấn", "Người thầy", "Mong ước kỷ niệm xưa", "Thầy cô cho em mùa xuân"], answer: 0 },
+    { q: "Nhạc phẩm nào thường vang lên trong lễ tri ân thầy cô?", options: ["Người thầy", "Nối vòng tay lớn", "Tự nguyện", "Khát vọng tuổi trẻ"], answer: 0 },
+    { q: "Bài hát nào có giai điệu vui tươi, thể hiện tình cảm học trò với thầy cô?", options: ["Thầy cô cho em mùa xuân", "Mùa xuân đầu tiên", "Cây và gió", "Bụi phấn"], answer: 0 },
+    { q: "Ai là người sáng tác bài hát 'Mong ước kỷ niệm xưa'?", options: ["Trần Tiến","Phú Quang","Văn Cao","Trịnh Công Sơn"], answer: 1 },
+    { q: "Câu hát 'Thầy cô cho em mùa xuân' nằm trong ca khúc nào?", options: ["Thầy cô cho em mùa xuân", "Người thầy", "Bụi phấn", "Mong ước kỷ niệm xưa"], answer: 0 },
+    { q: "Tác giả nào có nhiều bài hát về thầy cô và mái trường?", options: ["Phạm Tuyên", "Trịnh Công Sơn", "Vũ Hoàng", "Nguyễn Văn Chung"], answer: 0 },
+    { q: "Bài hát nào gợi lại kỷ niệm thời học sinh, thường được hát trong lễ tri ân?", options: ["Mong ước kỷ niệm xưa", "Tạm biệt nhé", "Như có Bác Hồ", "Bụi phấn"], answer: 0 },
+    { q: "Giai điệu nào gắn liền với lời ca 'Người thầy vẫn lặng lẽ đi về sớm trưa'?", options: ["Người thầy", "Thầy cô cho em mùa xuân", "Bụi phấn", "Những bông hoa trong vườn"], answer: 0 },
+    { q: "Bài 'Người thầy' ngoài ca ngợi nghề giáo còn gửi gắm thông điệp gì?", options: ["Biết ơn, trân trọng và tiếp nối lý tưởng của thầy cô", "Kêu gọi bảo vệ môi trường", "Nói về mùa xuân", "Ca ngợi tuổi trẻ"], answer: 0 },
+    { q: "Trong bài 'Bụi phấn', hình ảnh 'bụi phấn rơi rơi' tượng trưng cho điều gì?", options: ["Sự hy sinh thầm lặng của người thầy", "Không khí lớp học bụi bặm", "Thời gian trôi nhanh", "Tình yêu tuổi học trò"], answer: 0 },
+    { q: "‘Mong ước kỷ niệm xưa’ được xem là biểu tượng cho điều gì trong tuổi học trò?", options: ["Tình cảm trong sáng và tri ân thầy cô", "Sự chia ly buồn bã", "Khát vọng thành công", "Tình yêu đôi lứa"], answer: 0 },
+    { q: "Ca khúc nào sau đây KHÔNG phải về chủ đề thầy cô?", options: ["Nối vòng tay lớn", "Bụi phấn", "Người thầy", "Mong ước kỷ niệm xưa"], answer: 0 },
+  ]
+};
+let questions = [];
+let score = 0, timeLeft = 90, timer, currentQ;
+let dealMode = false;
+let used = { timeBuff: false, boost: false, dealIt: false };
+const qArea = document.getElementById("questionArea");
+const qText = document.getElementById("question");
+const opts = document.getElementById("options");
+const scoreEl = document.getElementById("score");
+const timeBar = document.getElementById("timeBar");
+const timeFill = document.getElementById("timeFill");
+const countdown = document.getElementById("countdown");
+const topicSelect = document.getElementById("topicSelect");
+const startBtn = document.getElementById("startBtn");
+const topics = [
+  { name: "??", key: "nhanThuc", display: "Nhận thức chung" },
+  { name: "??", key: "lichSu", display: "Lịch sử ngày 20/11" },
+  { name: "??", key: "danhNhan", display: "Nhà giáo & Danh nhân" },
+  { name: "??", key: "amNhac", display: "Âm nhạc tri ân thầy cô" }
+];
+
+const topicTitle = document.createElement("h2");
+topicTitle.id = "topicTitle";
+topicTitle.style.color = "#b300ff";
+topicTitle.style.marginBottom = "10px";
+qArea.prepend(topicTitle);
+document.getElementById("timeBuff").onclick = useTimeBuff;
+document.getElementById("boost").onclick = useBoost;
+document.getElementById("dealIt").onclick = useDealIt;
+startBtn.onclick = startCountdown;
+
+let lastTime = Date.now();
+
+function startGame() {
+  score = 0;
+  timeLeft = 90;
+  used = { timeBuff: false, boost: false, dealIt: false };
+  document.querySelectorAll(".powerups button").forEach(b => b.disabled = false);
+  document.getElementById("timeContainer").style.display = "block";
+  document.getElementById("alertLine").style.display = "block";
+
+  lastTime = Date.now();
+  clearInterval(timer);
+  timer = setInterval(() => {
+    const now = Date.now();
+    const delta = (now - lastTime) / 1000;
+    lastTime = now;
+
+    timeLeft -= delta;
+    if (timeLeft <= 0) {
+      timeLeft = 0;
+      endGame();
+    }
+    updateTimeBar();
+  }, 100);
+}
+
+function updateTimeBar() {
+  const timeBar = document.getElementById("timeBar");
+  const percent = Math.max(0, (timeLeft / 90) * 100);
+  timeBar.style.width = percent + "%";
+  timeBar.textContent = Math.ceil(timeLeft) + "s";
+
+  timeBar.classList.remove("warning", "danger");
+  if (timeLeft <= 15) timeBar.classList.add("danger");
+  else if (timeLeft <= 30) timeBar.classList.add("warning");
+}
+
+function startCountdown() {
+  startBtn.style.display = "none";
+  let c = 3;
+  countdown.textContent = c;
+  let cd = setInterval(() => {
+    c--;
+    if (c > 0) countdown.textContent = c;
+    else if (c === 0) countdown.textContent = "BẮT ĐẦU!";
+    else {
+      clearInterval(cd);
+      countdown.style.display = "none";
+      chooseTopic();
+      startGame();
+    }
+  }, 1000);
+}
+
+function chooseTopic() {
+  topicSelect.innerHTML = "<h2>Bốc chủ đề ẩn danh</h2>";
+  topics.forEach(t => {
+    const btn = document.createElement("button");
+    btn.className = "topicBtn";
+    btn.textContent = t.name;
+    btn.onclick = () => {
+        topicSelect.style.display = "none";
+        qArea.style.display = "block";
+        topicTitle.textContent = "🎯 Đã chọn chủ đề: " + t.display;
+        questions = questionSets[t.key];
+        nextQuestion();
+    };
+    topicSelect.appendChild(btn);
+  });
+  topicSelect.style.display = "block";
+}
+
+function nextQuestion() {
+  currentQ = questions[Math.floor(Math.random() * questions.length)];
+  const arr = currentQ.options.map((opt, i) => ({ opt, index: i }));
+  const shuffled = arr.sort(() => Math.random() - 0.5);
+  qText.textContent = currentQ.q;
+  opts.innerHTML = "";
+  shuffled.forEach((item, i) => {
+    const btn = document.createElement("button");
+    btn.textContent = (i + 1) + ". " + item.opt;
+    btn.onclick = () => checkAnswer(item.index);
+    opts.appendChild(btn);
+  });
+}
+
+function showAlert(text, color1, color2) {
+  const alertLine = document.getElementById("alertLine");
+  const alertText = document.getElementById("alertText");
+  alertLine.style.background = `linear-gradient(to right, ${color1}, ${color2})`;
+  alertText.textContent = text;
+  alertText.style.animation = "none";
+  void alertText.offsetWidth;
+  alertText.style.animation = "fadeInOut 1.8s ease";
+}
+
+
+function checkAnswer(i) {
+  if (i === currentQ.answer) {
+    if (dealMode) { score += 30; dealMode = false; showAlert("Câu hỏi trước: 💥 Deal It thành công! +30đ", "#00ff99", "#00d9ff"); }
+    else { score += 10; showAlert("Câu hỏi trước: ✅ Đã chính xác +10đ", "#00ff99", "#00d9ff"); }
+  } else {
+    if (dealMode) { score = Math.floor(score / 2); dealMode = false; showAlert("Câu hỏi trước: ❌ Deal It thất bại! -½ điểm", "#ff0000", "#ff7b00"); }
+    else { timeLeft = Math.max(0, timeLeft - 2); showAlert("Câu hỏi trước: ❌ Trả lời sai -2s", "#ff0000", "#ff7b00"); }
+  }
+  scoreEl.textContent = score;
+  qArea.style.display = "none";
+  chooseTopic();
+}
+
+function useTimeBuff() {
+  if (used.timeBuff) return;
+  used.timeBuff = true;
+  timeLeft += 10;
+  document.getElementById("timeBuff").disabled = true;
+  updateTimeBar();
+}
+
+function useBoost() {
+  if (used.boost) return;
+  used.boost = true;
+  document.getElementById("boost").disabled = true;
+  const correctIndex = currentQ.answer;
+  const btns = opts.querySelectorAll("button");
+  btns.forEach(b => {
+    if (b.textContent.includes(currentQ.options[correctIndex])) {
+      b.style.border = "3px solid #00ff00";
+      b.style.background = "#b9ffb9";
+    }
+  });
+}
+
+function useDealIt() {
+  if (used.dealIt) return;
+  used.dealIt = true;
+  dealMode = true;
+  document.getElementById("dealIt").disabled = true;
+  showAlert("Deal It kích hoạt! Câu này đúng được x3 điểm, sai bị trừ nửa số điểm!");
+}
+
+function endGame() {
+  clearInterval(timer);
+  timeBar.style.display = "none";
+  qArea.style.display = "none";
+  topicSelect.style.display = "none";
+  document.getElementById("resultModal").classList.add("show");
+  document.getElementById("finalScore").textContent = "Tổng điểm của bạn: " + score;
+}
+
+function closeModal() {
+  location.reload(true);
+}
+</script>
+</body>
+</html>

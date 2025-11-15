@@ -204,7 +204,7 @@
   </nav>
 <h1>Minigame: Tri ân người lái đò</h1>
 <div class="game-container" id="main-screen">
-    <p>Hãy dùng máy tính, máy tính bảng hoặc laptop trên website để có trải nghiệm tốt nhất!<br>Thời gian sự kiện: 10/11/2025 - 21/11/2025 (Cập nhật mới lúc 7:30 AM 15/11/2025 - Thêm câu hỏi!)</p>
+    <p>Hãy dùng máy tính, máy tính bảng hoặc laptop trên website để có trải nghiệm tốt nhất!<br>Thời gian sự kiện: 10/11/2025 - 21/11/2025</p>
 <div class="stats-bar">
   <div class="score"><b>🏆 Điểm: <span id="score">0</span></b></div>
   <div class="time-bar-container" id="timeContainer" style="display:none;">
@@ -321,6 +321,12 @@ const questionSets = {
     { q: "Câu nói nào thể hiện lòng biết ơn thầy cô?", options: ["Dù khó khăn đến đâu cũng phải học", "Học để làm giàu", "Thầy cô là người bạn tốt", "Học để trở thành người nổi tiếng"], answer: 0 },
     { q: "Ngày Nhà giáo Việt Nam giúp chúng ta nhận thức điều gì quan trọng?", options: ["Giá trị của tri thức và công lao của thầy cô", "Cách chơi thể thao", "Cách nấu ăn ngon", "Cách mua sắm thông minh"], answer: 0 },
     { q: "Câu nói 'Không có học trò dốt, chỉ có thầy dạy chưa tốt' thể hiện điều gì?", options: ["Trách nhiệm cao của người dạy", "Phê bình học sinh", "Tư tưởng cá nhân chủ nghĩa", "Tinh thần cạnh tranh"], answer: 0 },
+    { q: "Hình ảnh 'người đưa đò' thường tượng trưng cho điều gì?", options: ["Sự dẫn dắt và hi sinh của thầy cô", "Người vận chuyển hàng hóa", "Nghề câu cá", "Chuyến du lịch sông nước"], answer: 0 },
+    { q: "Trong lớp học, vật dụng nào là biểu tượng của sự truyền đạt tri thức?", options: ["Viên phấn", "Cái kéo", "Máy khoan", "Búa tạ"], answer: 0 },
+    { q: "Vì sao học sinh nên tri ân thầy cô vào 20/11?", options: ["Để thể hiện lòng biết ơn và sự tôn trọng", "Để được lên điểm", "Vì bắt buộc", "Vì đó là trào lưu"], answer: 0 },
+    { q: "Thầy cô mong muốn điều gì nhất từ học sinh?", options: ["Sự nỗ lực và tiến bộ", "Quà thật đắt", "Like Facebook", "Đi học cho vui"], answer: 0 },
+    { q: "Cụm từ 'Uống nước nhớ nguồn' liên hệ với thầy cô như thế nào?", options: ["Nhắc nhớ công ơn người dạy dỗ", "Nhắc phải uống đủ nước", "Liên quan đến môn thể dục", "Không có ý nghĩa gì"], answer: 0 },
+    { q: "Ngày Nhà giáo Việt Nam góp phần nâng cao điều gì trong xã hội?", options: ["Vai trò và vị thế của nhà giáo", "Lương giáo viên", "Cơ sở vật chất trường học", "Chương trình giảng dạy"], answer: 0 },
   ],
 
   lichSu: [
@@ -341,6 +347,11 @@ const questionSets = {
     { q: "Sự kiện nào đánh dấu lần đầu tiên Việt Nam tham gia kỷ niệm Ngày Quốc tế Hiến chương các Nhà giáo?", options: ["Năm 1958, theo đề nghị của Công đoàn Giáo dục Việt Nam", "Năm 1982, sau khi thống nhất đất nước", "Năm 1965, theo UNESCO", "Năm 1976, tại Ba Lan"], answer: 0 },
     { q: "Trước 1975, miền Nam Việt Nam có kỷ niệm ngày dành cho thầy cô không?", options: ["Có, nhưng chưa thống nhất toàn quốc", "Không hề có", "Chỉ trong các trường tư", "Có, trùng ngày 5/9"], answer: 0 },
     { q: "Năm 2022, ngành Giáo dục Việt Nam kỷ niệm bao nhiêu năm Ngày Nhà giáo Việt Nam?", options: ["40 năm", "50 năm", "45 năm", "30 năm"], answer: 0 },
+    { q: "Ngày 20/11 ban đầu có tên gọi là gì?", options: ["Ngày Hiến chương các Nhà giáo", "Ngày Nhà giáo Việt Nam", "Ngày Tri ân thầy cô", "Ngày Sư phạm toàn quốc"], answer: 0 },
+    { q: "Hiến chương các Nhà giáo ra đời vào năm nào?", options: ["1957", "1982", "1970", "1968"], answer: 0 },
+    { q: "Ai ký quyết định chính thức chọn 20/11 là ngày Nhà giáo Việt Nam?", options: ["Hội đồng Bộ trưởng", "Bộ GD&ĐT", "UNESCO", "Quốc hội"], answer: 0 },
+    { q: "Phong trào dạy tốt – học tốt xuất hiện mạnh mẽ vào thời kỳ nào?", options: ["Sau 1982", "Trước 1945", "Thời Lý – Trần", "Sau 2000"], answer: 0 },
+    { q: "Sự kiện nào đánh dấu việc Việt Nam hòa nhập với phong trào tôn vinh giáo viên quốc tế?", options: ["Tham gia Hiến chương Nhà giáo 1957", "Gia nhập Liên Hợp Quốc", "Kỷ niệm 1000 năm Thăng Long", "Thành lập UNESCO Việt Nam"], answer: 0 },
   ],
 
   danhNhan: [
@@ -364,6 +375,13 @@ const questionSets = {
     { q: "Ai là người sáng lập Trường Đại học Sư phạm Hà Nội?", options: ["GS Tạ Quang Bửu", "GS Lê Văn Thiêm", "GS Nguyễn Văn Huyên", "GS Trần Đại Nghĩa"], answer: 0 },
     { q: "Nhà giáo Nhân dân Nguyễn Lân có đóng góp lớn trong lĩnh vực nào?", options: ["Ngôn ngữ học và từ điển học", "Toán học", "Vật lý", "Hóa học"], answer: 0 },
     { q: "Danh nhân Chu Văn An sống vào thời kỳ nào?", options: ["Trần (thế kỷ 13-14)", "Lý (thế kỷ 11-12)", "Nguyễn (thế kỷ 19)", "Trịnh (thế kỷ 16-17)"], answer: 0 },
+    { q: "Chu Văn An mở trường dạy học ở đâu?", options: ["Làng Huỳnh Cung", "Kinh thành Thăng Long", "Huế", "Hải Phòng"], answer: 1 },
+    { q: "Nhà giáo nào nổi tiếng là người thầy của học trò Nguyễn Văn Tố?", options: ["Nguyễn Văn Huyên", "Ngô Sĩ Liên", "Nguyễn Văn Tố không có thầy nổi tiếng", "Chu Văn An"], answer: 3 },
+    { q: "GS Nguyễn Lân có bao nhiêu người con theo nghề giáo?", options: ["Hơn 5", "1", "2", "Không ai"], answer: 0 },
+    { q: "Ai được coi là người truyền cảm hứng lớn cho nền Toán học Việt Nam thời hiện đại?", options: ["GS Ngô Bảo Châu", "GS Hoàng Tụy", "GS Tạ Quang Bửu", "GS Lê Văn Thiêm"], answer: 3 },
+    { q: "Danh nhân nào vừa là thầy, vừa là nhà văn hóa lỗi lạc của dân tộc?", options: ["Nguyễn Trãi", "Chu Văn An", "Nguyễn Du", "Phan Bội Châu"], answer: 1 },
+    { q: "Nhà giáo Nhân dân Nguyễn Ngọc Ký đã truyền cảm hứng cho bao thế hệ học sinh bằng điều gì?", options: ["Sự kiên trì và nghị lực vượt qua khó khăn", "Sự giàu có và quyền lực", "Sự nổi tiếng trên truyền hình", "Sự sáng tạo trong nghệ thuật"], answer: 0 },
+    { q: "Ai là người thầy nổi tiếng với câu nói 'Học, học nữa, học mãi'?", options: ["Chủ tịch Hồ Chí Minh", "Chu Văn An", "Nguyễn Trãi", "Nguyễn Du"], answer: 0 },
   ],
 
   amNhac: [
@@ -385,6 +403,12 @@ const questionSets = {
     { q: "Trong bài 'Bụi phấn', hình ảnh 'bụi phấn rơi rơi' tượng trưng cho điều gì?", options: ["Sự hy sinh thầm lặng của người thầy", "Không khí lớp học bụi bặm", "Thời gian trôi nhanh", "Tình yêu tuổi học trò"], answer: 0 },
     { q: "‘Mong ước kỷ niệm xưa’ được xem là biểu tượng cho điều gì trong tuổi học trò?", options: ["Tình cảm trong sáng và tri ân thầy cô", "Sự chia ly buồn bã", "Khát vọng thành công", "Tình yêu đôi lứa"], answer: 0 },
     { q: "Ca khúc nào sau đây KHÔNG phải về chủ đề thầy cô?", options: ["Nối vòng tay lớn", "Bụi phấn", "Người thầy", "Mong ước kỷ niệm xưa"], answer: 0 },
+    { q: "Ca khúc nào thường dùng mở đầu lễ chào mừng 20/11 ở nhiều trường?", options: ["Người thầy", "Bụi phấn", "Mong ước kỷ niệm xưa", "Ngày đầu tiên đi học"], answer: 3 },
+    { q: "Bài hát nào có giai điệu nhẹ nhàng, kể về hành trình lớn lên nhờ thầy cô?", options: ["Người thầy", "Bụi phấn", "Đi học", "Nhật ký của mẹ"], answer: 2 },
+    { q: "Ca khúc 'Đi học' sáng tác bởi ai?", options: ["Bùi Đình Thảo", "Vũ Hoàng", "Phạm Tuyên", "Hoàng Vân"], answer: 0 },
+    { q: "Bài hát nào KHÔNG dành cho chủ đề 20/11 nhưng hay bị hát nhầm?", options: ["Cây và gió", "Bụi phấn", "Người thầy", "Đi học"], answer: 0 },
+    { q: "'Ai thủa bé cũng đã từng ước – ước sau này mình lớn…' là lời mở đầu của bài hát nào?", options: ["Người Gieo Mầm Xanh", "Người thầy", "Mãi không quên", "Mong ước kỷ niệm xưa"], answer: 0 },
+    { q: "Câu hát nào sau đây nằm trong bài 'Bài Ca Người Giáo Viên Nhân Dân'?", options: [ "Bài ca ấy loài hoa ấy đẹp như em", "Khi thầy viết bảng, bụi phấn rơi rơi", "Dẫu đêm khuya vẫn miệt mài bên trang giáo án", "Mong ngày mai em lớn khôn nên người"],  answer: 0 },
   ]
 };
 let questions = [];
@@ -572,5 +596,3 @@ function closeModal() {
 </script>
 </body>
 </html>
-
-

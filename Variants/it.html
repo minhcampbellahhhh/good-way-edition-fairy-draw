@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Good-way Edition: Fairy Draw (IT Superstar)</title>
+  <title>Good-way Edition: Fairy Draw (Infinite Challenge)</title>
   <style>
     * { box-sizing: border-box; }
     body {
@@ -224,7 +224,7 @@
       <div>Điểm cao nhất: <b><span id="high-score">0</span></b></div>
       <div>Round cao nhất: <b><span id="highest-round">0</span></b></div>
     </div>
-    <p style="font-size: 12px">Bắt đầu game khi trang web tải đủ tài nguyên!</p>
+    <p style="font-size: 12px">Nhấn Ctrl+F5 để lấy lại xếp hạng. Lưu ý: Hãy đợi trang tải đủ dữ liệu để bắt đầu game</p>
     <button class="start"; onclick="startGame()"; style="font-size: 24px">Bắt đầu chơi</button>
     <br>
     <table style="background-color: transparent;">
@@ -248,19 +248,16 @@
      <div class="ticker__track">
       <div class="ticker__list">
         <span class="ticker__item">Dự án game thuộc về Trần Đặng Bình Minh (MinhCampbell) - Trưởng bộ phận BMSTORY Entertainment và Các thành viên trong CLB Tin học của Trường Đại Học Kinh Tế - Kỹ Thuật Công Nghiệp.</span>
-        <span class="ticker__item">Thông báo cập nhật và bảo trì dự kiến vào tháng 11/2025: Thêm ngôn ngữ lập trình mới, nội dung mới.</span>
+        <span class="ticker__item">Thông báo cập nhật và bảo trì dự kiến vào tháng 12/2025: Cập nhật quan trọng!</span>
         <span class="ticker__item">Thông báo gửi câu hỏi cụ thể ở phần dưới của trang web này. Đọc kỹ nội dung trước khi gửi về ban tổ chức.</span>
         <span class="ticker__item">Cảm ơn các bạn đã cùng chơi và đồng hành với chúng tôi!</span>
       </div>
     </div>
     </div>
-    <h3 style="font-size: 20px; color:#ff0000">----------- Nội dung cập nhật (Ngày 27/10/2025) -----------</h3>
+    <h3 style="font-size: 20px; color:#ff0000">----------- Nội dung cập nhật (Ngày 27/11/2025) -----------</h3>
       <ul style="text-align: left; line-height: 1.8;">
-        <li>Thêm lá chức năng mới: Deal It. Chỉnh sửa chức năng của lá Sync. (Nội dung thay đổi ở phần dưới)</li>
-        <li>Thêm bộ câu hỏi ngôn ngữ lập trình mới: Pascal.</li>
-        <li>Cập nhật giao diện game. Chỉnh sửa cột mốc.</li>
-        <li>Video hướng dẫn chơi sẽ được cập nhật trong vòng 4 ngày tới.</li>
-        <li>Sự kiện Ngày Nhà Giáo Việt Nam 20/11/2025: Coming Soon!</li>
+        <li>Thêm bộ câu hỏi ngôn ngữ lập trình mới: R.</li>
+        <li>Cập nhật giao diện game, nội dung mới.</li>
       </ul>
     <br>
     <br>
@@ -385,6 +382,7 @@
         <td><img src="../Image/Swift.png" style="width: 125px; vertical-align: middle;"></td>
         <td><img src="../Image/SQL.png" style="width: 125px; vertical-align: middle;"></td>
         <td><img src="../Image/Pascal.png" style="width: 125px; vertical-align: middle;"></td>
+        <td><img src="../Image/R.png" style="width: 125px; vertical-align: middle;"></td>
       </tr>
     </table>
     <br>
@@ -577,6 +575,7 @@ const programmingLanguages = [
   { subject: "Swift", image: "../Image/Swift.png", text: "Swift" },
   { subject: "SQL", image: "../Image/SQL.png", text: "SQL" },
   { subject: "Pascal", image: "../Image/Pascal.png", text: "Pascal" },
+  { subject: "R", image: "../Image/R.png", text: "R" },
 ];
 
 const questions = [
@@ -894,9 +893,47 @@ const questions = [
   { subject: "Mạng máy tính", question: "Chuẩn Ethernet IEEE là?", options: ["802.3", "802.5", "802.11", "802.15"], correct: 1 },
   { subject: "Mạng máy tính", question: "Đường truyền vật lí được chia thành:", options: ["Cáp đồng trục và cáp xoắn đôi", "Cáp đồng trục và cáp sợi quang", "Môi trường hữu tuyến, môi trường vô tuyến", "Cáp đồng trục và cáp sợi quang, cáp xoắn đôi"], correct: 3 },
   { subject: "Mạng máy tính", question: "Nhược điểm của mạng peer to peer là", options: ["Cài đặt và cấu hình phức tạp", "Không thể sao chép dữ liệu tập trung", "Chi phí đắt hơn mạng client – server", "Quản trị và sửa chữa phức tạp"], correct: 2 },
-  { subject: "Mạng máy tính", question: "Điều nào dưới đây mô tả kiểu kết nối Point to Multipoint:", options: ["Topo dạng Star là kết nối kiểu point to point", "Các đường truyền nối từng cặp nút lại với nhau", "Các nút mạng cùng nối chung vào một đường BUS chung", "Mạng kiểu này còn được gọi là mạng lưu trữ và chuyển tiếp"], correct: 4 },
+  { subject: "Mạng máy tính", question: "Điều nào dưới đây mô tả kiểu kết nối Point to Multipoint:", options: ["Topo dạng Star là kết nối kiểu point to point", "Các đường truyền nối từng cặp nút lại với nhau", "Các nút mạng cùng nối chung vào một đường BUS chung", "Còn được gọi là mạng lưu trữ và chuyển tiếp"], correct: 4 },
   { subject: "Mạng máy tính", question: "Trong mạng Lan, loại cáp nào được sử dụng phổ biến nhất hiện nay?", options: ["Cáp quang", "Cáp UTP", "Cáp đồng trục", "Cáp STP"], correct: 2 },
   { subject: "Mạng máy tính", question: "Trang thiết bị mạng trung tâm dùng để kết nối các máy tính trong mạng hình sao (STAR)?", options: ["Router", "NIC", "Repeater", "Switch"], correct: 4 },
+  { subject: "Mạng máy tính", question: "Tầng nào trong mô hình OSI chịu trách nhiệm định tuyến gói tin giữa các mạng?", options: ["Tầng Vật lý", "Tầng Giao vận", "Tầng Mạng", "Tầng Ứng dụng"], correct: 3 },
+  { subject: "Mạng máy tính", question: "Địa chỉ IP 192.168.1.0/24 thuộc lớp nào?", options: ["Lớp A", "Lớp B", "Lớp C", "Lớp D"], correct: 3 },
+  { subject: "Mạng máy tính", question: "Một subnet /26 có thể chứa bao nhiêu host khả dụng?", options: ["64", "62", "32", "30"], correct: 2 },
+  { subject: "Mạng máy tính", question: "Thiết bị nào hoạt động ở tầng 2 của mô hình OSI?", options: ["Hub", "Router", "Switch", "Repeater"], correct: 3 },
+  { subject: "Mạng máy tính", question: "Giao thức nào dùng để dịch địa chỉ IP thành địa chỉ MAC?", options: ["DHCP", "DNS", "ARP", "ICMP"], correct: 3 },
+  { subject: "Mạng máy tính", question: "Địa chỉ 127.0.0.1 được gọi là gì?", options: ["Địa chỉ Broadcast", "Địa chỉ Loopback", "Địa chỉ Gateway", "Địa chỉ Multicast"], correct: 2 },
+  { subject: "Mạng máy tính", question: "Subnet mask 255.255.255.192 tương ứng với prefix nào?", options: ["/25", "/26", "/27", "/28"], correct: 2 },
+  { subject: "Mạng máy tính", question: "Giao thức TCP hoạt động ở tầng nào trong mô hình OSI?", options: ["Tầng Mạng", "Tầng Giao vận", "Tầng Phiên", "Tầng Ứng dụng"], correct: 2 },
+  { subject: "Mạng máy tính", question: "Thiết bị nào được dùng để kết nối nhiều mạng khác nhau?", options: ["Switch", "Router", "Bridge", "Hub"], correct: 2 },
+  { subject: "Mạng máy tính", question: "Phát biểu nào sau đây đúng về địa chỉ MAC?", options: ["Là địa chỉ logic", "Được gán bởi người quản trị mạng", "Là địa chỉ vật lý của card mạng", "Thay đổi mỗi khi khởi động lại"], correct: 3 },
+  { subject: "Mạng máy tính", question: "Giao thức nào dùng để cấp phát IP tự động cho thiết bị?", options: ["DNS", "ARP", "ICMP", "DHCP"], correct: 4 },
+  { subject: "Mạng máy tính", question: "Một địa chỉ IP lớp C có thể có tối đa bao nhiêu host trong cùng một mạng (không chia subnet)?", options: ["254", "256", "512", "1024"], correct: 1 },
+  { subject: "Mạng máy tính", question: "Port mặc định của giao thức HTTP là bao nhiêu?", options: ["20", "21", "80", "443"], correct: 3 },
+  { subject: "Mạng máy tính", question: "Địa chỉ broadcast của mạng 192.168.10.0/24 là gì?", options: ["192.168.10.255", "192.168.10.0", "192.168.10.1", "192.168.10.254"], correct: 1 },
+  { subject: "Mạng máy tính", question: "Trong mô hình TCP/IP, tầng Ứng dụng bao gồm các giao thức nào sau đây?", options: ["IP, ICMP", "HTTP, FTP, SMTP", "TCP, UDP", "Ethernet, Wi-Fi"], correct: 2 },
+  { subject: "Mạng máy tính", question: "Thiết bị nào khuếch đại tín hiệu điện nhưng không lọc dữ liệu?", options: ["Router", "Switch", "Repeater", "Bridge"], correct: 3 },
+  { subject: "Mạng máy tính", question: "Công thức tính số subnet khi mượn n bit là gì?", options: ["2^n", "2^n − 2", "2^(32−n)", "2^n + 2"], correct: 1 },
+  { subject: "Mạng máy tính", question: "Công thức tính số host khả dụng trong subnet là gì?", options: ["2^n", "2^n − 1", "2^n − 2", "2^(n−1)"], correct: 3 },
+  { subject: "Mạng máy tính", question: "Địa chỉ nào là địa chỉ Gateway thường thấy trong mạng 192.168.1.0/24?", options: ["192.168.1.1", "192.168.1.0", "192.168.1.255", "192.168.1.254"], correct: 1 },
+  { subject: "Mạng máy tính", question: "Giao thức nào sử dụng port 443?", options: ["HTTP", "HTTPS", "FTP", "SSH"], correct: 2 },
+  { subject: "Mạng máy tính", question: "Nếu 4 PCs kết nối với nhau thông qua HUB thì cần bao nhiêu địa chỉ IP cho 5 thiết bị mạng này?", options: ["5", "1", "2", "4"], correct: 4 },
+  { subject: "Mạng máy tính", question: "Mục tiêu của việc phân tích, thiết kế các mạng máy tính theo quan điểm phân tầng là", options: ["Để giảm độ phức tạp việc thiết kế và cài đặt mạng", "Để dễ dàng cho việc quản trị mạng", "Không phải các lý do trên", "Để nâng cấp hệ thống mạng dễ dàng hơn"], correct: 1 },
+  { subject: "Mạng máy tính", question: "Một router làm việc ở tầng nào trong mô hình mạng OSI?", options: ["Transport", "Datalink", "Network", "Presentation"], correct: 3 },
+  { subject: "Mạng máy tính", question: "Địa chỉ 129.219.255.255 là địa chỉ gì?", options: ["Broadcast lớp A", "Host lớp B", "Host lớp A", "Broadcast lớp B"], correct: 4 },
+  { subject: "Mạng máy tính", question: "Địa chỉ 29.255.255.255 là địa chỉ gì?", options: ["Broadcast lớp B", "Broadcast lớp A", "Host lớp A", "Host lớp B"], correct: 2 },
+  { subject: "Mạng máy tính", question: "Địa chỉ IP nào sau đây không được dùng để kết nối trực tiếp trong mạng Internet?", options: ["170.25.46.142", "127.0.0.1", "201.134.1.2", "192.168.98.20"], correct: 2 },
+  { subject: "Mạng máy tính", question: "Mạng Internet là", options: ["Mạng máy tính toàn cầu", "Mạng diện rộng", "Mạng kết nối theo giao thức TCP/IP", "Mạng của các mạng con kết nối lại với nhau"], correct: 3 },
+  { subject: "Mạng máy tính", question: "Chức năng của tầng mạng là?", options: ["Thực hiện chuyển mạch", "Kiểm soát lỗi và luồng dữ liệu", "Lưu và chuyển tiếp gói tin", "Đóng gói dữ liệu"], correct: 3 },
+  { subject: "Mạng máy tính", question: "Nếu lấy 1 địa chỉ lớp B để chia subnet với netmask là 255.255.240.0 thì có bao nhiêu subnets có thể sử dụng được?", options: ["30", "2", "14", "6"], correct: 3 },
+  { subject: "Mạng máy tính", question: "Chức năng của tầng mạng là", options: ["Thực hiện chuyển mạch", "Đóng gói dữ liệu", "Kiểm soát lỗi và luồng dữ liệu", "Điều khiển tắc nghẽn"], correct: 4 },
+  { subject: "Mạng máy tính", question: "Chọn ý đúng về địa chỉ MAC?", options: ["Sử dụng 32 bit để đánh địa chỉ MAC", "Do người quản trị mạng khai báo", "Được ghi sẵn trên card mạng (NIC)", "Sử dụng 24 bit để đánh địa chỉ MAC"], correct: 3 },
+  { subject: "Mạng máy tính", question: "Cho địa chỉ mạng 192.168.2.0, subnet mask 255.255.255.240. Hỏi có bao nhiêu host trong mạng?", options: ["254", "255", "14", "16"], correct: 3 },
+  { subject: "Mạng máy tính", question: "Cho biết giá trị subnet mask hợp lệ trong các giá trị sau", options: ["255.0.255.0", "255.128.255.0", "255.255.255.128", "255.3.0.0"], correct: 3 },
+  { subject: "Mạng máy tính", question: "Các đơn vị dữ liệu giao thức trong lớp 3 của mô hình OSI được gọi là", options: ["Packet", "Message", "Segment", "Frame"], correct: 1 },
+  { subject: "Mạng máy tính", question: "Byte đầu tiên của một địa chỉ IP có dạng: 10100001. Vậy nó thuộc lớp nào?", options: ["Lớp E", "Lớp B", "Lớp D", "Lớp C"], correct: 2 },
+  { subject: "Mạng máy tính", question: "Một octet của địa chỉ IP là", options: ["một byte", "một bit", "hai byte", "tám byte"], correct: 1 },
+  { subject: "Mạng máy tính", question: "Lớp B cho phép mượn tối đa bao nhiêu bit cho subnet?", options: ["8", "14", "2", "6"], correct: 2 },
+  { subject: "Mạng máy tính", question: "Một mạng con lớp A cần chứa tối thiểu 255 host sử dụng subnet mask nào sau đây?", options: ["255.255.254.0", "255.255.255.192", "255.255.255.240", "255.0.0.255"], correct: 1 },
 
 { subject: "Hệ điều hành", question: "Hệ điều hành nào là mã nguồn mở?", options: ["macOS", "iOS", "Linux", "Windows"], correct: 3 },
 { subject: "Hệ điều hành", question: "Tiến trình (process) là gì?", options: ["Thư mục", "Phần cứng", "Chương trình đang thực thi", "Tệp hệ thống"], correct: 3 },
@@ -904,7 +941,7 @@ const questions = [
 { subject: "Hệ điều hành", question: "Ví dụ hệ điều hành thời gian thực (RTOS) là?", options: ["Windows 10", "Linux Ubuntu", "macOS", "FreeRTOS"], correct: 4 },
 { subject: "Hệ điều hành", question: "Trong mô hình nhiều chương trình (multiprogramming), mục tiêu chính là?", options: ["Giảm số tiến trình", "Tăng nhiệt độ CPU", "Giảm dung lượng bộ nhớ", "Tăng hiệu quả sử dụng CPU"], correct: 4 },
 { subject: "Hệ điều hành", question: "Multitasking nghĩa là gì?", options: ["Một tiến trình chạy duy nhất", "Nhiều tiến trình chạy đồng thời", "Chỉ chạy tiến trình nền", "Không có tiến trình nào"], correct: 2 },
-{ subject: "Hệ điều hành", question: "Deadlock xảy ra khi?", options: ["CPU quá tải", "Các tiến trình chờ nhau vô hạn", "Ổ cứng hỏng", "Thiếu RAM"], correct: 2 },
+{ subject: "Hệ điều hành", question: "Deadlock (Tắc nghẽn) xảy ra khi?", options: ["CPU quá tải", "Các tiến trình chờ nhau vô hạn", "Ổ cứng hỏng", "Thiếu RAM"], correct: 2 },
 { subject: "Hệ điều hành", question: "Semaphore được dùng để?", options: ["Đồng bộ tiến trình", "Tăng tốc CPU", "Phát nhạc", "Lưu trữ dữ liệu"], correct: 1 },
 { subject: "Hệ điều hành", question: "Bộ nhớ ảo (virtual memory) cho phép?", options: ["Chỉ chạy trên đĩa cứng", "Chạy chương trình lớn hơn RAM vật lý", "Bỏ qua bộ nhớ", "Chạy nhanh hơn CPU"], correct: 2 },
 { subject: "Hệ điều hành", question: "Thrashing xảy ra khi?", options: ["Thiếu tiến trình", "CPU lỗi", "Quá nhiều hoán đổi trang bộ nhớ", "Ổ cứng hỏng"], correct: 3 },
@@ -950,6 +987,36 @@ const questions = [
 { subject: "Hệ điều hành", question: "Hệ điều hành đầu tiên hỗ trợ đa nhiệm thực sự?", options: ["Windows 3.1", "MS-DOS", "Unix", "CP/M"], correct: 3 },
 { subject: "Hệ điều hành", question: "Thuật toán SJF (Shortest Job First) trong hệ điều hành ưu tiên tiến trình nào?", options: ["Tiến trình sử dụng CPU nhiều nhất", "Tiến trình có độ ưu tiên cao nhất", "Tiến trình đến sớm nhất", "Tiến trình có thời gian thực thi ngắn nhất"], correct: 4 },
 { subject: "Hệ điều hành", question: "Thuật toán SRTF (Shortest Remaining Time First) là biến thể nào của SJF?", options: ["Dạng ưu tiên (preemptive) của SJF", "Dạng không ưu tiên (non-preemptive) của SJF", "Thuật toán vòng tròn (Round Robin)", "Thuật toán ưu tiên tĩnh"], correct: 1 },
+{ subject: "Hệ điều hành", question: "Trong hệ điều hành, 'Process' được hiểu là gì?", options: ["Một đoạn mã chương trình", "Một chương trình đang thực thi", "Một tập tin lưu trữ", "Một luồng dữ liệu"], correct: 2 },
+{ subject: "Hệ điều hành", question: "Bộ lập lịch (Scheduler) có nhiệm vụ chính là gì?", options: ["Quản lý bộ nhớ", "Quản lý tập tin", "Phân phối CPU cho các tiến trình", "Kiểm tra lỗi phần cứng"], correct: 3 },
+{ subject: "Hệ điều hành", question: "Thuật toán SRTF (Shortest Remaining Time First) là biến thể nào của SJF?", options: ["Dạng ưu tiên (preemptive) của SJF", "Dạng không ưu tiên (non-preemptive) của SJF", "Thuật toán vòng tròn (Round Robin)", "Thuật toán ưu tiên tĩnh"], correct: 1 },
+{ subject: "Hệ điều hành", question: "Bốn điều kiện cần để xảy ra deadlock là gì?", options: ["Tương tranh, tuần hoàn, chiếm giữ và chờ, không thu hồi", "Chiếm giữ và chờ, loại trừ lẫn nhau, không thu hồi, chờ vòng tròn", "Tắc nghẽn, loại trừ, chờ, tái sử dụng", "Độc quyền, tương tranh, lặp vòng, ưu tiên"], correct: 2 },
+{ subject: "Hệ điều hành", question: "Trong cơ chế phân trang (Paging), đơn vị nhỏ nhất của bộ nhớ được gọi là gì?", options: ["Segment", "Page", "Block", "Frame"], correct: 2 },
+{ subject: "Hệ điều hành", question: "Thuật toán thay thế trang nào dưới đây dùng nguyên tắc 'trang nào ít được sử dụng nhất sẽ bị loại'? ", options: ["FIFO", "LRU", "OPT", "Clock"], correct: 2 },
+{ subject: "Hệ điều hành", question: "Trong hệ thống đa nhiệm, chuyển đổi giữa các tiến trình đang chạy gọi là gì?", options: ["Swapping", "Context switching", "Paging", "Forking"], correct: 2 },
+{ subject: "Hệ điều hành", question: "Tập hợp các tiến trình đang chờ thực thi tại CPU được quản lý bởi hàng đợi nào?", options: ["Ready Queue", "Wait Queue", "Job Queue", "Device Queue"], correct: 1 },
+{ subject: "Hệ điều hành", question: "Lời gọi hệ thống là lệnh do hệ điều hành cung cấp dùng để giao tiếp giữa hệ điều hành và...", options: ["Chương trình ứng dụng", "Người sử dụng", "Phần cứng máy tính", "Tiến trình"], correct: 4 },
+{ subject: "Hệ điều hành", question: "Phần cứng (Hardware) thông thường bao gồm những gì?", options: ["CPU, Memory", "Memory, I/O", "CPU, Memory, I/O", "I/O"], correct: 3 },
+{ subject: "Hệ điều hành", question: "Chức năng chính của hệ điều hành là gì?", options: ["Quản lý bộ nhớ, tập tin, tiến trình", "Điều hành hệ thống và giúp người dùng khai thác phần cứng", "Khai thác chức năng phần cứng", "Quản lý tài nguyên và giúp người dùng khai thác phần cứng dễ dàng hơn"], correct: 4 },
+{ subject: "Hệ điều hành", question: "Các thành phần chính của hệ điều hành có bao nhiêu phần?", options: ["6", "4", "8", "2"], correct: 2 },
+{ subject: "Hệ điều hành", question: "Multitasking được gọi là gì?", options: ["Hệ thống phân tán", "Hệ thống bó", "Hệ thống song song", "Hệ thống đa nhiệm"], correct: 4 },
+{ subject: "Hệ điều hành", question: "Các hạn chế của thiết bị cầm tay PDA là gì?", options: ["Cả 3 đáp án trên", "Màn hình nhỏ", "Bộ nhớ hạn chế", "Xử lý chậm"], correct: 1 },
+{ subject: "Hệ điều hành", question: "Một số công việc được lưu trong bộ nhớ chính và CPU đa nhiệm giữa chúng gọi là...", options: ["Hệ thống xử lý theo lô đa chương", "Hệ thống xử lý theo lô", "Hệ thống song song", "Hệ thống phân tán"], correct: 1 },
+{ subject: "Hệ điều hành", question: "Cấu trúc hệ điều hành nào tương thích dễ dàng với mô hình hệ thống phân tán?", options: ["Cấu trúc phân lớp", "Cấu trúc máy ảo", "Cấu trúc Server–Client", "Cấu trúc đơn giản"], correct: 3 },
+{ subject: "Hệ điều hành", question: "Ở HĐH có cấu trúc phân lớp, tập hợp các lời gọi hệ thống được tạo ra bởi...", options: ["Lớp phần cứng", "Lớp giao tiếp người dùng", "Lớp kế lớp phần cứng – hạt nhân", "Lớp ứng dụng"], correct: 3 },
+{ subject: "Hệ điều hành", question: "Loại hệ thống có nhiều bộ xử lí cùng chia sẻ bộ nhớ và thiết bị ngoại vi là...", options: ["Hệ thống xử lí phân tán", "Hệ thống xử lí thời gian thực", "Hệ thống xử lí song song", "Hệ thống xử lí theo lô"], correct: 3 },
+{ subject: "Hệ điều hành", question: "Trong hệ điều hành, 'Process' được hiểu là gì?", options: ["Một luồng dữ liệu", "Một tập tin lưu trữ", "Một chương trình đang thực thi", "Một đoạn mã chương trình"], correct: 3 },
+{ subject: "Hệ điều hành", question: "Bộ lập lịch (Scheduler) có nhiệm vụ chính là gì?", options: ["Kiểm tra lỗi phần cứng", "Phân phối CPU cho các tiến trình", "Quản lý bộ nhớ", "Quản lý tập tin"], correct: 2 },
+{ subject: "Hệ điều hành", question: "Thuật toán SRTF (Shortest Remaining Time First) là biến thể nào của SJF?", options: ["Dạng không ưu tiên (non-preemptive) của SJF", "Thuật toán ưu tiên tĩnh", "Dạng ưu tiên (preemptive) của SJF", "Thuật toán vòng tròn (Round Robin)"], correct: 3 },
+{ subject: "Hệ điều hành", question: "Bốn điều kiện cần để xảy ra deadlock là gì?", options: ["Chiếm giữ và chờ, loại trừ lẫn nhau, không thu hồi, chờ vòng tròn", "Độc quyền, tương tranh, lặp vòng, ưu tiên", "Tương tranh, tuần hoàn, chiếm giữ và chờ, không thu hồi", "Tắc nghẽn, loại trừ, chờ, tái sử dụng"], correct: 1 },
+{ subject: "Hệ điều hành", question: "Trong cơ chế phân trang (Paging), đơn vị nhỏ nhất của bộ nhớ được gọi là gì?", options: ["Frame", "Segment", "Page", "Block"], correct: 3 },
+{ subject: "Hệ điều hành", question: "Thuật toán thay thế trang nào dùng nguyên tắc 'trang ít được sử dụng nhất sẽ bị loại'?", options: ["Clock", "FIFO", "OPT", "LRU"], correct: 4 },
+{ subject: "Hệ điều hành", question: "Trong hệ thống đa nhiệm, việc chuyển đổi giữa các tiến trình gọi là gì?", options: ["Forking", "Paging", "Swapping", "Context switching"], correct: 4 },
+{ subject: "Hệ điều hành", question: "Tập hợp các tiến trình đang chờ thực thi tại CPU được quản lý bởi hàng đợi nào?", options: ["Device Queue", "Ready Queue", "Job Queue", "Wait Queue"], correct: 2 },
+{ subject: "Hệ điều hành", question: "Đâu KHÔNG phải là trạng thái của tiến trình?", options: ["New (tạo mới một tiến trình)", "Running (tiến trình đang được thực thi)", "Waiting (tiến trình đang chờ sự kiện xảy ra)", "Swapping (trao đổi giữa các tiến trình)"], correct: 4 },
+{ subject: "Hệ điều hành", question: "Hàng đợi dành cho các process xếp hàng chờ nhập/xuất được gọi là:", options: ["Busy-Waitting buffer", "Ready queue", "Waitting queue", "Running"], correct: 3 },
+{ subject: "Hệ điều hành", question: "Khi một tiến trình kết thúc xử lý, hệ điều hành huỷ bỏ nó bằng một số hoạt động. Hoạt động nào sau đây là KHÔNG cần thiết?", options: ["Huỷ bỏ định danh của tiến trình", "Thu hồi các tài nguyên cấp phát cho tiến trình", "Huỷ tiến trình ra khỏi tất cả các danh sách quản lí của hệ thống", "Câu B và C đúng"], correct: 4 },
+{ subject: "Hệ điều hành", question: "Một luồng (thread) thường được gọi là:", options: ["Một đơn vị cơ bản của việc sử dụng Register", "Một đơn vị cơ bản của việc sử dụng CPU", "Một đơn vị cơ bản của việc sử dụng Bộ nhớ", "Một đơn vị cơ bản của việc sử dụng Bộ I/O"], correct: 2 },
 
   { subject: "Blockchain", question: "Blockchain chủ yếu được dùng để?", options: ["Giao dịch phi tập trung", "Lưu trữ tập trung", "Xử lý ảnh", "Tăng tốc internet"], correct: 1 },
   { subject: "Blockchain", question: "Khối (block) trong blockchain chứa gì?", options: ["Hình ảnh", "Dữ liệu giao dịch", "Tệp âm thanh", "Phần mềm"], correct: 2 },
@@ -1655,7 +1722,7 @@ const questions = [
   { language: "SQL", question: "Trong SQL, VIEW là gì?", options: ["Bảng ảo từ kết quả truy vấn", "CSDL con", "Bảng vật lý", "Bảng hệ thống"], correct: 1 },
   { language: "SQL", question: "Lệnh CREATE VIEW dùng để?", options: ["Tạo bảng thật", "Tạo user", "Tạo index", "Tạo bảng ảo"], correct: 4 },
   { language: "SQL", question: "Lệnh DROP VIEW dùng để?", options: ["Xoá DB", "Xoá user", "Xoá view", "Xoá bảng"], correct: 3 },
-  { language: "SQL", question: "Stored Procedure trong SQL là gì?", options: ["Trigger", "Index", "View", "Thủ tục lưu trữ gồm nhiều lệnh SQL"], correct: 4 },
+  { language: "SQL", question: "Stored Procedure trong SQL là gì?", options: ["Trigger nhiều lệnh SQL", "Index trong những câu lệnh truy vấn SQL", "View cho một đối tượng dữ liệu", "Thủ tục lưu trữ gồm nhiều lệnh SQL"], correct: 4 },
   { language: "SQL", question: "Trigger trong SQL là gì?", options: ["View", "Thủ tục tự động chạy khi có sự kiện", "Khoá ngoại", "Index"], correct: 2 },
   { language: "SQL", question: "Câu lệnh GRANT trong SQL dùng để?", options: ["Cấp quyền cho user", "Xoá user", "Tạo user", "Xoá quyền"], correct: 1 },
   { language: "SQL", question: "Câu lệnh REVOKE trong SQL dùng để?", options: ["Thu hồi quyền user", "Tạo user", "Cấp quyền user", "Xoá user"], correct: 1 },
@@ -1689,6 +1756,14 @@ const questions = [
   { language: "SQL", question: "Trong SQL Server, để đổi tên cột trong bảng, ta dùng lệnh nào?", options: ["ALTER TABLE ... MODIFY NAME", "ALTER DATABASE ... MODIFY FILE", "sp_rename", "ALTER COLUMN ... RENAME"], correct: 3 },
   { language: "SQL", question: "Trong SQL Server, lệnh 'INSERT INTO ... SELECT ...' dùng để làm gì?", options: ["Xoá dữ liệu trùng lặp trong bảng hiện tại", "Tạo bảng mới từ kết quả truy vấn", "Cập nhật dữ liệu trong bảng hiện tại", "Chèn dữ liệu từ một bảng khác vào bảng hiện tại"], correct: 4 },
   { language: "SQL", question: "Trong SQL Server, lệnh 'UPDATE ... SET ...' dùng để làm gì?", options: ["Cập nhật giá trị của một dữ liệu trong bảng", "Cập nhật giá trị của một hoặc nhiều cột trong bảng", "Xóa dữ liệu của một hoặc nhiều cột trong bảng", "Sao chép dữ liệu giữa các bảng"], correct: 2 },
+  { language: "SQL", question: "Trong SQL Server, lệnh 'DECLARE @...  ...' dùng để làm gì?", options: ["Khai báo quyền truy cập cho người dùng", "Khai báo bảng mới trong cơ sở dữ liệu",  "Khai báo khóa chính cho bảng",  "Khai báo biến để lưu trữ giá trị tạm thời trong truy vấn" ], correct: 4 },
+  { language: "SQL", question: "Trong SQL Server, lệnh 'PRINT @TenBien' có tác dụng gì?", options: ["Gán giá trị cho biến @TenBien", "Xóa biến @TenBien khỏi bộ nhớ", "Tạo biến mới tên @TenBien", "In giá trị của biến @TenBien ra màn hình"  ], correct: 4 },
+  { language: "SQL", question: "Trong SQL Server, hàm 'CAST(expression AS data_type)' dùng để làm gì?", options: ["Chuyển đổi kiểu dữ liệu của một biểu thức sang kiểu dữ liệu khác", "So sánh hai kiểu dữ liệu khác nhau", "Xóa dữ liệu có kiểu nhất định trong bảng", "Kiểm tra kiểu dữ liệu của một cột"], correct: 1 },
+  { language: "SQL", question: "Trong SQL Server, hàm 'CONVERT(data_type, expression)' có chức năng gì?", options: ["Ghép hai giá trị thành một chuỗi duy nhất", "Định dạng lại giá trị của bảng thành kiểu chuỗi", "Chuyển đổi kiểu dữ liệu của biểu thức sang kiểu dữ liệu mong muốn", "Tạo bản sao của một bảng với kiểu dữ liệu mới"], correct: 3 },
+  { language: "SQL", question: "Trong SQL Server, cặp lệnh 'BEGIN ... END' dùng để làm gì?", options: ["Định nghĩa khối lệnh được thực thi cùng nhau", "Khai báo biến trong câu lệnh SQL", "Kết thúc một truy vấn SQL", "Tạo bảng mới trong cơ sở dữ liệu"], correct: 1 },
+  { language: "SQL", question: "Trong SQL Server, lệnh 'IF (điều_kiện)' dùng để làm gì?", options: ["Lặp lại một khối lệnh nhiều lần", "Kiểm tra điều kiện và thực thi khối lệnh", "Tạo bảng mới khi điều kiện thỏa mãn", "Khai báo biến điều kiện"], correct: 2 },
+  { language: "SQL", question: "Trong SQL Server, mệnh đề 'IF EXISTS (...)' thường được dùng để làm gì?", options: ["Xóa tất cả dữ liệu trong bảng", "Kiểm tra xem một đối tượng có tồn tại hay không", "Sao chép dữ liệu giữa các bảng nếu có trong đối tượng", "Kiểm tra xem chương trình có tồn tại dữ liệu hay không"], correct: 2 },
+  { language: "SQL", question: "Lệnh 'EXECUTE' (hoặc 'EXEC') trong SQL dùng để làm gì?", options: ["Thực thi một thủ tục lưu trữ hoặc câu lệnh SQL động", "Tạo thủ tục lưu trữ mới trong câu lệnh SQL", "Khai báo biến trong truy vấn chương trình SQL", "Kiểm tra cú pháp của một câu lệnh"], correct: 1 },
 
 { language: "Pascal", question: "Pascal được phát triển bởi ai?", options: ["Guido van Rossum", "James Gosling", "Niklaus Wirth", "Dennis Ritchie"], correct: 3 },
 { language: "Pascal", question: "Tập tin chương trình Pascal thường có phần mở rộng là?", options: [".cpp", ".pas", ".py", ".java"], correct: 2 },
@@ -1728,21 +1803,49 @@ const questions = [
 { language: "Pascal", question: "Khi khai báo tham số có từ khóa 'var' trong Pascal, điều đó có nghĩa gì?", options: ["Truyền giá trị", "Truyền tham chiếu", "Không có ý nghĩa gì", "Biến cục bộ"], correct: 2 },
 { language: "Pascal", question: "Lệnh nào dùng để thoát khỏi vòng lặp trong Pascal?", options: ["halt", "break", "exit", "continue"], correct: 3 },
 { language: "Pascal", question: "Trong Pascal, câu lệnh 'case x of ... end;' tương đương với cấu trúc nào?", options: ["repeat ... until", "for ... do", "with ... do", "if ... then ... else if ..."], correct: 4 },
+
+{ language: "R", question: "R được sử dụng nhiều nhất trong lĩnh vực nào?",  options: ["Website", "Phân tích dữ liệu", "Game 3D", "Blockchain"], correct: 2 },
+{ language: "R", question: "Kiểu dữ liệu vector trong R được tạo bằng hàm nào?", options: ["list()", "vec()", "c()", "v()"], correct: 3 },
+{ language: "R", question: "Hàm để đọc file CSV trong R là?", options: ["read.csv()", "readFile()", "open.csv()", "import.csv()"], correct: 1 },
+{ language: "R", question: "Hàm để vẽ biểu đồ đường trong R?", options: ["plot()", "line()", "graph()", "draw()"], correct: 1 },
+{ language: "R", question: "Trong R, dữ liệu dạng bảng được lưu bằng kiểu gì?",  options: ["matrix", "data.frame", "table", "grid"], correct: 2 },
+{ language: "R", question: "Hàm để xem 6 dòng đầu của data frame là?",  options: ["top()", "first()", "head()", "open()"], correct: 3 },
+{ language: "R", question: "Toán tử gán phổ biến trong R là?", options: ["<-", "=>", "=", "**"], correct: 1 },
+{ language: "R", question: "Hàm để tính trung bình trong R là?", options: ["avg()", "sum()", "mean()", "median()"], correct: 3 },
+{ language: "R", question: "Thư viện nổi tiếng để trực quan hóa dữ liệu trong R là?",   options: ["matplotlib", "ggplot2", "chartJS", "Rgraph"], correct: 2 },
+{ language: "R", question: "R được phát triển bởi ai?", options: ["Guido van Rossum", "Dennis Ritchie", "Ross Ihaka và Robert Gentleman", "Brendan Eich"], correct: 3 },
+{ language: "R", question: "Hàm nào dùng để xem cấu trúc của một object trong R?", options: ["info()", "str()", "desc()", "structure()"], correct: 2 },
+{ language: "R", question: "Hàm nào dùng để loại bỏ giá trị NA khi tính mean?", options: ["mean(x)", "mean(x, remove=TRUE)", "mean(x, omit=TRUE)", "mean(x, na.rm=TRUE)"], correct: 4 },
+{ language: "R", question: "File R script có phần mở rộng là gì?", options: [".rr", ".rscript", ".rs", ".R"], correct: 4 },
+{ language: "R", question: "Hàm nào dùng để ghép chuỗi trong R?", options: ["concat()", "paste()", "join()", "combine()"], correct: 2 },
+{ language: "R", question: "Hàm để tạo chuỗi số từ 1 đến 10?", options: ["range(1,10)", "1:10", "seqnum(1,10)", "gen(1,10)"], correct: 2 },
+{ language: "R", question: "Hàm để cài đặt package trong R?", options: ["install()", "install.pkg()", "library()", "install.packages()"], correct: 4 },
+{ language: "R", question: "Hàm để xem danh sách các biến trong môi trường hiện tại?", options: ["vars()", "env()", "ls()", "list()"], correct: 3 },
+{ language: "R", question: "Hàm dùng để tạo ma trận trong R?", options: ["matrix()", "mat()", "new.matrix()", "mtrx()"], correct: 1 },
+{ language: "R", question: "Trong R, kiểu dữ liệu logical gồm những giá trị nào?", options: ["yes/no", "1/0", "true/false", "TRUE/FALSE"], correct: 4 },
+{ language: "R", question: "Hàm dùng để lọc dữ liệu theo điều kiện trong dplyr?", options: ["choose()", "filter()", "select()", "subset()"], correct: 2 },
+{ language: "R", question: "Hàm nào dùng để kết hợp hai data frame theo hàng?", options: ["rbind()", "cbind()", "merge()", "combine()"], correct: 1 },
+{ language: "R", question: "Trong ggplot2, hàm nào dùng để vẽ biểu đồ cột?", options: ["geom_bar()", "geom_col()", "geom_hist()", "geom_column()"], correct: 2 },
+{ language: "R", question: "Hàm summary() trong R dùng để làm gì?", options: ["Xem biểu đồ", "Tính thống kê mô tả", "Hiển thị cấu trúc object", "Kiểm tra NA"], correct: 2 },
+{ language: "R", question: "Để chuyển một biến sang factor, dùng hàm nào?", options: ["as.char()", "factor()", "as.factor()", "make.factor()"], correct: 3 },
+{ language: "R", question: "Trong dplyr, hàm arrange() dùng để?", options: ["Lọc dữ liệu", "Sắp xếp dữ liệu", "Đổi tên cột", "Gộp nhóm"], correct: 2 },
+{ language: "R", question: "Hàm which() dùng để làm gì?", options: ["Tìm giá trị lớn nhất", "Lấy vị trí phần tử TRUE", "Lấy số lượng NA", "Kiểm tra kiểu dữ liệu"], correct: 2 },
+{ language: "R", question: "Toán tử %in% dùng để?", options: ["Lấy phần trăm", "Kiểm tra thành viên trong tập", "Gộp dữ liệu", "So sánh vector"], correct: 2 },
+{ language: "R", question: "Hàm na.omit() dùng để?", options: ["Loại bỏ NA khỏi vector/data frame", "Thay NA bằng 0", "Đếm số NA", "Ẩn NA khi vẽ biểu đồ"], correct: 1 },
+{ language: "R", question: "Hàm t() dùng để?", options: ["Tính tổng", "Chuyển vị matrix", "Sắp xếp tăng dần", "Tạo vector"], correct: 2 },
+{ language: "R", question: "Trong R, list khác gì vector?", options: ["Không khác gì", "Vector chứa kiểu bất kỳ, list chỉ chứa số", "List chứa được nhiều kiểu dữ liệu", "List chỉ dùng trong Python"], correct: 3 },
 ];
 
 function setupRoundCards() {
   roundCards = [];
-  // Lấy 2 lá môn học ngẫu nhiên
   const shuffledSubjects = shuffleArray([...subjectCards]).slice(0, 2);
   shuffledSubjects.forEach(subj => {
     roundCards.push({ type: "subject", image: subj.image, subject: subj.subject, function: null });
   });
-  // Lấy 1 lá ngôn ngữ lập trình ngẫu nhiên
   const shuffledProgramming = shuffleArray([...programmingLanguages]).slice(0, 1);
   shuffledProgramming.forEach(prog => {
     roundCards.push({ type: "programming", image: prog.image, subject: prog.subject, function: null });
   });
-  // Lấy 1 lá chức năng ngẫu nhiên
   const func = functionCards[Math.floor(Math.random() * functionCards.length)];
   roundCards.push({ type: "function", image: func.image, subject: null, function: func });
   roundCards = shuffleArray(roundCards);
@@ -2255,7 +2358,3 @@ function getCookie(name) {
   </script>
 </body>
 </html>
-
-
-
-
